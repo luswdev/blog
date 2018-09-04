@@ -1,0 +1,172 @@
+---
+layout: post
+title: "XV6 Ch2 Page tables"
+date: 2018-07-23 14:14:35 +0800
+comments: true
+categories: xv6
+tag: [xv6, page table, memory, 虛擬記憶體, 頁表, 分頁, 記憶體管理, kernel, c]
+copyright: true
+description: 頁表
+images: https://i.imgur.com/4qq54zV.png
+---
+## 分頁硬體
+- PTE：Page table entry，包含 20-bit PPN 及 flags
+- PPN：Physical Page number
+- {% label warning @x86的頁表 %}：2<sup>20</sup> 條 PTE。
+
+{% note success %}
+### 目標
+分頁硬體使用虛擬位址找到對應的 PTE，接著把高 20-bit 替換為 PTE 的 PPN，低 12-bit 直接沿用，即完成轉譯的動作。
+{% endnote %}
+
+### xv6 頁表
+![](https://i.imgur.com/4qq54zV.png "x86 page table hardware.")
+- 一個頁表在物理記憶體中為一顆兩層的樹
+	- 樹根為一個 4096 字節的目錄（page dir），包含 1024 個類 PTE，分別指向不同的頁表頁（page table page）。
+	- 每頁包含 1024 個 32-bit PTE。
+- 轉譯過程
+	1. 分頁硬體用虛擬地址的高 10-bit 找到指定的頁。
+	2. 如果指向的頁存在的話，繼續使用接著的 10-bit 來找到指定的 PTE。
+	3. 不存在的話，拋出錯誤。
+	
+### flags
+
+| flags | name | 為 1 時 | 為 0 時 
+| :---: | ---- | ------ | ------- |
+| P | Present | 表示頁存在 | 不存在 |
+| W | Writable | 可以寫入 | 只能讀/取 |
+| U | User | user 能使用此頁 | 只有 kernel 能使用 |
+| WT |  | Write-through | Write-back |
+| CD | Cache Disable | 不會對此頁進行 cache | 進行 cache |
+| A | Accessed | 為 0 時被存取， 處理器會將此位設為 1 | |
+| D | Dirty | 為 0 時寫入此頁， 處理器會將此位設為 1 | |
+| AVL | Available for system use | | |
+
+**{% label danger@註： %}**只有軟體可以將 A、D 清 0。[^1]
+
+[^1]:[記憶體管理／分頁架構](https://www.csie.ntu.edu.tw/~wcchen/asm98/asm/proj/b85506061/chap2/paging.html)
+
+{% note info%}
+#### WT 的補充
+**write-through**
+**write-back**
+{% endnote %}
+
+### 名詞解釋
+- 物理記憶體：DRAM
+- 物理地址：DRAM 的位址
+
+## Process address space
+- `main` 呼叫 `kvmalloc` 跳到新的頁表，重新映射至記憶體。
+![](https://i.imgur.com/Tvf1wwe.png "Layout of the virtual address space of a process and physical address space.")
+- 每個 process 都有自己的頁表，在切換 process 時也會切換頁表。
+- process 的頁表從 0 開始，最多至 `KERNBASE`，限制 process 最多使用 2GB。
+- 如果需要更多記憶體時：
+	1. xv6 先找到一個空的頁
+	2. 將對應的 PTE 加入 process 的頁表裡
+- 每個 process 的頁表都有包含對應的 kernel 映射（ `KERNBASE` 之上），這樣當發生中斷時就不需要切換頁表。
+- `KERNBASE` 之上的頁對應的 PTE，PTE_U 均設為 0。
+
+## Code: 建立 address space
+- `main` 呼叫 `kvmalloc` 來建立 `KERNBASE` 之上的頁表
+
+### kvmalloc
+```c :kvmalloc
+// file: vm.c (146)
+// Allocate one page table for the machine for the kernel address
+// space for scheduler processes.
+void
+kvmalloc(void)
+{
+  kpgdir = setupkvm();
+  switchkvm();
+}
+```
+- 建立頁表的工作由 `setupkvm` 完成
+
+### setupkvm
+```c :setupkvm
+// file: vm.c (127)
+// Set up kernel part of a page table.
+pde_t*
+setupkvm(void)
+{
+  pde_t *pgdir;
+  struct kmap *k;
+
+  if((pgdir = (pde_t*)kalloc()) == 0)
+    return 0;
+```
+- 首先分配一頁來存放目錄
+
+```c first_line:11
+  memset(pgdir, 0, PGSIZE);
+  if (p2v(PHYSTOP) > (void*)DEVSPACE)
+    panic("PHYSTOP too high");
+  for(k = kmap; k < &kmap[NELEM(kmap)]; k++)
+    if(mappages(pgdir, k->virt, k->phys_end - k->phys_start, 
+                (uint)k->phys_start, k->perm) < 0)
+      return 0;
+  return pgdir;
+}
+```
+- 接著呼叫 `mappages` 來建立 kernel 所需的映射。
+- 映射存放在 kmap 裡
+```c line_number:false :struct kmap
+// file: vm.c (115)
+// This table defines the kernel's mappings, which are present in
+// every process's page table.
+static struct kmap {
+  void *virt;
+  uint phys_start;
+  uint phys_end;
+  int perm;
+} kmap[] = {
+ { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, // I/O space
+ { (void*)KERNLINK, V2P(KERNLINK), V2P(data), 0},     // kern text+rodata
+ { (void*)data,     V2P(data),     PHYSTOP,   PTE_W}, // kern data+memory
+ { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, // more devices
+};
+```
+	- kmap 包含 kernel 的資料及指令、`PHYTOP`以下的物理記憶體、及 I/O 設備的記憶體。
+	- 這裡不會建立有關 user 的映射
+
+
+### mappages
+```c :mappages
+// file: vm.c (67)
+// Create PTEs for virtual addresses starting at va that refer to
+// physical addresses starting at pa. va and size might not
+// be page-aligned.
+static int
+mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
+{
+  char *a, *last;
+  pte_t *pte;
+  
+  a = (char*)PGROUNDDOWN((uint)va);
+  last = (char*)PGROUNDDOWN(((uint)va) + size - 1);
+  for(;;){
+    if((pte = walkpgdir(pgdir, a, 1)) == 0)
+      return -1;
+    if(*pte & PTE_P)
+      panic("remap");
+    *pte = pa | perm | PTE_P;
+    if(a == last)
+      break;
+    a += PGSIZE;
+    pa += PGSIZE;
+  }
+  return 0;
+}
+```
+
+### switchkvm
+```c :switchkvm
+// file: vm.c (157)
+void
+switchkvm(void)
+{
+  lcr3(v2p(kpgdir));   // switch to the kernel page table
+}
+```

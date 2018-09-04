@@ -1,0 +1,79 @@
+@font-face {
+  font-family:"STARWARS";
+  src:url("STARWARS/STARWARS.eot?") format("eot"),
+    url("STARWARS/STARWARS.woff") format("woff"),
+    url("STARWARS/STARWARS.ttf") format("truetype"),
+    url("STARWARS/STARWARS.svg#STARWARS") format("svg");
+  font-weight:normal;
+  font-style:normal;
+}
+
+@font-face {
+  font-family:"Starjedi";
+  src:url("Starjedi/Starjedi.eot?") format("eot"),
+    url("Starjedi/Starjedi.woff") format("woff"),
+    url("Starjedi/Starjedi.ttf") format("truetype"),
+    url("Starjedi/Starjedi.svg#Starjedi") format("svg");
+  font-weight:normal;
+  font-style:normal;
+}
+
+@font-face {
+  font-family:"Starjhol";
+  src:url("Starjhol/Starjhol.eot?") format("eot"),
+    url("Starjhol/Starjhol.woff") format("woff"),
+    url("Starjhol/Starjhol.ttf") format("truetype"),
+    url("Starjhol/Starjhol.svg#Starjhol") format("svg");
+  font-weight:normal;
+  font-style:normal;
+}
+
+@font-face {
+  font-family:"Starjout";
+  src:url("Starjout/Starjout.eot?") format("eot"),
+    url("Starjout/Starjout.woff") format("woff"),
+    url("Starjout/Starjout.ttf") format("truetype"),
+    url("Starjout/Starjout.svg#Starjout") format("svg");
+  font-weight:normal;
+  font-style:normal;
+}
+
+@font-face {
+  font-family:"STJEDISE";
+  src:url("STJEDISE/STJEDISE.eot?") format("eot"),
+    url("STJEDISE/STJEDISE.woff") format("woff"),
+    url("STJEDISE/STJEDISE.ttf") format("truetype"),
+    url("STJEDISE/STJEDISE.svg#STJEDISE") format("svg");
+  font-weight:normal;
+  font-style:normal;
+}
+
+@font-face {
+  font-family:"Stjldbl1";
+  src:url("Stjldbl1/Stjldbl1.eot?") format("eot"),
+    url("Stjldbl1/Stjldbl1.woff") format("woff"),
+    url("Stjldbl1/Stjldbl1.ttf") format("truetype"),
+    url("Stjldbl1/Stjldbl1.svg#Stjldbl1") format("svg");
+  font-weight:normal;
+  font-style:normal;
+}
+
+@font-face {
+  font-family:"Stjldbl2";
+  src:url("Stjldbl2/Stjldbl2.eot?") format("eot"),
+    url("Stjldbl2/Stjldbl2.woff") format("woff"),
+    url("Stjldbl2/Stjldbl2.ttf") format("truetype"),
+    url("Stjldbl2/Stjldbl2.svg#Stjldbl2") format("svg");
+  font-weight:normal;
+  font-style:normal;
+}
+
+@font-face {
+  font-family:"Strjmono";
+  src:url("Strjmono/Strjmono.eot?") format("eot"),
+    url("Strjmono/Strjmono.woff") format("woff"),
+    url("Strjmono/Strjmono.ttf") format("truetype"),
+    url("Strjmono/Strjmono.svg#Strjmono") format("svg");
+  font-weight:normal;
+  font-style:normal;
+}

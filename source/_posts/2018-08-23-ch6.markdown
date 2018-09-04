@@ -1,0 +1,11 @@
+---
+layout: post
+title: "XV6 Ch6 檔案系統"
+date: 2018-08-23 14:14:45 +0800
+comments: true
+categories: xv6
+tag: [xv6]
+copyright: true
+description: 檔案系統
+images:
+---

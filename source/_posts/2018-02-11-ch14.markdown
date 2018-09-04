@@ -1,0 +1,17 @@
+---
+layout: post
+title: "計概14：模擬、圖學、電腦遊戲"
+date: 2018-02-11 10:18:36 +0800
+comments: true
+categories: 計算機概論
+tag: [計算機概論]
+scopyright: true
+description: 模擬
+images: https://i.imgur.com/5nutKY0.jpg
+---
+## 14.1 何謂模擬？
+### 複雜系統
+### 模型
+### 建構模型
+- 連續模擬：如氣象學。
+- 離散事件模擬：由個體、屬性及事件所組成，如排隊。

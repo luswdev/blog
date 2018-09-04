@@ -1,0 +1,23 @@
+---
+layout: post
+title: "計概02：二進位系統"
+date: 2018-02-02 01:30:56 +0800
+comments: true
+categories: 
+計算機概論tag: [計算機概論, 位置表示法]
+copyright: true
+description: 介紹位置表示法的邏輯，及二進位的概念。
+images: https://i.imgur.com/2KWdaOI.jpg
+---
+## 2.2 位置表示法
+>基底 base：由 0 開始，等於基底時進位。
+
+### 位置表示法 positional notation
+base R，位元數為 n，di →第 i 個位元，則公式為：</br>
+`dn*R^n-1+dn-1*R^n-2+···+d2*R+d1`
+
+### 二進位與八進位
+- 只要分別知道各個位元在另外一個進制的表示法，合起來即是其數值在另一個進制的表示法。</br>
+- 如：754(base 8)中 7(111)、5(101)、4(100)，則 111101100(base 2) == 754(base 8)。</br>
+- 每一個儲存單元稱為二進制數元 binary digit，或簡稱位元 bit。</br>
+- 8 個 bit 組合成位元組 bytes，bytes 組合成字組 words。

@@ -1,0 +1,40 @@
+---
+layout: post
+title: "計概16：全球資訊網"
+date: 2018-02-12 10:18:42 +0800
+comments: true
+categories: 計算機概論
+tag: [計算機概論, WWW]
+copyright: true
+description: 介紹 html。
+images: https://i.imgur.com/1uuQYpB.png
+---
+## 16.1 建構網路
+- 全球資訊網 WWW（網路 web）：一種分散資訊架構。
+- 一致資源定址器 URL
+
+### 搜尋引擎
+### 即時傳訊 IM
+### 網路部落格
+### Cookies
+
+---
+## 16.2 超文字標示語言 HTML
+- 段落 `<p></p>`
+- 屬性：屬性名字=值
+- 圖片 `<img src = “a.jpg”>`
+- 連結 `<a href = “https://www.google.com”></a>`
+
+### HTML 5
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Welcome to OMU's Site!!</title>
+  </head>
+  <body>
+    <p>some thing</p>
+    <a href = “https://www.google.com”></a>
+ </body>
+</html>
+```
