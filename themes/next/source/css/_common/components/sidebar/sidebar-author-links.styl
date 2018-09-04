@@ -1,0 +1,37 @@
+.links-of-author {
+  margin-top: 10px;
+}
+
+.links-of-author a,
+.links-of-author .exturl {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  //margin-bottom: 10px;
+  border-bottom-color: $black-light;
+  font-size: 13px;
+  border-radius: 4px;
+  if hexo-config('social_icons.transition') { the-transition(); }
+  padding: 0 5px;
+  margin: 0 -1px;
+  box-sizing: border-box;
+  &:hover {
+    //background-color: #eee;
+    color: $orange;
+  }
+
+  /*&:before {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 3px;
+    content: " ";
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgb(random-color(0, 255) - 50%, random-color(0, 255) - 50%, random-color(0, 255) - 50%);
+  }*/
+}
+
+.links-of-author i {
+  font-size:16px;
+}
