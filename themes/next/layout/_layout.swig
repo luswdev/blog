@@ -34,6 +34,7 @@
     <!-- <div class="headband"></div> -->
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div id="head-padding-top"></div>
       <div class="header-inner">{% include '_partials/header/index.swig' %}</div>
     </header>
 

@@ -70,7 +70,7 @@ footer:
     # If you want to animate the icon, set it to true.
     animated: false
     # Change the color of icon, using Hex Code.
-    color: "#808080"
+    color: "#fc6423"
 
   # If not defined, will be used `author` from Hexo main config.
   copyright:
@@ -235,7 +235,7 @@ sidebar:
   #  - always  expand for all pages automatically
   #  - hide    expand only when click on the sidebar toggle icon.
   #  - remove  Totally remove sidebar including sidebar toggle.
-  display: post
+  display: hide
   #display: always
   #display: hide
   #display: remove
@@ -427,7 +427,7 @@ font:
   # Font settings for <code> and code blocks.
   codes:
     external: true
-    family: 
+    family:
     size:
 
 

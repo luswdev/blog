@@ -70,6 +70,8 @@ images: https://i.imgur.com/4qq54zV.png
 ## Code: 建立 address space
 - `main` 呼叫 `kvmalloc` 來建立 `KERNBASE` 之上的頁表
 
+<p id="kvmalloc"></p>
+
 ### kvmalloc
 ```c :kvmalloc
 // file: vm.c (146)

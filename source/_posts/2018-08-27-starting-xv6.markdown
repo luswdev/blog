@@ -164,6 +164,7 @@ main(void)
 ```
 - `kinit1()`
 - `kvmalloc()`
+  - [In Ch2](https://omuskywalker.github.io/hexo/2018/07/23/ch2/#kvmalloc)
 - `mpinit()`
 - `lapicinit()`
 - `seginit()`

@@ -1,5 +1,5 @@
  
-<div class="note default">
+<div class="note default post-copyright-div">
   <ul class="post-copyright">
     <li class="post-copyright-author">
       <strong>{{ __('post.copyright.author') + __('symbol.colon') }} </strong>{#

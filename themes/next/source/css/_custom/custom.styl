@@ -25,7 +25,7 @@
 	border-bottom:     none;
 }
 
-#footnotelist {
+/*#footnotelist {
   background-color:  ighten($gainsboro, 65%);
   background-color:  $note-primary-bg;
   border:            initial;
@@ -41,7 +41,7 @@
     font-size:         larger;
   }
 }
-
+*/
 p.description {
     font-style:      italic;
     font-size:       0.9em;
@@ -198,8 +198,8 @@ li.menu > a:after {
   border-radius: 15px;
   padding: 0 9px;
   &:hover {
-    border-color: $black-deep;
-    color :$black-deep;
+    border-color: $orange;
+    color :$orange;
   }
 }
 
@@ -223,6 +223,7 @@ li.menu > a:after {
   width: 10px;
   &:hover {
     background-color: #eee;
+    color: $black-deep;
   }
 }
 
@@ -265,4 +266,43 @@ a.link_to_about .site-author-name:hover {
  
 div.footnotes > div.footnotelist > ol > li {
   list-style: none !important;
+}
+
+.sidebar-toggle-line{
+  background-color: $orange;
+}
+
+.back-to-top {
+  color: $orange;
+}
+
+.pace-activity {
+  border-top-color: $orange !important;
+  border-left-color: $orange !important;
+}
+.pace-progress-inner
+.pace-progress {
+  background-color: $orange !important;
+}
+
+.header-inner {
+  //margin-top: 1em;
+}
+
+.site-brand-wrapper {
+  border-radius: 15px;
+}
+
+.page-archive {
+  if mobile() {
+    .post-type-normal {
+      h1 {
+        font-size: 2em !important;
+      }
+    }
+  }
+}
+
+#head-padding-top{
+  height :1em;
 }
