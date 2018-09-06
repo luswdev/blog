@@ -48,7 +48,7 @@ favicon:
   small: /images/sith.png
   medium: /images/sith.png
   apple_touch_icon: /images/sith.png
-  safari_pinned_tab: /images/sith.svg
+  safari_pinned_tab: /images/sith.png
   #android_manifest: /images/manifest.json
   #ms_browserconfig: /images/browserconfig.xml
 
@@ -66,7 +66,7 @@ footer:
   icon:
     # Icon name in fontawesome, see: https://fontawesome.com/v4.7.0/icons
     # `heart` is recommended with animation in red (#ff0000).
-    name: github
+    name: bullseye
     # If you want to animate the icon, set it to true.
     animated: false
     # Change the color of icon, using Hex Code.
@@ -184,7 +184,7 @@ social_icons:
 
 # Blog rolls
 links_icon: globe
-links_title: 連結
+links_title: 有用連結
 #links_layout: block
 links_layout: inline
 links:
@@ -248,7 +248,7 @@ sidebar:
 
 
   # Scroll percent label in b2t button.
-  scrollpercent: true
+  scrollpercent: false
 
   # Enable sidebar on narrow view (only for Muse | Mist).
   onmobile: true

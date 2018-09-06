@@ -36,11 +36,11 @@ images: https://i.imgur.com/4qq54zV.png
 | P | Present | 表示頁存在 | 不存在 |
 | W | Writable | 可以寫入 | 只能讀/取 |
 | U | User | user 能使用此頁 | 只有 kernel 能使用 |
-| WT |  | Write-through | Write-back |
+| WT | - | Write-through | Write-back |
 | CD | Cache Disable | 不會對此頁進行 cache | 進行 cache |
-| A | Accessed | 為 0 時被存取， 處理器會將此位設為 1 | |
-| D | Dirty | 為 0 時寫入此頁， 處理器會將此位設為 1 | |
-| AVL | Available for system use | | |
+| A | Accessed | 為 0 時被存取， 處理器會將此位設為 1 | - |
+| D | Dirty | 為 0 時寫入此頁， 處理器會將此位設為 1 | - |
+| AVL | Available for system use | - | - |
 
 **{% label danger@註： %}**只有軟體可以將 A、D 清 0。[^1]
 
