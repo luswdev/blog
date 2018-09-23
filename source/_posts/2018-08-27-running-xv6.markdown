@@ -11,7 +11,7 @@ images: https://i.imgur.com/prBjQ9C.jpg
 ---
 ## Makefile 解析
 
-```makefile :Makefile
+```makefile
 OBJS = \
 	bio.o\
 	console.o\
@@ -308,7 +308,7 @@ qemu-system-i386 -serial mon:stdio -hdb fs.img xv6.img -smp 1 -m 512
 ---
 ## Code: Kernel.ld
 
-```armasm Kernel.ld
+```armasm
 /* Simple linker script for the JOS kernel.
    See the GNU ld 'info' manual ("info ld") to learn the syntax. */
 

@@ -32,9 +32,9 @@
 
   <div class="{{ container_class }} {% block page_class %}{% endblock %}">
     <!-- <div class="headband"></div> -->
-
+    <div id="head-padding-top"></div>
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div id="head-padding-top"></div>
+     
       <div class="header-inner">{% include '_partials/header/index.swig' %}</div>
     </header>
 
@@ -118,5 +118,9 @@
   {% include '_third-party/exturl.swig' %}
   {% include '_third-party/bookmark.swig' %}
   {% include '_third-party/copy-code.swig' %}
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+   <script>
+   $("body").backstretch("https://i.imgur.com/GHWjxQu.jpg");
+   </script>-->
 </body>
 </html>

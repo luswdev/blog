@@ -1,61 +1,22 @@
-.post-meta .post-time time {
-  border-bottom:     none;
+@import highlight;
+
+body {
+  background: -webkit-radial-gradient(circle,white,$black-dim);
+  background-repeat: no-repeat;
+  background-attachment:fixed;
+}
+.main { 
+  margin-top: -4em;
 }
 
-.post-meta .post-category a{
-  border-bottom:     none;
-  text-dectoration:  none;
-}
-
-.links-of-blogroll-title {
-	margin-top:       1em;
-}
-
-.footer .author a {
-	border-bottom:     none;
-  color:             $grey-dark; 
-}
-
-.footer .author a:hover {
-  color:             $footer-link-hover-color;
-}
-
-
-.tag-cloud-tags a {
-	border-bottom:     none;
-}
-
-/*#footnotelist {
-  background-color:  ighten($gainsboro, 65%);
-  background-color:  $note-primary-bg;
-  border:            initial;
-	padding:           15px;
- 	border-left:       3px solid $gainsboro;
-  border-radius:     unit(hexo-config('note.border_radius'), px) if hexo-config('note.border_radius') is a 'unit';
-  border-left-color: $note-primary-border;
-  i {
-    color :            $note-primary-text;
-    top:               13px;
-    left:              15px;
-    padding-right:     15px;
-    font-size:         larger;
-  }
-}
-*/
+// Index
+// --------------------------------------------------
 p.description {
-    font-style:      italic;
-    font-size:       0.9em;
-    margin-top:      10px;
-    color:           $index-description-color;
-    text-align:      center;
+  font-size:       0.9em;
+  margin-top:      10px;
+  color:           $index-description-color;
+  text-align:      center;
 }
-
-.out-img-topic {
-  display:           block;
-  margin-bottom:     24px;
-  overflow:          hidden;
-}
-
 img.img-topic {
   display:           block ;
   margin-left:       .7em;
@@ -63,72 +24,51 @@ img.img-topic {
   padding:           0;
   float:             right;
   clear:             right;
-  width:             100%
+  width:             100%;
+}
+.out-img-topic {
+  display:           block;
+  margin-bottom:     24px;
+  overflow:          hidden;
 }
 
-@import highlight;
-
-code {
-  //border: none;
-  color: $text-color;
+// header
+// --------------------------------------------------
+#head-padding-top{
+  height :1em;
+  //background-color: rgba(0, 0, 0, 0.75);
+  +mobile(){
+    display: none;
+  }
+  +mobile-small(){
+    display: none;
+  }
 }
-
-.feed-link {
-    margin-top: 15px;
-    margin-left: 7px;
-    a {
-      border-radius: 15px !important;
-    }
-}
-
-.post-toc a {
-  border-bottom: none;
-  padding:4px 0 5px 10px;
-  border-left: 2px solid rgba(0,0,0,0);
-}
-
-li.active > a{
-  border-left: 2px solid $toc-link-active-border-color;
-}
-
-li.active > ol > li > a{
-  padding-left: 25px;
-}
-
-li.active > ol > li > ol > li > a {
-  padding-left: 40px;
-}
-  
-
-li.active > ol > li > ol > li > ol > li > a {
-  padding-left: 55px;
-}
-
-
-.nav 
-.nav-child {
-  padding-left: 0 !important;
-}
-
-.gutter div.line {
-  padding-right: 10px !important;
-  box-sizing: border-box;
-  border-right: 3px solid #6ce26c
-}
-
-.figcode {
-  padding:12px 16px;
-}
-
-.site-brand-wrapper{
-  background-color: $black-dim;
+.header {
+  background-color: #fff;
+  width: $content-desktop ;
+  margin: 0 auto;
+  padding: 3em 4em 4em;
+  +desktop-large() {
+    & { width: $content-desktop-large; }
+  }
+  +desktop-largest() {
+    & { width: $content-desktop-largest; }
+  }
+  +mobile() { 
+    width: auto; 
+    padding: 1em 1em 4em;
+  }
 }
 .container .header-inner {
-  width: 95%;
+  width: 100%;
   background-color: $black-dim;
   border-radius: 15px;
+  
 }
 
+// logo
+// --------------------------------------------------
 .custom-logo-site-title {
   padding-top: 50px;
   padding-bottom: 20px; 
@@ -137,62 +77,76 @@ li.active > ol > li > ol > li > ol > li > a {
     padding-top: 20px;
   }
 }
-.site-subtitle {
-  padding-bottom: 12px;
-  font-size: 20px;
+.site-title{
+  +mobile() {
+    font-size: 50px;
+  }
+}
+.site-brand-wrapper {
+  border-radius: 15px;
+  background-color: $black-dim;
 }
 
-.links-of-author a{
-  border:none;
-}
-
-.back-to-top
-.sidebar-toggle {
-  border-radius: 3px;
-}
-
-nav.site-nav ul.menu > li > a:hover{
-  color: $grey;
-}
-  
+// nav
+// --------------------------------------------------
+nav.site-nav ul.menu > li > a:hover{ color: $grey; }
+.page-home .menu-item-home a { border-bottom-color: #fff; }
 .menu a {
   color: #fff;
   padding-bottom: 8px;
 }
 
-li.menu > a:after {
-  border-radius:100%;
-  border:1px solid #fff;
+// pace
+// --------------------------------------------------
+.pace-activity {
+  border-top-color: $orange !important;
+  border-left-color: $orange !important;
 }
 
-
-/*.menu-item {
-  &:after {
-    content: ".";
-    display: inline;
-    border-radius: 50%;
-    width:4px;
-    heigth: 4px;
-    color: $black-dim;
-    
-  }
+.pace-progress-inner
+.pace-progress {
+  background-color: $orange !important;
 }
 
-.menu-item-active {
-  &:after {
-    color: #fff;
-  }
-}*/
-
-.page-home .menu-item-home a {
-  border-bottom-color: #fff;
+// toc
+// --------------------------------------------------
+.post-toc a {
+  border-bottom: none;
+  padding:4px 0 5px 10px;
+  border-left: 2px solid rgba(0,0,0,0);
 }
+li.active > a{ border-left: 2px solid $toc-link-active-border-color; }
+li.active > ol > li > a{ padding-left: 25px; }
+li.active > ol > li > ol > li > a { padding-left: 40px; }
+li.active > ol > li > ol > li > ol > li > a { padding-left: 55px; }
 
-
-.links-of-blogroll-title-name {
-  color: $orange;
+// sidebar
+// --------------------------------------------------
+.fa.fa-history.fa-{ padding: 0 }
+.sidebar-nav .sidebar-nav-active { border-color: $sidebar-highlight; }
+.sidebar{ background-color: rgba(0, 0, 0, 0); }
+.sidebar-toggle-line{ background-color: $black-dim; }
+.feed-link {
+    margin-top: 15px;
+    margin-left: 7px;
+    a {
+      border-radius: 15px !important;
+    }
 }
-
+.back-to-top { color: $black-dim; }
+.links-of-blogroll-list { color: $text-color !important; }
+.links-of-blogroll-title { margin-top: 1em; }
+.links-of-author a{ border:none; }
+.links-of-blogroll-title-name
+.site-state-item > a:hover
+a.link_to_about .site-author-name:hover
+{
+  color: $orange !important;
+}
+.back-to-top
+.sidebar-toggle {
+  border-radius: 3px; 
+}
 .sidebar-nav li {
   border: 1px solid $sidebar-nav-color;
   border-radius: 15px;
@@ -203,21 +157,17 @@ li.menu > a:after {
   }
 }
 
-.sidebar-nav .sidebar-nav-active {
-  border-color: $sidebar-highlight;
+// post
+// --------------------------------------------------
+div.footnotes > div.footnotelist > ol > li { list-style: none !important; }
+.post-meta .post-category a
+.post-meta .post-time time {
+  border-bottom:     none;
 }
-
-.sidebar{
-  background-color: rgba(0, 0, 0, 0);
+.main-inner {
+  padding: 0 4em 2em;
+  background-color: #fff;
 }
-
-.links-of-blogroll-list  {
-  color: $text-color !important;
-}
-.site-state-item > a:hover{
-  color: $orange !important;
-}
-
 .page-number {
   border-radius: 100%;
   width: 10px;
@@ -227,13 +177,10 @@ li.menu > a:after {
   }
 }
 
-.gitment-editor-preview-field {
-  background-color: #fff;
-}
-.gitment-comment-header {
-  background-color: $body-bg-color !important;
-}
-
+// gitment
+// --------------------------------------------------
+.gitment-editor-preview-field { background-color: #fff; }
+.gitment-comment-header { background-color: $body-bg-color !important; }
 .gitment-editor-submit 
 .gitment-comments-init-btn {
   color: #555 !important;
@@ -246,7 +193,6 @@ li.menu > a:after {
     border: 1px solid #eee !important;
   }
 }
-
 .gitment-editor-avatar
 .gitment-header-issue-link
 .gitment-editor-login-link
@@ -255,54 +201,33 @@ li.menu > a:after {
   border: none;
 }
 
-
-.fa.fa-history.fa-{
-  padding: 0
-}
-
-a.link_to_about .site-author-name:hover {
-  color: $orange !important;
-}
- 
-div.footnotes > div.footnotelist > ol > li {
-  list-style: none !important;
-}
-
-.sidebar-toggle-line{
-  background-color: $orange;
-}
-
-.back-to-top {
-  color: $orange;
-}
-
-.pace-activity {
-  border-top-color: $orange !important;
-  border-left-color: $orange !important;
-}
-.pace-progress-inner
-.pace-progress {
-  background-color: $orange !important;
-}
-
-.header-inner {
-  //margin-top: 1em;
-}
-
-.site-brand-wrapper {
-  border-radius: 15px;
-}
-
-.page-archive {
-  if mobile() {
-    .post-type-normal {
-      h1 {
-        font-size: 2em !important;
-      }
-    }
+// footer
+// --------------------------------------------------
+.footer .author a {
+	border-bottom:     none;
+  color:             $whitesmoke; 
+  &:hover{
+    color:           $footer-link-hover-color;
   }
 }
 
-#head-padding-top{
-  height :1em;
+// pages
+// --------------------------------------------------
+.tag-cloud-tags a {
+	border-bottom: none;
 }
+.page-archive {
+  if mobile() {
+    .post-type-normal > h1 {
+      font-size: 2em !important;
+    }
+  }
+  
+}
+
+// trash
+// --------------------------------------------------
+/*.nav 
+.nav-child {
+  padding-left: 0 !important;
+}*/

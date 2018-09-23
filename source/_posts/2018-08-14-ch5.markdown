@@ -41,7 +41,7 @@ struct context {
 ### File: swtch.S
 - *swtch* 有兩個參數：`struct context ** old`、`struct context * new`。
 
-```x86asm :swtch.S
+```x86asm
 # Context switch
 #
 #   void swtch(struct context **old, struct context *new);
@@ -93,7 +93,7 @@ swtch:
 - `sched` 會再次檢查以上動作，並且確定此時中斷是關閉的，最後呼叫 `swtch`，將 process 的暫存器保存在 proc->context，switch 到 cpu->scheduler。
 
 ### sched()
-```c :sched()
+```c
 // file: proc.c (292)
 void
 sched(void)
@@ -116,7 +116,7 @@ sched(void)
 - `swtch` 會 return 回 scheduler 的堆疊上，scheduler 繼續執行迴圈：找到一個 process 運行，`swtch` 到該 process，repeat。
 
 ### scheduler()
-```c :scheduler()
+```c
 void
 scheduler(void)
 {
@@ -158,7 +158,7 @@ scheduler(void)
 - `mycpu` 尋找當前的 `lapicid` 是哪顆 CPU 的。
 
 ### mycpu()
-```c :mycpu()
+```c
 struct cpu*
 mycpu(void)
 {
@@ -325,7 +325,7 @@ recv(struct q *q)
 | `wakeup` | 尋找狀態為 `SLEEPING` 的 process，改成 `RUNNABLE`|
 
 ### sleep()
-```c :sleep()
+```c
 // file: proc.c (418)
 void
 sleep(void *chan, struct spinlock *lk)
@@ -370,7 +370,7 @@ sleep(void *chan, struct spinlock *lk)
 ```
 
 ### wakeup1()
-```c :wakeup1()
+```c
 // file: proc.c (458)
 static void
 wakeup1(void *chan)
@@ -384,7 +384,7 @@ wakeup1(void *chan)
 ```
 
 ### wakeup()
-```c :wakeup()
+```c
 // file: proc.c (468)
 void
 wakeup(void *chan)
@@ -414,7 +414,7 @@ struct pipe {
 ```
 
 ### pipewrite()
-```c :pipewrite()
+```c
 int
 pipewrite(struct pipe *p, char *addr, int n)
 {
@@ -441,7 +441,7 @@ pipewrite(struct pipe *p, char *addr, int n)
 - `pipewrite` 從 0 開始將資料讀入 `buf`，更新 `nwrite` 計數器，當 `buf` 滿了，則喚醒 `piperead` 並睡眠；或是讀入完畢，一樣喚醒 `pipiread`。
 
 ### piperead()
-```c :piperead()
+```c
 int
 piperead(struct pipe *p, char *addr, int n)
 {
@@ -473,7 +473,7 @@ piperead(struct pipe *p, char *addr, int n)
 ---
 ## Code: Wait, exit and kill
 ### wait()
-```c :wait()
+```c
 int
 wait(void)
 {
@@ -521,7 +521,7 @@ wait(void)
 - 如果找到已退出的子 process，紀錄該子 process 的 pid，清理 `struct proc`，釋放相關記憶體。
 
 ### exit()
-```c :exit()
+```c
 void
 exit(void)
 {
@@ -569,7 +569,7 @@ exit(void)
 - 喚醒父 process，將子 process 交給 *initproc*，修改狀態，呼叫 `sched` switch 至 scheduler。
 
 ### kill()
-```c :kill()
+```c
 int
 kill(int pid)
 {

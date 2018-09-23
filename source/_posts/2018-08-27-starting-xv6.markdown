@@ -14,7 +14,7 @@ images: https://i.imgur.com/YHwrSg2.png
 ## Code: startothers
 - 在 main 初始化一些設備後，會先呼叫 startothers，再呼叫 mpmain 來完成 cpu 的設定及呼叫 scheduler。
 
-```c :startothers
+```c :startothers()
 // file: main.c (68)
 static void
 startothers(void)
@@ -51,8 +51,8 @@ startothers(void)
 ```c first_line:26
     lapicstartap(c->id, v2p(code));
 ```
-- 正式的啟動 CPU c，即進入 entryother.S
-- entryother.S 做完設定後會 call mpenter()，mpmenter 最後會呼叫 mpmain()。
+- 正式的啟動 CPU `c`，即進入 entryother.S
+- entryother.S 做完設定後會呼叫 `mpenter()`，`mpmenter` 最後會呼叫 `mpmain()`。
 
 ```c first_line:27
     // wait for cpu to finish mpmain()
@@ -61,12 +61,12 @@ startothers(void)
   }
 }
 ```
-- 在 mpmain() 會將 cpu->started 設為 1，CPU0 在 `while` 迴圈等待 CPU c 啟動完畢，才繼續啟動下一個 CPU。
+- 在 `mpmain()` 會將 `cpu->started` 設為 `1`，CPU0 在 `while` 迴圈等待 CPU `c` 啟動完畢，才繼續啟動下一個 CPU。
 
 
 ### lapicstartup
 
-```c :lapicstartup()
+```c
 // file: lapic.c(137)
 void
 lapicstartap(uchar apicid, uint addr)
@@ -132,7 +132,7 @@ mpmain(void)
 ## Main 解析
 ### main()
 
-```c :main()
+```c
 // file: main.c (17)
 int
 main(void)
@@ -163,6 +163,7 @@ main(void)
 }
 ```
 - `kinit1()`
+  - [In ch2](https://omuskywalker.github.io/hexo/2018/07/23/ch2/#kinit)
 - `kvmalloc()`
   - [In Ch2](https://omuskywalker.github.io/hexo/2018/07/23/ch2/#kvmalloc)
 - `mpinit()`
@@ -184,6 +185,7 @@ main(void)
 - `startothers()`
 	- [Above](#vtr-str)
 - `kinit2()`
+  - [In ch2](https://omuskywalker.github.io/hexo/2018/07/23/ch2/#kinit)
 - `userinit()`
 	- [In Ch1](https://omuskywalker.github.io/hexo/2018/07/16/ch1/#userinit)
 - `mpmain()`

@@ -5,20 +5,27 @@
   a {
     //display: inline-block;
     padding: 1px 15px !important;
-    color: $text-color;
-    border: 1px solid $text-color !important;
+    color: $$whitesmoke ;
+    border: 1px solid $whitesmoke !important;
     border-radius: 4px;
 
     i {
-      color: $text-color;
+      color: $whitesmoke;
       font-size: 14px;
     }
+
 
     &:hover {
       color: $orange;
       //background: #eee;
       border: 1px solid $orange !important;
       i { color: $orange; }
+      
     }
+  }
+  padding-bottom: 1px !important;
+  &:hover {
+    padding-bottom: 0 !important;
+    padding-top: 1px !important;
   }
 }

@@ -11,7 +11,7 @@
   -webkit-transform: translateZ(0); // http://stackoverflow.com/questions/17079857/position-fixed-broken-in-chrome-with-flash-behind
 
   a, .exturl {
-    color: $text-color;
+    color: $whitesmoke ;
     border-bottom-color: $black-light;
     &:hover { color: $gainsboro; }
   }
@@ -21,7 +21,7 @@
   }
   +mobile() {
     hide() if not hexo-config('sidebar.onmobile');
-    background-color: rgba(255, 255, 255, .9) !important;
+    background-color: rgba(0, 0, 0, .8) !important;
   }
 
 }

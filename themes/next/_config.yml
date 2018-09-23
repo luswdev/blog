@@ -70,7 +70,7 @@ footer:
     # If you want to animate the icon, set it to true.
     animated: false
     # Change the color of icon, using Hex Code.
-    color: "#fc6423"
+    color: "#f5f5f5"
 
   # If not defined, will be used `author` from Hexo main config.
   copyright:
@@ -759,7 +759,7 @@ label: true
 tabs:
   enable: true
   transition:
-    tabs: false
+    tabs: true
     labels: true
   border_radius: 5
 

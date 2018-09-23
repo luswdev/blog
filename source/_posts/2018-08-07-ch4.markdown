@@ -4,8 +4,161 @@ title: "XV6 Ch4 鎖"
 date: 2018-08-07 14:14:40 +0800
 comments: true
 categories: xv6
-tag: xv6
-copyright: true
+tag: [xv6, kernel, c, lock, race conditions]
+copyright: true 
 description: 鎖
-images:
+images: https://i.imgur.com/T6893f9.png
 ---
+## Race conditions
+### 例子
+```c
+struct list{
+    int data;
+    struct list *next;
+};
+
+struct list *list = 0;
+
+void
+insert(int data)
+{
+    struct list *l;
+    l = malloc(sizeof *l);
+    l->data = data;
+    l->next = list;
+    list = l;
+}
+```
+![](https://i.imgur.com/T6893f9.png "Example race")
+
+假設現在有兩個 process 同時在不同的 CPU 上執行上述程式碼，當兩個 process 都執行到 14 行，則兩條鏈結的 `next` 都設置為 `list`；接著，先執行的 process A 將 list 設定為自己的鏈結，後執行的 process B 也將 list 設為自己的鏈結。
+- {% label danger@問題 %}：此時 list 上將會遺失原本 process A `insert` 的節點。
+
+### 圖解
+- 一開始的 list
+![](https://i.imgur.com/nRSnZn6.png "list")
+- 假設 pocess A 及 B 同時將自己的資料插在 list 的第一顆
+![](https://i.imgur.com/vzKF44W.png "both a and b insert same time")
+- 接著 process A 以些微的差距先將 list 設為 l（自己的鏈結），此時 list 的第一顆為 A 的資料
+![](https://i.imgur.com/lclqzPs.png "a change the list")
+- 最後 process B 也將 list 設為 l，此時 list 上的第一顆為 B 的資料，{% label danger@且 A 的資料遺失了 %}
+![](https://i.imgur.com/3fr2iqX.png "b change the list")
+
+### 使用鎖
+```c diff:true
+struct list *list = 0;
+struct lock listlock;
+
+void
+insert(int data)
+{
+    struct list *l;
++    acquire(&listlock);
+    l = malloc(sizeof *l);
+    l->data = data;
+    l->next = list;
+    list = l;
++    release(&listlock);
+}
+```
+
+## Code: 鎖
+- xv6 使用 `struct spinlock`，其中以 locked 作為標記。
+    - 為 0 時，此鎖無人使用，可以被取用
+    - **非** 0 時，此鎖有人在使用，無法被取用
+
+### File: spinlock.h
+```c
+// Mutual exclusion lock.
+struct spinlock {
+  uint locked;       // Is the lock held?
+  
+  // For debugging:
+  char *name;        // Name of lock.
+  struct cpu *cpu;   // The cpu holding the lock.
+  uint pcs[10];      // The call stack (an array of program counters)
+                     // that locked the lock.
+};
+```
+
+- 邏輯上，`acquire` 應該長這樣：
+```c
+void
+acquire(struct spinlock *lk)
+{
+    for(;;) {
+        if(!lk->locked) {
+            lk->locked = 1;
+            break;
+        }
+    }
+}
+```
+- 但是我們發現，可能會有多個 CPU 執行至第五行，發現 `lk->locked` 為 `0`，接著都拿到了鎖，{% label warning@即違反了互斥 %}
+- xv6 使用 x86 的特殊指令 `xchg` 來完成動作。
+
+```c :acquire
+// file: spinlock.c (20)
+// Acquire the lock.
+// Loops (spins) until the lock is acquired.
+// Holding a lock for a long time may cause
+// other CPUs to waste time spinning to acquire it.
+void
+acquire(struct spinlock *lk)
+{
+  pushcli(); // disable interrupts to avoid deadlock.
+  if(holding(lk))
+    panic("acquire");
+
+  // The xchg is atomic.
+  // It also serializes, so that reads after acquire are not
+  // reordered before it. 
+  while(xchg(&lk->locked, 1) != 0)
+    ;
+
+  // Record info about lock acquisition for debugging.
+  lk->cpu = cpu;
+  getcallerpcs(&lk, lk->pcs);
+}
+```
+```c :release
+// file: spinlock.c (42)
+// Release the lock.
+void
+release(struct spinlock *lk)
+{
+  if(!holding(lk))
+    panic("release");
+
+  lk->pcs[0] = 0;
+  lk->cpu = 0;
+
+  // The xchg serializes, so that reads before release are 
+  // not reordered after it.  The 1996 PentiumPro manual (Volume 3,
+  // 7.2) says reads can be carried out speculatively and in
+  // any order, which implies we need to serialize here.
+  // But the 2007 Intel 64 Architecture Memory Ordering White
+  // Paper says that Intel 64 and IA-32 will not move a load
+  // after a store. So lock->locked = 0 would work here.
+  // The xchg being asm volatile ensures gcc emits it after
+  // the above assignments (and after the critical section).
+  xchg(&lk->locked, 0);
+
+  popcli();
+}
+```
+```c :xchg
+// file: x86.h (120)
+static inline uint
+xchg(volatile uint *addr, uint newval)
+{
+  uint result;
+  
+  // The + in "+m" denotes a read-modify-write operand.
+  asm volatile("lock; xchgl %0, %1" :
+               "+m" (*addr), "=a" (result) :
+               "1" (newval) :
+               "cc");
+  return result;
+}
+```

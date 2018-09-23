@@ -19,7 +19,7 @@ images: https://i.imgur.com/DMQi16S.png
 ## Code: Assembly bootstrap
 ### File: bootasm.s
 
-```x86asm :bootasm.s
+```x86asm
 #include "asm.h"
 #include "memlayout.h"
 #include "mmu.h"
@@ -188,7 +188,7 @@ spin:
 - Kernel 為 ELF 格式的二進位檔。
 - ELF(Executable and Linking Format) ，為 UNIX 中的目錄檔格式。
 
-```c :bootmain.c
+```c
 // Boot loader.
 // 
 // Part of the boot sector, along with bootasm.S, which calls bootmain().

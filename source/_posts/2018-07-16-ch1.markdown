@@ -55,7 +55,6 @@ images: https://i.imgur.com/TgbSjgz.jpg"
 
     ![address space](https://i.imgur.com/jhNNkts.jpg "Layout of a virtual address space")
 
-### File: entry.s
 ```x86asm :entry.s
 _start = V2P_WO(entry)
 
@@ -95,7 +94,7 @@ entry:
 - `Allocproc` 掃描 proc tabel，找到 `p->state` 是 `UNUSED`，接著設定為 `EMBRYO` 來標示被使用，並給予一組唯一的 pid。
 
 ### allocproc()
-```c :allocproc()
+```c
 //file: proc.c (29)
 // Look in the process table for an UNUSED proc.
 // If found, change state to EMBRYO and initialize
@@ -164,7 +163,7 @@ found:
 <p id="userinit"></p>
 
 ### userinit()
-```c :userinit()
+```c
 // file: proc.c (79)
 userinit(void)
 {
@@ -301,7 +300,7 @@ scheduler(void)
 ```
 
 ### File: swtch.S
-```x86asm :swtch.S
+```x86asm
 # Context switch
 #
 #   void swtch(struct context **old, struct context *new);
@@ -397,7 +396,7 @@ trapret:
 - 若 `exec` 失敗了且返回，*initcode* 會不斷的呼叫一個 system call：`exit()`(17)。
 
 ### File: initcode.S
-```x86asm :initcode.S
+```x86asm
 # Initial process execs /init.
 
 #include "syscall.h"

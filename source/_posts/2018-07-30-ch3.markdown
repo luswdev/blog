@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "XV6 Ch3 Trap，中斷及驅動程式"
+title: "XV6 Ch3 Trap、中斷及驅動程式"
 date: 2018-07-30 14:14:38 +0800
 comments: true
 categories: xv6
@@ -57,7 +57,7 @@ xv6 用 trap 來表示中斷，這是因為此術語被 PDP11/40 使用，也是
 ---
 ## Code: 第一個 system call
 ### File: initcode.S (8)
-```x86asm :initcode.S
+```x86asm
 .globl start
 start:
   pushl $argv
@@ -69,7 +69,7 @@ start:
 - Process 將`exec` 的參數 push 進堆疊，並將 system call number 放進 `%eax`。
 - `SYS_exec` 即為 system call number，對應到 syscalls 的陣列索引（syscall.c 中），一個函數指標陣列。
 
-```c syscalls[]
+```c :syscalls[]
 // file: :syscall.c (102)
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -188,7 +188,7 @@ for(my $i = 0; $i < 256; $i++){
 - Push 中斷號碼，跳至 `alltraps`。
 
 #### File: trapret.S
-```x86asm :trapret.S
+```x86asm
 #include "mmu.h"
 
   # vectors.S sends all traps here.
@@ -275,7 +275,7 @@ trapret:
 ---
 ## Code: C trap handler
 ### trap()
-```c :trap()
+```c
 // file: trap.c (36)
 void
 trap(struct trapframe *tf)
@@ -366,11 +366,11 @@ trap(struct trapframe *tf)
 
 ---
 ## Code: System calls（機制）
-### syscall()
 - 從 trap frame 中的 `%eax` 讀取 system call 號碼，及對應 syscall table 的索引。
 - 如果 system call 號碼是非法的，`return -1`。
 
-```c :syscall()
+### syscall()
+```c
 void
 syscall(void)
 {
@@ -461,7 +461,7 @@ static int (*syscalls[])(void) = {
 - 硬碟驅動程式用 `struct buf` 來表示一個磁碟區
 
 ### File: buf.h
-```c :buf.h
+```c
 struct buf {
   int flags;
   uint dev;          // device number
