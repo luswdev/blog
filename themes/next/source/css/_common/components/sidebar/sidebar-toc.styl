@@ -22,9 +22,10 @@
     transition-property: all;
     color: $toc-link-color;
     border-bottom-color: $toc-link-border-color;
+    border-bottom: 1px solid;
 
     &:hover {
-      color: $toc-link-hover-color;
+      color: $toc-link-hover-color !important;
       border-bottom-color: $toc-link-hover-border-color;
     }
   }
@@ -33,14 +34,16 @@
 .post-toc .nav-item {
   overflow: hidden;
   text-overflow: ellipsis;
-   text-align: justify;
+  text-align: justify;
   white-space: nowrap if !hexo-config('toc.wrap');
   line-height: 1.8;
 }
 
 .post-toc .nav .nav-child { display: none; }
 
-.post-toc .nav .active > .nav-child { display: block; }
+.post-toc .nav .active > .nav-child { 
+  display: block;
+   }
 
 .post-toc .nav .active-current > .nav-child {
   display: block;
@@ -50,10 +53,12 @@
 .post-toc .nav .active > a {
   color: $toc-link-active-color;
   border-bottom-color: $toc-link-active-border-color;
+   border-bottom: 1px solid;
 }
 
-.post-toc .nav .active-current > a {
+.post-toc .nav .active-current > a.nav-link {
   color: $toc-link-active-current-color;
+  border-bottom-color: $toc-link-active-border-color;
   &:hover {
     color: $toc-link-active-current-border-color;
   }

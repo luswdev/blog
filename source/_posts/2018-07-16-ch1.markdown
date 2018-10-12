@@ -36,7 +36,7 @@ images: https://i.imgur.com/TgbSjgz.jpg"
     - user 指令執行時，只會用到 user 堆疊，此時 kernel 堆疊為空。
     - kernel 指令執行時，user 堆疊的資料不會清空，也不會使用到。
 - `p->state` 指 process 的狀態：新建、準備執行、執行中、等待I/O及退出。
-- `p->pgdir`：保存 proecess 的 page table。
+- `p->pgdir`：保存 process 的 page table。
 
 ![address space](https://i.imgur.com/XXvQbTB.jpg "Layout of a virtual address space")
 

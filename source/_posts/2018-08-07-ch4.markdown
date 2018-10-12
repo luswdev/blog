@@ -62,6 +62,8 @@ insert(int data)
 }
 ```
 
+---
+
 ## Code: 鎖
 - xv6 使用 `struct spinlock`，其中以 locked 作為標記。
     - 為 0 時，此鎖無人使用，可以被取用

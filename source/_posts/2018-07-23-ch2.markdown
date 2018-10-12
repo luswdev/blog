@@ -56,6 +56,8 @@ images: https://i.imgur.com/4qq54zV.png
 - 物理記憶體：DRAM
 - 物理地址：DRAM 的位址
 
+---
+
 ## Process address space
 - `main` 呼叫 `kvmalloc` 跳到新的頁表，重新映射至記憶體。
 ![](https://i.imgur.com/Tvf1wwe.png "Layout of the virtual address space of a process and physical address space.")
@@ -66,6 +68,8 @@ images: https://i.imgur.com/4qq54zV.png
 	2. 將對應的 PTE 加入 process 的頁表裡
 - 每個 process 的頁表都有包含對應的 kernel 映射（ `KERNBASE` 之上），這樣當發生中斷時就不需要切換頁表。
 - `KERNBASE` 之上的頁對應的 PTE，PTE_U 均設為 0。
+
+---
 
 ## Code: 建立 address space
 - `main` 呼叫 `kvmalloc` 來建立 `KERNBASE` 之上的頁表
@@ -212,6 +216,8 @@ switchkvm(void)
 }
 ```
 
+---
+
 ## 分配物理記憶體
 kernel 在運行時須為以下物件分配物理記憶體：
 - Page table
@@ -293,6 +299,8 @@ kfree(char *v)
 }
 ```
 - 接著把 v 轉為 `struct run` 的指標，插在 free list 的第一顆。
+
+---
 
 ## User part of an address space
 ![](https://i.imgur.com/XcCaPsd.png "Memory layout of a user process with its initial stack")

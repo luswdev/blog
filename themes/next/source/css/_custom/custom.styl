@@ -111,11 +111,9 @@ nav.site-nav ul.menu > li > a:hover{ color: $grey; }
 // toc
 // --------------------------------------------------
 .post-toc a {
-  border-bottom: none;
+  border-bottom: none !important;
   padding:4px 0 5px 10px;
-  border-left: 2px solid rgba(0,0,0,0);
 }
-li.active > a{ border-left: 2px solid $toc-link-active-border-color; }
 li.active > ol > li > a{ padding-left: 25px; }
 li.active > ol > li > ol > li > a { padding-left: 40px; }
 li.active > ol > li > ol > li > ol > li > a { padding-left: 55px; }
@@ -123,9 +121,8 @@ li.active > ol > li > ol > li > ol > li > a { padding-left: 55px; }
 // sidebar
 // --------------------------------------------------
 .fa.fa-history.fa-{ padding: 0 }
-.sidebar-nav .sidebar-nav-active { border-color: $sidebar-highlight; }
-.sidebar{ background-color: rgba(0, 0, 0, 0); }
 .sidebar-toggle-line{ background-color: $black-dim; }
+.links-of-author {margin-top: 16px;}
 .feed-link {
     margin-top: 15px;
     margin-left: 7px;
@@ -133,11 +130,25 @@ li.active > ol > li > ol > li > ol > li > a { padding-left: 55px; }
       border-radius: 15px !important;
     }
 }
+.sidebar{ 
+  background-color: rgba(0, 0, 0, 0); 
+  top: 1em;
+}
+.sidebar-nav .sidebar-nav-active { 
+  border-color: $sidebar-highlight; 
+  background: $sidebar-highlight;
+  color: $whitesmoke;
+}
+
 .back-to-top { color: $black-dim; }
 .links-of-blogroll-list { color: $text-color !important; }
 .links-of-blogroll-title { margin-top: 1em; }
 .links-of-author a{ border:none; }
 .links-of-blogroll-title-name
+{
+  color: $whitesmoke;
+  background: $orange;  
+}
 .site-state-item > a:hover
 a.link_to_about .site-author-name:hover
 {
@@ -153,7 +164,7 @@ a.link_to_about .site-author-name:hover
   padding: 0 9px;
   &:hover {
     border-color: $orange;
-    color :$orange;
+    color : $whitesmoke;
   }
 }
 

@@ -45,12 +45,12 @@ cache:
 # For example, you put your favicons into `hexo-site/source/images` directory.
 # Then need to rename & redefine they on any other names, otherwise icons from Next will rewrite your custom icons in Hexo.
 favicon:
-  small: /images/sith.png
-  medium: /images/sith.png
-  apple_touch_icon: /images/sith.png
-  safari_pinned_tab: /images/sith.png
-  #android_manifest: /images/manifest.json
-  #ms_browserconfig: /images/browserconfig.xml
+  small: /images/sith16.png
+  medium: /images/sith32.png
+  apple_touch_icon: /images/sith128.png
+  safari_pinned_tab: /images/safari-pinned-tab.svg
+  android_manifest: /images/manifest.json
+  ms_browserconfig: /images/browserconfig.xml
 
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link, and install hexo-generator-feed: `npm install hexo-generator-feed --save`.
@@ -189,6 +189,7 @@ links_title: 有用連結
 links_layout: inline
 links:
   6.828: https://pdos.csail.mit.edu/6.828/2018/
+  DCLab: https://hackmd.io/s/Bk15R0-5m
 
 # Sidebar Avatar
 avatar:
@@ -427,7 +428,7 @@ font:
   # Font settings for <code> and code blocks.
   codes:
     external: true
-    family:
+    family: Oxygen Mono
     size:
 
 
@@ -961,7 +962,7 @@ vendors:
 
 recent_posts_title: 近期文章
 recent_posts_layout: block
-recent_posts: true
+recent_posts: false
 
 # Assets
 css: css

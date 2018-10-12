@@ -6,7 +6,6 @@
       <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
-
   <aside id="sidebar" class="sidebar">
     {% if theme.sidebar.onmobile %}
       <div id="sidebar-dimmer"></div>
@@ -88,7 +87,7 @@
               {% endif %}
             </nav>
           {% endif %}
-
+          <!--
           {% if theme.rss %}
             <div class="feed-link motion-element">
               <a href="{{ url_for(theme.rss) }}" rel="alternate">
@@ -97,6 +96,7 @@
               </a>
             </div>
           {% endif %}
+          -->
 
           {% if theme.social %}
             <div class="links-of-author motion-element">
