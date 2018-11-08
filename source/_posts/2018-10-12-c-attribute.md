@@ -9,9 +9,8 @@ images: https://i.imgur.com/itHAfw6.png
 ---
 ## attribute
 有分三種： ① 對副函式的　② 對資料的　③ 對結構的
-{% note info %}
-**attribute** 是給 compiler 看的。
-{% endnote %}
+
+{% label info@註：<b>attribute</b> 是給 compiler 看的。 %}
 
 ## 對結構的
 ### packed
@@ -154,3 +153,7 @@ void sample_fun(){
     return do_nothing;
 }
 ```
+
+{% note info %}
+### section 補充
+{% endnote %}
