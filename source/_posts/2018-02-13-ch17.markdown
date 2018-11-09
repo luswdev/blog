@@ -8,6 +8,7 @@ tag: [計算機概論, 安全]
 copyright: true
 description: 介紹一些資訊安全概要。
 images: https://i.imgur.com/janvjC2.png
+toc: true
 ---
 ## 17.1 各層級的安全
 - 資訊安全 — CIA 鐵三角
@@ -15,6 +16,7 @@ images: https://i.imgur.com/janvjC2.png
 	- 完整性：確保資料只能以適當機製作修改，為資料的可信性。
 	- 可變性：被授權者為正當用途可存取適當資料的程度。
 
+<!-- more -->
 ---
 ## 17.2 防止未經授權的存取
 - 用戶身份認證

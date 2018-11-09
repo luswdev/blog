@@ -8,6 +8,7 @@ tag: [xv6, c, makefile, QEMU, ld, link script, gcc, GNU, objcopy, objdump]
 copyright: true
 description: 詳解 makefile 的各種參數、如何在虛擬機器上運行 xv6，及一些 linkscript 的解釋。
 images: https://i.imgur.com/prBjQ9C.jpg
+toc: true
 ---
 ## Makefile 解析
 
@@ -55,26 +56,26 @@ CFLAGS = -fno-builtin -O2 -Wall -MD -ggdb -m32
 - `-O2`：`-O` 表示最佳化的程度，數字越大越好，但會增加編譯時間。
 - `-Wall`：Warm all 的意思，打開所有的警告。
 - `-MD`：生成 .d（directory），等同於 `-M -MF file`。
- 
-{% note info %}
+
+<!-- more -->
+
 `gcc -M file.c`[^1] 會將 file.c 有 include 的 .h （包含標準函式庫）關聯起來，即輸出為：</br>
 `file.o: file.c header.h stdio.h`</br>
 `gcc -M -MF file.c` 將 `-M` 的輸出存入 file.d 裡。</br>
 **註**：`-M` 會自動帶 `-E`，如果使用 `-MD` 替代 `-M -MF` 時則不會帶 `-E`。
-{% endnote %}
 
 - `-ggdb`：為 GDB 生成更多的 debug 資訊。 
 - `-m32`：生成 32 位元的程式碼。
 
 [^1]:[Linux Makefile 生成 .d 依赖文件及 gcc -M -MF -MP 等相关选项说明](https://blog.csdn.net/QQ1452008/article/details/50855810)
 
-```makefile first_line:39
+```makefile
 CFLAGS += $(shell $(CC) -fno-stack-protector -E -x c /dev/null >/dev/null 2>&1 && echo -fno-stack-protector)
 ASFLAGS = -m32
 # FreeBSD ld wants ``elf_i386_fbsd''
 LDFLAGS += -m $(shell $(LD) -V | grep elf_i386 2>/dev/null)
 ```
-```makefile first_line:43
+```makefile
 xv6.img: bootblock kernel fs.img
 	dd if=/dev/zero of=xv6.img count=10000
 	dd if=bootblock of=xv6.img conv=notrunc
@@ -86,11 +87,10 @@ xv6.img: bootblock kernel fs.img
 - `notrunc` 在輸出檔案時會比對輸入的檔案，只會輸出與輸入檔案不一樣的地方。
 - `seek` 會略過數個 blocks 之後再輸出，block 大小由 `obs=BTYES` 宣告（預設為 512）。
 
-{% note warning %}
 /dev/zero 為一個特殊檔案，讀取時會提供無限的空字元，44 行為生成一個大小為 10000（個 block）的空白檔案 xv6.img（或是把 xv6.img 的前 10000 個 block 清除。）
-{% endnote %}
 
-```makefile first_line:47
+
+```makefile
 bootblock: bootasm.S bootmain.c
 	$(CC) $(CFLAGS) -O -nostdinc -I. -c bootmain.c
 	$(CC) $(CFLAGS) -nostdinc -I. -c bootasm.S
@@ -123,11 +123,9 @@ bootblock: bootasm.S bootmain.c
 | `-S` |去除所有符號資訊|
 | `-O binary` |輸出為二進位的文件|
 
-{% note info %}
 反組譯的用意是為了 debug
-{% endnote %}
 
-```makefile first_line:54
+```makefile
 bootother: bootother.S
 	$(CC) $(CFLAGS) -nostdinc -I. -c bootother.S
 	$(LD) $(LDFLAGS) -N -e start -Ttext 0x7000 -o bootother.out bootother.o
@@ -136,7 +134,7 @@ bootother: bootother.S
 ```
 - 啟動其他的 CPU
 
-```makefile first_line:59
+```makefile
 initcode: initcode.S
 	$(CC) $(CFLAGS) -nostdinc -I. -c initcode.S
 	$(LD) $(LDFLAGS) -N -e start -Ttext 0 -o initcode.out initcode.o
@@ -145,7 +143,7 @@ initcode: initcode.S
 ```
 - 建立 initcode
 
-```makefile first_line:64
+```makefile
 kernel: $(OBJS) bootother initcode
 	$(LD) $(LDFLAGS) -Ttext 0x100000 -e main -o kernel $(OBJS) -b binary initcode bootother
 	$(OBJDUMP) -S kernel > kernel.asm
@@ -153,7 +151,7 @@ kernel: $(OBJS) bootother initcode
 ```
 - 建立 kernel
 
-```makefile first_line:68
+```makefile
 tags: $(OBJS) bootother.S _init
 	etags *.S *.c
 
@@ -162,7 +160,7 @@ vectors.S: vectors.pl
 ```
 - 使用 vectors.pl 生成 vectors.S
 
-```makefile first_line:73
+```makefile
 ULIB = ulib.o usys.o printf.o umalloc.o
 
 _%: %.o $(ULIB)
@@ -177,7 +175,7 @@ _%: %.o $(ULIB)
 |$^|代表所有必要條件，即 `%.o $(ULIB)`|
 |$*|代表第一個必要條件，但不包含副檔名|
 
-```makefile first_line:79
+```makefile
 _forktest: forktest.o $(ULIB)
 	# forktest has less library code linked in - needs to be small
 	# in order to be able to max out the proc table.
@@ -209,7 +207,7 @@ fs.img: mkfs README $(UPROGS)
 
 - fs 指的是 file system
 
-```makefile first_line:106
+```makefile
 -include *.d
 
 clean: 
@@ -294,16 +292,14 @@ tar:
 
 - 輸入以下代碼[^2]
 
-```shell line_number:false
+```shell
 qemu-system-i386 -serial mon:stdio -hdb fs.img xv6.img -smp 1 -m 512
 ```
 ![QEMU](https://i.imgur.com/prBjQ9C.jpg "Running xv6 in QEMU")
 
 [^2]:[【學習 Xv6 】在 Mac OSX 下運行 Xv6](http://leenjewel.github.io/blog/2014/07/24/%5B%28xue-xi-xv6-%29%5D-zai-mac-osx-xia-yun-xing-xv6/)
 
-{% note warning %}
 註：make 好了以後，在 MacOS 的環境下使用 QEMU 模擬器即可運行。
-{% endnote %}
 
 ---
 ## Code: Kernel.ld
@@ -325,7 +321,7 @@ SECTIONS
 - 設定記憶體位置到 `0x8010000`（虛擬地址，分頁硬體會映射至實體位置 `0x0010000`）
 - *bootmain.c* 將 ELF 指標指向 `0x100000` 接著將 kernel 讀入。
 
-```first_line:13
+```armasm
 	.text : AT(0x100000) {
 		*(.text .stub .text.* .gnu.linkonce.t.*)
 	}

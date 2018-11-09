@@ -8,6 +8,7 @@ tag: [計算機概論, 網路]
 copyright: true
 description: 介紹網路架構及協定。
 images: https://i.imgur.com/dnBpSae.png
+toc: true
 ---
 ## 15.1 網路連接
 - 網路的任一裝置被稱作節點或是主機 host。
@@ -21,6 +22,8 @@ images: https://i.imgur.com/dnBpSae.png
 - 環狀拓樸 ring topology：以封閉環路連接所有電腦，訊息以單方向傳遞。
 - 星狀拓樸 star topology：以一個節點為中心，連結所有其他節點，透過中心發送訊息。中心承載大量網路負荷，若中心無法運作，則無法通訊。
 - 匯流排拓樸 bus topology：所有節點都可以連上一個雙向的通訊線上，如乙太網路 Ethernet。
+
+<!-- more -->
 
 #### 廣域網路 WAN：連結兩個或以上的區域網路。
 - 閘道器 gateway：處理區域網路與其他網路的通訊。

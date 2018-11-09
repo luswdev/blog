@@ -8,6 +8,7 @@ tag: [計算機概論, 組合語言, Pep/8, 演算法, pseudocode]
 description: 介紹 Pep/8 及虛擬碼。
 images: https://i.imgur.com/3tuxNJg.png
 copyright: true
+toc: true
 ---
 ## 6.1 電腦的動作
 即可程式化 programmable、儲存 store、擷取 retrieve 及運算 process。
@@ -24,6 +25,8 @@ copyright: true
 	- PC 程式計數器：存放下一個被執行的指令位址。
 	- IR 程式暫存器：儲存目前執行的指令。
 	- 累加器（A暫存器）。
+
+<!-- more -->
 
 一個位元組能表示的最大數為255(base 10)，也就是11111111(base 2)、0xFF，一個字語（16位元）能表示的最大數為65535，也就是0xFFFF，若要表示負數，則範圍為0x-7FFF~0x7FFF
 
@@ -81,16 +84,21 @@ copyright: true
 
 也可以用 Set sum to sum + num，或是 sum ← sum + num。
 
-```:輸入/輸出 line_number:false
+- 輸入/輸出
+
+``` 
 Write “Hello word!”
 Read num
 ```
+- 選擇
 
-```:選擇 line_number:false
+``` 
 IF(sum<0)…
 ELSE …
 ```
 
-```:重複 line_number:false
+- 重複
+
+``` 
 WHILE(counter < limit) …
 ```

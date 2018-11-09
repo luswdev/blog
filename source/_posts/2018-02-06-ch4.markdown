@@ -8,6 +8,7 @@ tag: [計算機概論, 閘, 電晶體, 加法器, 邏輯圖, 電路]
 copyright: true
 description: 介紹基本的閘，及一些應用。
 images: https://i.imgur.com/3EGd4xe.jpg
+toc: true
 ---
 ## 4.1 電腦與電學
 電子訊號有某個電壓準位，一般而言電壓準位在 0~2 伏特時屬於「低」，代表二進制的 0，而位於 2~5 伏特時則為「高」，代表二進制的 1。
@@ -17,6 +18,8 @@ images: https://i.imgur.com/3EGd4xe.jpg
 	- 布林表示法
 	- 邏輯圖
 	- 真值表
+
+<!-- more -->
 
 ---
 ## 4.2 閘

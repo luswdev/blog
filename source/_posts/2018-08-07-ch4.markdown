@@ -8,6 +8,7 @@ tag: [xv6, kernel, c, lock, race conditions]
 copyright: true 
 description: 鎖
 images: https://i.imgur.com/T6893f9.png
+toc: true
 ---
 ## Race conditions
 ### 例子
@@ -29,10 +30,13 @@ insert(int data)
     list = l;
 }
 ```
+
+<!-- more -->
+
 ![](https://i.imgur.com/T6893f9.png "Example race")
 
 假設現在有兩個 process 同時在不同的 CPU 上執行上述程式碼，當兩個 process 都執行到 14 行，則兩條鏈結的 `next` 都設置為 `list`；接著，先執行的 process A 將 list 設定為自己的鏈結，後執行的 process B 也將 list 設為自己的鏈結。
-- {% label danger@問題 %}：此時 list 上將會遺失原本 process A `insert` 的節點。
+- 問題：此時 list 上將會遺失原本 process A `insert` 的節點。
 
 ### 圖解
 - 一開始的 list
@@ -41,11 +45,11 @@ insert(int data)
 ![](https://i.imgur.com/vzKF44W.png "both a and b insert same time")
 - 接著 process A 以些微的差距先將 list 設為 l（自己的鏈結），此時 list 的第一顆為 A 的資料
 ![](https://i.imgur.com/lclqzPs.png "a change the list")
-- 最後 process B 也將 list 設為 l，此時 list 上的第一顆為 B 的資料，{% label danger@且 A 的資料遺失了 %}
+- 最後 process B 也將 list 設為 l，此時 list 上的第一顆為 B 的資料，且 A 的資料遺失了。
 ![](https://i.imgur.com/3fr2iqX.png "b change the list")
 
 ### 使用鎖
-```c diff:true
+```c
 struct list *list = 0;
 struct lock listlock;
 
@@ -53,12 +57,12 @@ void
 insert(int data)
 {
     struct list *l;
-+    acquire(&listlock);
+    acquire(&listlock);
     l = malloc(sizeof *l);
     l->data = data;
     l->next = list;
     list = l;
-+    release(&listlock);
+    release(&listlock);
 }
 ```
 
@@ -84,6 +88,7 @@ struct spinlock {
 ```
 
 - 邏輯上，`acquire` 應該長這樣：
+
 ```c
 void
 acquire(struct spinlock *lk)
@@ -96,10 +101,10 @@ acquire(struct spinlock *lk)
     }
 }
 ```
-- 但是我們發現，可能會有多個 CPU 執行至第五行，發現 `lk->locked` 為 `0`，接著都拿到了鎖，{% label warning@即違反了互斥 %}
+- 但是我們發現，可能會有多個 CPU 執行至第五行，發現 `lk->locked` 為 `0`，接著都拿到了鎖，ㄋ即違反了互斥
 - xv6 使用 x86 的特殊指令 `xchg` 來完成動作。
 
-```c :acquire
+```c acquire
 // file: spinlock.c (20)
 // Acquire the lock.
 // Loops (spins) until the lock is acquired.
@@ -123,7 +128,7 @@ acquire(struct spinlock *lk)
   getcallerpcs(&lk, lk->pcs);
 }
 ```
-```c :release
+```c release
 // file: spinlock.c (42)
 // Release the lock.
 void
@@ -149,7 +154,7 @@ release(struct spinlock *lk)
   popcli();
 }
 ```
-```c :xchg
+```c xchg
 // file: x86.h (120)
 static inline uint
 xchg(volatile uint *addr, uint newval)

@@ -8,6 +8,7 @@ tag: [計算機概論, 壓縮, 數字表示, 二進位]
 copyright: true
 description: 介紹一些資料型態是如何表示的，如圖片、音訊。
 images: https://i.imgur.com/pN6GCCx.png
+toc: true
 ---
 ## 3.1 資料與電腦
 - 資料 data：事實的基本數值。
@@ -22,6 +23,8 @@ images: https://i.imgur.com/pN6GCCx.png
 1. 類比資料 analog data：連續的，較類似實際資訊
 2. 數位資料 digital data：不連續的。
 3. 數位化 digitize：由類比轉成數位。
+
+<!-- more -->
 
 ### 二進製表示法
 一個位元可表示兩件事（ 0 或是 1 ），如：會下雨、不會下雨；當需要表示超過兩件事時，就需要多重位元，兩個位元可表示四件事（ 00, 01, 10, 11 ）… 以此類推。

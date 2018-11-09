@@ -8,6 +8,7 @@ tag: [計算機概論]
 scopyright: true
 description: 模擬
 images: https://i.imgur.com/5nutKY0.jpg
+toc: true
 ---
 ## 14.1 何謂模擬？
 ### 複雜系統

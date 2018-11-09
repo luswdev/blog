@@ -8,6 +8,7 @@ tag: [計算機概論, 電腦]
 copyright: true
 description: 介紹電腦的架構。
 images: https://i.imgur.com/wiHImvM.png
+toc: true
 ---
 ## 5.1 個別電腦元件
 - 處理器速度 Hz 表示，如 2.7GHz。
@@ -26,6 +27,8 @@ ALU 與控制單元組成CPU。
 
 - 匯流排 bus：連接不同單元的排線。
 - 匯流排寬度：可以同時被傳輸的位元數目。
+
+<!-- more -->
 
 ### 擷取/執行週期
 擷取下一個指令→將指令解碼 → 取得資料 → 執行指令

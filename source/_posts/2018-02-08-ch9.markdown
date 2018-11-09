@@ -8,6 +8,7 @@ tag: [計算機概論, OOP, 高階語言]
 copyright: true
 description: 介紹物件導向及高級語言。
 images: https://i.imgur.com/ooL8Lhr.png
+toc: true
 ---
 ## 9.1 物件導向方法論
 ### 物件導向 OOP
@@ -22,6 +23,8 @@ images: https://i.imgur.com/ooL8Lhr.png
 	- 兩種責任類型：知識（是什麼）及行為（做什麼）。
 
 class 會將資料封裝，也就是把資料和動作捆綁在一起，別的 class 無法存去此資訊。
+
+<!-- more -->
 
 ---
 ## 9.2 翻譯過程

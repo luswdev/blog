@@ -7,7 +7,8 @@ categories: xv6
 tag: [xv6, c, process, kernel, exec, asm]
 copyright: true
 description: 說明第一個 process 如何初始化，並執行。
-images: https://i.imgur.com/TgbSjgz.jpg"
+images: https://i.imgur.com/TgbSjgz.jpg
+toc: true
 ---
 - OS 必須具備三項技能：多工、獨立及交流。
 
@@ -20,6 +21,8 @@ images: https://i.imgur.com/TgbSjgz.jpg"
         1. 通常在不同部份的 OS 中的介面是複雜的。
         2. 這會容易讓開發者出錯。
 - **Microkernel**：為了減少 kernel 出錯的風險，設計者可以將 kernel mode 上執行的 OS 程式碼最小化，並大讓OS 在 user mode 中執行。
+
+<!-- more -->
 
 ![microkernel](https://i.imgur.com/TgbSjgz.jpg "A mkernel with a file system server")
 
@@ -55,7 +58,7 @@ images: https://i.imgur.com/TgbSjgz.jpg"
 
     ![address space](https://i.imgur.com/jhNNkts.jpg "Layout of a virtual address space")
 
-```x86asm :entry.s
+```x86asm entry.s
 _start = V2P_WO(entry)
 
 # Entering xv6 on boot processor, with paging off.
@@ -120,7 +123,7 @@ found:
 ```
 - 接著嘗試請求分配一個 kernel stack，如果失敗，把 `p->state` 改回 `UNUSED`。
 
-```c first_line:22
+```c
   // Allocate kernel stack.
   if((p->kstack = kalloc()) == 0){
     p->state = UNUSED;
@@ -137,7 +140,7 @@ found:
 - Allocproc 通過設定返回程式計數器的值來導致新 process 的 kernel thread 會先在 forkret 中執行，再回到 trapret。
 - Kernel thread 從 p->context 的拷貝開始執行，因此設定 p->context->eip 指向 forkret 會導致 kernel thread 從 forkret 的開頭開始執行。
 
-```c first_line:32
+```c
   // Set up new context to start executing at forkret,
   // which returns to trapret.
   sp -= 4;
@@ -177,12 +180,12 @@ userinit(void)
 ```
 - `inituvm` 請求一個 page 大小的實體記憶體，將虛擬記憶體 0 映射到此記憶體，並將 `_binary_initcode_start_` 及 `_binary_initcode_size_` 拷貝到 page。
 
-```c first_line:11
+```c
   inituvm(p->pgdir, _binary_initcode_start, (int)_binary_initcode_size);
 ```
 - 把 trap frame 設定為初始使用者模式。
 
-```c first_line:12
+```c
   p->sz = PGSIZE;
   memset(p->tf, 0, sizeof(*p->tf));
   p->tf->cs = (SEG_UCODE << 3) | DPL_USER;
@@ -195,13 +198,13 @@ userinit(void)
 ```
 - `p->name` 設為 `"initcode"` 是為了 debug，`p->cwd` 設在 process 的現在目錄。
 
-```c first_line:21
+```c
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
 ```
 - 設定 `p->state` 為 `RUNNABLE`。
 
-```c first_line:23
+```c
   p->state = RUNNABLE;
 }
 ```
@@ -210,7 +213,7 @@ userinit(void)
 ## Code: 執行第一個 process
 - 當 *main* 呼叫完 *userinit* 後，呼叫 *mpmain*，*mpmain* 接著呼叫 *scheduler* 開始運行 process。
 
-```c :mpmain()
+```c mpmain()
 // file: main.c (55)
 // Common CPU setup code.
 static void
@@ -223,7 +226,7 @@ mpmain(void)
 }
 ```
 
-```c :scheduler()
+```c scheduler()
 // file: proc.c (249)
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
@@ -240,14 +243,14 @@ scheduler(void)
 ```
 - 第一行指令：`sti`，啟動處理器中斷；開機的時候在 *bootasm.S* 中將中斷禁止(`cli`)，在 xv6 準備完成後重新開啟。
 
-```c first_line:14
+```c
   for(;;){
     // Enable interrupts on this processor.
     sti();
 ```
 - *Scheduler* 找到一個`p->state`為`RUNNABLE`的 process，此時是唯一的：`initproc`。
 
-```c first_line:17
+```c
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
@@ -256,7 +259,8 @@ scheduler(void)
 ```
 - 接著把 pre-cpu 的變量 `proc` 設為此 process。
 - 呼叫 `switchuvm` 通知硬體開始使用目標 process 的  page table。
-```c :switchuvm() line_number:false
+
+```c switchuvm()
     // file: vm.c (163)
     // Switch TSS and h/w page table to correspond to process p.
     void
@@ -275,7 +279,7 @@ scheduler(void)
 ```
 - `switchuvm` 同時設置好任務狀態段 `SEG_TSS`，讓硬體在 process 的 kernel stack 中執行 system call 與中斷。
 
-```c first_line:22
+```c
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
       // before jumping back to us.
@@ -285,7 +289,7 @@ scheduler(void)
 - 接著把 `p->state` 設為 `RUNNING`。
 - 呼叫 `swtch`，context switch 到目標程序的 kernel thread。
 
-```c first_line:27
+```c
       p->state = RUNNING;
       swtch(&cpu->scheduler, proc->context);
       switchkvm();
@@ -335,7 +339,7 @@ swtch:
 - `allocproc` 把 `initproc` 的 `p->context->eip` 設為 `forkret`，使得 `ret` 開始執行 `forkret`。
 - 第一次執行 `forkret` 時會呼叫一些初始化函數(`initlog`)，接著返回。
 
-```c :forkret()
+```c forkret()
 // file: proc.c (320)
 // A fork child's very first scheduling by scheduler()
 // will swtch here.  "Return" to user space.
@@ -365,7 +369,7 @@ forkret(void)
 - `addl` 跳過 `trapno` 和 `errcode` 兩個數據
 - 最後 `iret` pop `%gs`、`%fs`、`%es`、`%ds` 出堆疊。
 
-```x86asm :trapret
+```x86asm trapret
   # file: trapasm.S (26)
   # Return falls through to trapret...
 .globl trapret
@@ -379,9 +383,9 @@ trapret:
   iret
 ```
 
-{% note info %}
+
 `iret`：interrupt return，程序返回中斷前的位址。
-{% endnote %}
+
 - 處理器從 `%eip` 的值繼續執行，對於 `initproc` 即為虛擬地址 0，也就是 *initcode.S* 的第一條指令。
 
 ---

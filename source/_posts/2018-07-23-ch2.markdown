@@ -8,16 +8,17 @@ tag: [xv6, page table, memory, 虛擬記憶體, 頁表, 分頁, 記憶體管理,
 copyright: true
 description: 解釋 xv6 建立頁表的過程，包括 kernel 及 user。
 images: https://i.imgur.com/4qq54zV.png
+toc: true
 ---
 ## 分頁硬體
 - PTE：Page table entry，包含 20-bit PPN 及 flags
 - PPN：Physical Page number
-- {% label warning @x86的頁表 %}：2<sup>20</sup> 條 PTE。
+- x86的頁表：2<sup>20</sup> 條 PTE。
 
-{% note success %}
 ### 目標
 分頁硬體使用虛擬位址找到對應的 PTE，接著把高 20-bit 替換為 PTE 的 PPN，低 12-bit 直接沿用，即完成轉譯的動作。
-{% endnote %}
+
+<!-- more -->
 
 ### xv6 頁表
 ![](https://i.imgur.com/4qq54zV.png "x86 page table hardware.")
@@ -42,15 +43,15 @@ images: https://i.imgur.com/4qq54zV.png
 | D | Dirty | 為 0 時寫入此頁， 處理器會將此位設為 1 | - |
 | AVL | Available for system use | - | - |
 
-**{% label danger@註： %}**只有軟體可以將 A、D 清 0。[^1]
+**註：**只有軟體可以將 A、D 清 0。[^1]
 
 [^1]:[記憶體管理／分頁架構](https://www.csie.ntu.edu.tw/~wcchen/asm98/asm/proj/b85506061/chap2/paging.html)
 
-{% note info%}
+
 #### WT 的補充
 **write-through**
 **write-back**
-{% endnote %}
+
 
 ### 名詞解釋
 - 物理記憶體：DRAM
@@ -105,7 +106,7 @@ setupkvm(void)
 ```
 - 首先分配一頁來存放目錄
 
-```c first_line:11
+```c
   memset(pgdir, 0, PGSIZE);
   if (p2v(PHYSTOP) > (void*)DEVSPACE)
     panic("PHYSTOP too high");
@@ -119,7 +120,7 @@ setupkvm(void)
 - 接著呼叫 `mappages` 來建立 kernel 所需的映射。
 - 映射存放在 kmap 裡
 
-```c line_number:false :struct kmap
+```c struct kmap
 // file: vm.c (115)
 // This table defines the kernel's mappings, which are present in
 // every process's page table.
@@ -159,13 +160,13 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
 ```
 - 首先呼叫 `walkpgdir` 來找到對應的 PTE
 
-```c first_line:16
+```c
     if(*pte & PTE_P)
       panic("remap");
 ```
 - 接著確認 PTE_P flags
 
-```c first_line:18
+```c
     *pte = pa | perm | PTE_P;
     if(a == last)
       break;
@@ -176,7 +177,7 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
 }
 ```
 - 最後初始化 PTE。
-- {% label warning@問題： %}如何初始化
+- 問題：如何初始化
 
 ## walkpgdir
 ```c
@@ -232,7 +233,7 @@ kernel 在運行時須為以下物件分配物理記憶體：
 <p id="kinit" ></p>
 
 ### kinit1 / 2
-``` c :kinit1
+``` c kinit1
 // file: kalloc.c (31)
 void
 kinit1(void *vstart, void *vend)
@@ -242,7 +243,7 @@ kinit1(void *vstart, void *vend)
   freerange(vstart, vend);
 }
 ```
-```c :kinit2
+```c kinit2
 // file: kalloc.c (38)
 void
 kinit2(void *vstart, void *vend)
@@ -254,7 +255,7 @@ kinit2(void *vstart, void *vend)
 - `kinit1 / 2` 呼叫 `freerange` 將記憶體加入 free list
 
 ### freerange
-```c :freerange
+```c
 // file: kalloc.c (45)
 void
 freerange(void *vstart, void *vend)
@@ -268,7 +269,7 @@ freerange(void *vstart, void *vend)
 - `freerange` 呼叫 `kfree` 來完成工作
 
 ### kfree
-```c :kfree
+```c
 // file: kalloc.c (54)
 //PAGEBREAK: 21
 // Free the page of physical memory pointed at by v,
@@ -288,7 +289,7 @@ kfree(char *v)
 ```
 - 首先將每個字節設為 1
 
-```c first_line:17
+```c
   if(kmem.use_lock)
     acquire(&kmem.lock);
   r = (struct run*)v;
@@ -309,7 +310,7 @@ kfree(char *v)
 - 用途：增長/收縮 process 的記憶體。
 
 ### sys_sbrk
-```c :sbrk
+```c
 int
 sys_sbrk(void)
 {
@@ -326,7 +327,7 @@ sys_sbrk(void)
 ```
 
 ### growproc
-```c :growproc
+```c
 // Grow current process's memory by n bytes.
 // Return 0 on success, -1 on failure.
 int
@@ -393,9 +394,8 @@ struct proghdr {
 ```
 - 一個 proghdr 描述了須載入至記憶體的 program section
 
-{% note info %}
 xv6 的 program 只有一個 section，其他 OS 可能會有多個。
-{% endnote %}
+
 
 ### File: exec.c 
 ```c
@@ -424,7 +424,7 @@ exec(char *path, char **argv)
 ```
 - 用 `namei` 打開二進制文件（ch6 會說明）
 
-```c first_line:23
+```c
   ilock(ip);
   pgdir = 0;
 
@@ -436,7 +436,7 @@ exec(char *path, char **argv)
 ```
 - 接著確認 ELF 是否正確（藉由 ELF_magic）
 
-```c first_line:31
+```c
   if((pgdir = setupkvm()) == 0)
     goto bad;
 

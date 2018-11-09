@@ -8,6 +8,7 @@ tag: [xv6, inode]
 copyright: true
 description: 簡單介紹作業系統。
 images: https://i.imgur.com/42HcaQC.jpg
+toc: true
 ---
 - OS的工作：有效率的在電腦上執行數個程式。
 - Kernel：提供 process 服務
@@ -15,12 +16,13 @@ images: https://i.imgur.com/42HcaQC.jpg
     - 指令：實現程式的運算。
     - 資料：運算中所用到的變數。
     - 堆疊：組織 procedure 呼叫。
-    
-{% note info %}
+ 
+<!-- more -->   
+
 1. 當一個 process 需要調用 kernel 的服務時，就會調用一個**procedure 呼叫**至OS介面。
 2. procedure 即為 **system call**
 3. system call 進入 kernel，kernel 回傳其服務。
-{% endnote %}
+
 ![System call sample](https://i.imgur.com/42HcaQC.jpg "A kernel and two user processes.") 
 - Kernel 使用 CPU 的硬體保護機制去確保 process 只會在 user space 中執行，及只存取自己的記憶體（使用特權 privilege 機制）。
 
@@ -33,9 +35,9 @@ images: https://i.imgur.com/42HcaQC.jpg
     - Kernel 將一個 process 與其 pid（process identifier）連結。
 - `fork()`：一個 system call 用來新增子 process。
 
-{% note warning %}
 子 process 與父 porcess 擁有同樣的記憶體**內容**，但是在不同的記憶體及暫存器上執行，所以在其中一個process 中改變一個變數值並不會影響另一個。
-{% endnote %}
+
+
 - `exit()`：用來結束子 process。
 - `wait()`：在主 process 中使用；當子 process 結束後，才繼續執行主 process（通常搭配 `exit()` 使用）。
 - `exec`
@@ -48,7 +50,7 @@ images: https://i.imgur.com/42HcaQC.jpg
     - 2 standard error
 - Shell 確保上述三個描述符每次都會被打開。
 
-```c line_number:false
+```c
 // read something from file descriptor to "buf"
 read(fd, buf, n);
 // write something from "buf" to file descriptor
@@ -60,7 +62,7 @@ write(fd, buf, n);
 ## Pipes
 - 如同一條水管，pipes 的兩端連接不同的 process，其中一端寫入資料，其中一端讀取其資料。也就是說，pipes 提供使兩個不同的 process 互相溝通的方法。
 
-```shell line_number:false
+```shell
 # sample of pipes
 echo hello world | wc
 # another way call "temporary files"
@@ -78,7 +80,7 @@ echo hello world >/tmp/xyz; wc </tmp/xyz
 - 目錄的結構為樹，且有一個**根目錄 /**（例如：/a/b/c）。
 - 任何不從根目錄開始的路徑稱作 process 的當前目錄。
 
-```shell line_number:false
+```shell
 # create a new director
 mkdir("/dir");
 # open with 0_CREATE flag create a new file

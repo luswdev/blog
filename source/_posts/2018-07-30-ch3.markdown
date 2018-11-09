@@ -8,6 +8,7 @@ tag: [xv6, c, trap, interrupt, system call, vectors, ide, asm, kernel]
 copyright: true
 description: 説明 trap handler 與 interrupt handler 運作的模式，與 IDE 的介紹。
 images: https://i.imgur.com/ruXCSVM.jpg
+toc: true
 ---
 - CPU 執行一個 porcess 時，是不斷的進行：讀取指令、增加程式計數器、執行指令的迴圈；但有時候一個程式需要進入 kernel，而不是執行下一行指令；包括：設備信號的發出、使用者程式做一些非法的事或是呼叫一個 system call。
 
@@ -15,6 +16,8 @@ images: https://i.imgur.com/ruXCSVM.jpg
     1. Kernel 需使處理器能夠從 user mode 轉至 kernel mode（再轉回來）。
     2. Kernel 及設備須協調好他們平行的活動。
     3. Kernel 需了解設備的介面。
+
+<!-- more -->
 
 ## System call，例外及中斷
 - 有三種情況須從 user 轉至 kernel：
@@ -34,9 +37,9 @@ images: https://i.imgur.com/ruXCSVM.jpg
 - Trap：當前 process 引起
 - 中斷：由設備引起
 
-{% note warning %}
+
 xv6 用 trap 來表示中斷，這是因為此術語被 PDP11/40 使用，也是 UNIX 的傳統術語。
-{% endnote %}
+
 
 ---
 ## X86 的保護機制
@@ -69,7 +72,7 @@ start:
 - Process 將`exec` 的參數 push 進堆疊，並將 system call number 放進 `%eax`。
 - `SYS_exec` 即為 system call number，對應到 syscalls 的陣列索引（syscall.c 中），一個函數指標陣列。
 
-```c :syscalls[]
+```c syscalls[]
 // file: :syscall.c (102)
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -103,7 +106,7 @@ static int (*syscalls[])(void) = {
 - Main 呼叫 `tvinit`。
 <p id="tvinit"></p>
 
-```c :tvinit()
+```c tvinit()
 // file: trap.c
 void
 tvinit(void)
@@ -112,7 +115,7 @@ tvinit(void)
 ```
 - `Tvinit` 設置 `idt` 表的 256 項。
 
-```c first_line:6
+```c
   for(i = 0; i < 256; i++)
     SETGATE(idt[i], 0, SEG_KCODE<<3, vectors[i], 0);
 ```
@@ -120,14 +123,14 @@ tvinit(void)
 - Trap gate 不會清除 IF bit。
 - 並將 system call 的權限設為 `DPL_USER`，允許使用者程式使用 `int` 指令產生 `trap`；xv6 不允許 process 用 `int` 產生其他中斷，如果這麼做會拋出錯誤並產生 13 號中斷。
 
-```c first_line:8
+```c
   SETGATE(idt[T_SYSCALL], 1, SEG_KCODE<<3, vectors[T_SYSCALL], DPL_USER);
   
   initlock(&tickslock, "time");
 }
 ```
 
-```c :SETGATE()
+```c SETGATE()
 // file: mmu.h (213)
 #define SETGATE(gate, istrap, sel, off, d)                \
 {                                                         \
@@ -142,7 +145,7 @@ tvinit(void)
   (gate).off_31_16 = (uint)(off) >> 16;                   \
 }
 ```
-```c :gate.type
+```c gate.type
 #define STS_IG32    0xE     // 32-bit Interrupt Gate
 #define STS_TG32    0xF     // 32-bit Trap Gate
 ```
@@ -154,7 +157,7 @@ tvinit(void)
 - 從對應的 IDT 讀取 `%eip`、`%cs`。
 
 #### File: vector.pl
-```pl :vector.pl
+```pl
 #!/usr/bin/perl -w
 
 # Generate vectors.S, the trap/interrupt entry points.
@@ -204,8 +207,8 @@ alltraps:
 - 接著繼續 push `%ds`、`%es`、`%fs`、`%gs` 及通用暫存器，現在 kernel stack 包含一個 `struct trapframe`。
 
 ![trapframe](https://i.imgur.com/EYisQXH.jpg "Layout of trapframe")
-- {% label info@trapfram %}
-```c :struct trapframe line_number:false
+
+```c struct trapframe
 // file: x86.h (150)
 struct trapframe {
   // registers as pushed by pusha
@@ -242,7 +245,7 @@ struct trapframe {
   ushort padding6;
 };
 ```
-```c first_line:12
+```c
   # Set up data and per-cpu segments.
   movw $(SEG_KDATA<<3), %ax
   movw %ax, %ds
@@ -258,7 +261,7 @@ struct trapframe {
 ```
 - push `%esp`（trap frame），呼叫 *trap*。
 
-```c first_line:24
+```c
   # Return falls through to trapret...
 .globl trapret
 trapret:
@@ -292,7 +295,7 @@ trap(struct trapframe *tf)
 ```
 - 如果是 `TY_SYSCALL`，呼叫 syscall()。
 
-```c first_line:14
+```c
   switch(tf->trapno){
   case T_IRQ0 + IRQ_TIMER:
     if(cpu->id == 0){
@@ -327,7 +330,7 @@ trap(struct trapframe *tf)
 ```
 - 檢查是否為硬體中斷
 
-```c first_line:45
+```c
   //PAGEBREAK: 13
   default:
     if(proc == 0 || (tf->cs&3) == 0){
@@ -387,7 +390,7 @@ syscall(void)
 }
 ```
 
-```c :syscalls[]
+```c syscalls[]
 // file: syscall.c (102)
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -414,7 +417,7 @@ static int (*syscalls[])(void) = {
 };
 ```
 
-```c :syscall.h
+```c syscall.h
 // System call numbers
 #define SYS_fork    1
 #define SYS_exit    2
@@ -482,7 +485,7 @@ struct buf {
 - main 呼叫 ideinit 初始化硬碟驅動程式
 <p id="ideinit"></p>
 
-```c :ideinit()
+```c ideinit()
 // file: ide.c (45)
 void
 ideinit(void)
@@ -496,11 +499,12 @@ ideinit(void)
 - 呼叫 `picenable` 打開單處理器的中斷
 - 呼叫 `ioapicenable` 打開多處理器的中斷（只打開最後一個 CPU）
 
-```c first_line:10
+```c
   idewait(0);
 ```
 - `idewait` 等待硬碟接受命令，直到 busy 位（`IDE_BUSY`）被清除，ready 位（`IDE_DRDY`）被設置。
-```c :idewait() line_number:false
+
+```c idewait()
 static int
 idewait(int checkerr)
 {
@@ -513,7 +517,7 @@ idewait(int checkerr)
   return 0;
 }
 ```
-```c first_line:11
+```c
   // Check if disk 1 is present
   outb(0x1f6, 0xe0 | (1<<4));
   for(i=0; i<1000; i++){
@@ -532,7 +536,7 @@ idewait(int checkerr)
     - 若 B_VALID 未設置：從硬碟讀資料進 buf
 
 
-```c :iderw()
+```c iderw()
 // file: ide.c (126)
 void
 iderw(struct buf *b)
@@ -556,7 +560,7 @@ iderw(struct buf *b)
 ```
 - 把 buf b 放置隊伍的末端
 
-```c first_line:21
+```c
   // Start disk if necessary.
   if(idequeue == b)
     idestart(b);
@@ -564,7 +568,7 @@ iderw(struct buf *b)
 - 如果此 buf 在隊首，呼叫 `idestart` 將其送到硬碟。
 - 其他情況需等上一個處理完畢時才處理。
 
-```c first_line:24
+```c
   // Wait for request to finish.
   while((b->flags & (B_VALID|B_DIRTY)) != B_VALID){
     sleep(b, &idelock);
@@ -576,7 +580,7 @@ iderw(struct buf *b)
 - `iderw` 將請求加入的隊伍裡，並睡眠，等待 interrupt handler 處理完後更新其 flags。
 - 最後，硬碟完成其工作並觸發一個中斷，trap 呼叫 `ideintr` 來處理。
 
-```c :ideintr()
+```c ideintr()
 // file: ide.c (91)
 void
 ideintr(void)
@@ -598,7 +602,7 @@ ideintr(void)
 ```
 - 查詢隊首的 buf，如果正在被寫入，且 IDE 有資料在等待，呼叫 `insl` 將資料寫入。
 
-```c first_line:19
+```c
   // Wake process waiting for this buf.
   b->flags |= B_VALID;
   b->flags &= ~B_DIRTY;
@@ -607,7 +611,7 @@ ideintr(void)
 - 設置 `B_VALID`，清除 `B_DIRTY`。
 - 喚醒 `b`
 
-```c first_line:24
+```c
   // Start disk on next buf in queue.
   if(idequeue != 0)
     idestart(idequeue);

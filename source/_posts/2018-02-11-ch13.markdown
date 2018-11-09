@@ -8,6 +8,7 @@ tag: [計算機概論]
 copyright: true
 description: 簡單介紹 AI。
 images: https://i.imgur.com/pfMDr8l.jpg
+toc: true
 ---
 ## 13.1 能思考的機器
 ### 杜林試驗（圖靈試驗）
@@ -16,6 +17,8 @@ images: https://i.imgur.com/pfMDr8l.jpg
 - 強等值性：人和電腦用相同的程序來產生一樣的輸出。
 
 AI的面向：知識表達、專家系統、神經網路、自然語言處理、機器人學
+
+<!-- more -->
 
 ---
 ## 13.2 知識表達

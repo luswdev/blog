@@ -8,6 +8,7 @@ tag: [xv6, boot, bootstrap, elf, 函數指標, c,  asm]
 copyright: true
 description: 詳解 xv6 的開機流程，及 kernel 啟動方式。
 images: https://i.imgur.com/DMQi16S.png
+toc: true
 ---
 - x86 開機時，會先呼叫位於主機板上的 BIOS。
 - BIOS 的工作：準備硬體，將控制權轉給 OS (xv6)。
@@ -32,8 +33,9 @@ images: https://i.imgur.com/DMQi16S.png
 - 第一行指令：`cli`，禁止處理器中斷。
 - 硬體可以透過中斷觸發中斷處理，進而操作系統的功能。BIOS 為了初始化硬體，可能設置了自己的中斷處理。但控制權已經給 boot loader 了，所以現在處理中斷是不安全的；當 xv6 準備完成後會重新允許中斷。
 
+<!-- more -->
 
-```x86asm first_line:9
+```x86asm
 .code16                       # Assemble for 16-bit mode
 .globl start
 start:
@@ -45,7 +47,7 @@ start:
 - `%ss` 讀寫堆疊用
 - BIOS 完成工作後 `%ds`, `%es`, `%ss` 是未知的，所以將其設為 0
 
-```x86asm first_line:13
+```x86asm
   # Zero data segment registers DS, ES, and SS.
   xorw    %ax,%ax             # Set %ax to zero
   movw    %ax,%ds             # -> Data Segment
@@ -63,7 +65,7 @@ start:
 - 一個 segment:offset 可能產生 21-bit 的物理地址，但在模擬 Intel 8088 下只能使用 20 bits 的記憶體位置，IBM 提出了一個方法：如果鍵盤控制器輸出端的第二位高於第一位，則第 21 個 bit 可以正常使用，反之則歸零。
 - boot loader 用 I/O 指令控制鍵盤控制器端 0x64、0x60 來確保第 21 個 bit 正常運作。
 
-```x86asm first_line:18
+```x86asm
   # Physical address line A20 is tied to zero so that the first PCs 
   # with 2 MB would run software that assumed 1 MB.  Undo that.
 seta20.1:
@@ -97,8 +99,9 @@ seta20.2:
 - 由上述設定能確保當 boot loader 進入 protected mode 時，邏輯地址映射到物理地址會是 1-1 的。
 - `lgdt` 指令將 GDT 暫存器(指向 gdt) 載入 gdtdesc 的值。
 <p id="gdt"></p>
-- {% label info@補充 %}：在創建 GDT 的時候，第一項須為空(規定)，接著我們為此臨時的 GDT 設立 code 及 data 段。
-```x86asm :GDT line_number:false
+- 補充：在創建 GDT 的時候，第一項須為空(規定)，接著我們為此臨時的 GDT 設立 code 及 data 段。
+
+```x86asm GDT
 # Line 78 in bootasm.S
 # Bootstrap GDT
 .p2align 2                                   # force 4 byte alignment
@@ -110,7 +113,7 @@ gdtdesc:
      .word   (gdtdesc - gdt - 1)             # sizeof(gdt) - 1
      .long   gdt                             # address gdt
 ```
-```x86asm first_line:35
+```x86asm
   # Switch from real to protected mode.  Use a bootstrap GDT that makes
   # virtual addresses map directly to physical addresses so that the
   # effective memory map doesn't change during the transition.
@@ -119,7 +122,7 @@ gdtdesc:
 - Boot loader 將 `%cr0` 中的 `CRO_PE` 設為 1，來啟用 protected mode。
 - 啟用 protceted mode 不會立即改變處理器轉譯邏輯地址的過程；只有當段暫存器載入了新的值，處理器讀取 GDT 改變其內部的斷設定。
 
-```x86asm first_line:39
+```x86asm
   movl    %cr0, %eax
   orl     $CR0_PE, %eax
   movl    %eax, %cr0
@@ -127,7 +130,7 @@ gdtdesc:
 - `ljmp` 指令語法：`ljmp segment offset`，此時段暫存器為 `SEG_KCODE<<3`，即 8 (`SEG_KCODE == 1`，定義於`mmu.h`)
 - `ljmp` 指令跳至 start32 執行。
 
-```x86asm first_line:42
+```x86asm
 //PAGEBREAK!
   # Complete transition to 32-bit protected mode by using long jmp
   # to reload %cs and %eip.  The segment descriptors are set up with no
@@ -136,7 +139,7 @@ gdtdesc:
 ```
 - 進入 32 位元後的第一個動作：用`SEG_KDATA`初始化數據段暫存器
 
-```x86asm first_line:48
+```x86asm
 .code32  # Tell assembler to generate 32-bit code now.
 start32:
   # Set up the protected-mode data segment registers
@@ -152,7 +155,7 @@ start32:
 - 記憶體 0xa0000 至 0x100000 為設備區，xv6 kernel 放在 0x100000。
 - Boot loader 位於 0x7c00 至 0x7e00 (512 bytes)，所以其他位置都能拿來建立堆疊；這裡選擇 0x7c00 當作 top (`$start`)，堆疊向下延伸，直到 0x0000。
 
-```x86asm first_line:58
+```x86asm
   # Set up the stack pointer and call into C.
   movl    $start, %esp
   call    bootmain
@@ -161,11 +164,11 @@ start32:
 - 實際上沒有設備連接到 0x8a00。
 - 如果使用模擬器，boot loader 會把控制權還給模擬器。
 
-{% note warning %}
-真正的 boot loader 會印出一些錯誤訊息。
-{% endnote %}
 
-```x86asm first_line:61
+真正的 boot loader 會印出一些錯誤訊息。
+
+
+```x86asm
   # If bootmain returns (it shouldnt), trigger a Bochs
   # breakpoint if running under Bochs, then loop.
   movw    $0x8a00, %ax            # 0x8a00 -> port 0x8a00
@@ -176,7 +179,7 @@ start32:
 ```
 - 接著進入無限迴圈
 
-```x86asm first_line:68
+```x86asm
 spin:
   jmp     spin
 ```
@@ -215,7 +218,7 @@ bootmain(void)
 ```
 - 為了存取 ELF 開頭，*bootmain* 載入 ELF 文件的前 4096 bytes，並拷貝到 010000 中。
 
-```c first_line:24
+```c
   elf = (struct elfhdr*)0x10000;  // scratch space
 
   // Read 1st page off disk
@@ -223,11 +226,11 @@ bootmain(void)
 ```
 - 接著確認是否為 ELF 文件。
 
-{% note danger%}
-正常情況下 *bootmain* 不會`return`，這裡`return`會跳回 *bootasm.S* 中，由 *bootasm.S* 來處理此錯誤。
-{% endnote %}
 
-```c first_line:28
+正常情況下 *bootmain* 不會`return`，這裡`return`會跳回 *bootasm.S* 中，由 *bootasm.S* 來處理此錯誤。
+
+
+```c
   // Is this an ELF executable?
   if(elf->magic != ELF_MAGIC)
     return;  // let bootasm.S handle error
@@ -235,7 +238,7 @@ bootmain(void)
 - *bootmain* 從 ELF 開頭之後的 off bytes 讀取內容，並存入 paddr 中(呼叫`readseg`)。
 - 呼叫`stosb`將段的剩餘部分設 0
 
-```c first_line:31
+```c
   // Load each program segment (ignores ph flags).
   ph = (struct proghdr*)((uchar*)elf + elf->phoff);
   eph = ph + elf->phnum;
@@ -250,22 +253,22 @@ bootmain(void)
 - *entry.S* 中定義的`_start`即為 ELF 入口。
 - xv6 虛擬記憶體尚未建立，因此 entry 為物理地址。
 
-```c first_line:40
+```c
   // Call the entry point from the ELF header.
   // Does not return!
   entry = (void(*)(void))(elf->entry);
   entry();
 }
 ```
-{% note info %}
+
 **函數指標**的補充[^1]：
 上述用一個 `void (*entry)(void)` 指標即為一個函數指標，此指標指向一個函數，於上述 42 行將此指標指向 `elf->entry`，此動作將 `entry` 指標指向一個函數的進入點位置（`elf->entry`）。
 此時呼叫 `entry()` 會進入此指標位置，並當作一個副函式執行；因此執行完上述程式碼會進入 *entry.S*，並執行其中的程式碼。
-{% endnote %}
+
 
 [^1]:[指標函數和函數指標有什麼區別](http://bluelove1968.pixnet.net/blog/post/222285883-%E6%8C%87%E6%A8%99%E5%87%BD%E6%95%B8%E5%92%8C%E5%87%BD%E6%95%B8%E6%8C%87%E6%A8%99%E6%9C%89%E4%BB%80%E9%BA%BC%E5%8D%80%E5%88%A5)
 
-```c :waitdisk()
+```c waitdisk()
 void
 waitdisk(void)
 {
@@ -275,7 +278,7 @@ waitdisk(void)
 }
 ```
 
-```c :readsect()
+```c readsect()
 // Read a single sector at offset into dst.
 void
 readsect(void *dst, uint offset)
@@ -295,7 +298,7 @@ readsect(void *dst, uint offset)
 }
 ```
 
-```c :readseg()
+```c readseg()
 // Read 'count' bytes at 'offset' from kernel into physical address 'pa'.
 // Might copy more than asked.
 void

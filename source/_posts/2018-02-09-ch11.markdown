@@ -8,6 +8,7 @@ tag: [計算機概論, 檔案系統]
 copyright: true
 description: 介紹檔案如何被存取，以及磁碟的操作設計。
 images: https://i.imgur.com/HcZMlW8.jpg
+toc: true
 ---
 ## 11.1 檔案系統
 - 檔案：一個命名的資料集合。
@@ -20,6 +21,8 @@ images: https://i.imgur.com/HcZMlW8.jpg
 	1. 循序檔案存取：將檔案中的資訊依序存取，依照進度移動檔案指標。
 	2. 直接檔案存取：將檔案分成數個邏輯紀錄，可直接存取某個紀錄而不需照順序。
 - 檔案保護
+
+<!-- more -->
 
 ---
 ## 11.2 目錄

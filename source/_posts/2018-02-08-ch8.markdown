@@ -8,6 +8,7 @@ tag: [計算機概論, 資料結構, 堆疊, 佇列, 二元樹, 圖]
 description: 介紹基本的資料結構。
 images: https://i.imgur.com/OiaGpQ7.jpg
 copyright: true
+toc: true
 ---
 ## 8.1 抽象資料型態
 Abstract data type, ADT，就是一種容器。
@@ -19,7 +20,9 @@ Abstract data type, ADT，就是一種容器。
 
 - 插入 Push 
 - 刪除 Pop
-- 
+
+<!-- more -->
+
 ---
 ## 8.3 佇列 Queue
 為FIFO(First In First Out)，先進先出，即當我們要放資料時，排在最後面 rear，拿資料時拿第一個 front；類似於排隊。

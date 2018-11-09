@@ -8,6 +8,7 @@ tag: [計算機概論]
 copyright: true
 description: 對電腦基本的了解，一些先備知識。
 images: https://i.imgur.com/qS2rhcO.jpg
+toc: true
 ---
 ## 1.1 電腦系統
 >電腦系統如洋蔥由許多層組成，由內而外為：

@@ -8,6 +8,7 @@ tag: [計算機概論, SQL]
 copyright: true
 description: 介紹資訊如何保存，及 簡單的 SQL 語言。
 images: https://i.imgur.com/CI28UOQ.jpg
+toc: true
 ---
 ## 12.1 管理資訊
 有三種普遍的資訊系統：電子試算表、資料庫管理系統及電子商務。
@@ -19,6 +20,8 @@ images: https://i.imgur.com/CI28UOQ.jpg
 
 - 試算表公式：如SUM、COUNT、MAX等。
 - 循環參照：一個無解狀態，如B14 = D21+D22，而D21 = B13+B14。
+
+<!-- more -->
 
 ---
 ## 12.3 資料庫系統
@@ -40,31 +43,31 @@ images: https://i.imgur.com/CI28UOQ.jpg
 
 - 查詢：
 
-```sql line_number:false
+```sql
 SELECT attribute-list FROM table-list WHERE condition
 ```
 如欲取回整個紀錄，可以用 *，需要字串比對，可以用 like：
 
-```sql line_number:false
+```sql
 SELECT * FROM table-list WHERE condition like '%doc%'
 ```
 也可以用 order by 來排序
 
-```sql line_number:false
+```sql
 SELECT attribute-list FROM table-list WHERE condition order by id
 ```
 
 - 修改：
 
-```sql :insert 插入 line_number:false
+```sql insert 插入
 	insert into attribute-list values (some , 'value')
 ```
 
-```sql :update 更新 line_number:false
+```sql update 更新
 	update attribute-list set field_name = 'value' where another_field = 'value2'
 ```
 
-```sql :delete 刪除 line_number:false
+```sql delete 刪除
 	delete from attribute-list where field_name = 'value'
 ```
 ### 資料庫的設計

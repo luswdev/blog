@@ -8,6 +8,7 @@ categories:
 copyright: true
 description: 介紹位置表示法的邏輯，及二進位的概念。
 images: https://i.imgur.com/2KWdaOI.jpg
+toc: true
 ---
 ## 2.2 位置表示法
 >基底 base：由 0 開始，等於基底時進位。

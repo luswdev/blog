@@ -8,6 +8,7 @@ tag: [計算機概論, WWW]
 copyright: true
 description: 介紹 html。
 images: https://i.imgur.com/1uuQYpB.png
+toc: true
 ---
 ## 16.1 建構網路
 - 全球資訊網 WWW（網路 web）：一種分散資訊架構。
@@ -24,6 +25,8 @@ images: https://i.imgur.com/1uuQYpB.png
 - 屬性：屬性名字=值
 - 圖片 `<img src = “a.jpg”>`
 - 連結 `<a href = “https://www.google.com”></a>`
+
+<!-- more -->
 
 ### HTML 5
 ```html

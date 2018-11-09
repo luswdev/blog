@@ -6,11 +6,11 @@ categories: C
 tag: [C, attribute]
 description: 介紹常用的 attribute 屬性
 images: https://i.imgur.com/itHAfw6.png
+toc: true
 ---
-## attribute
 有分三種： ① 對副函式的　② 對資料的　③ 對結構的
 
-{% label info@註：<b>attribute</b> 是給 compiler 看的。 %}
+註：**attribute** 是給 compiler 看的。
 
 ## 對結構的
 ### packed
@@ -24,6 +24,8 @@ struct sample {
 }
 ```
 
+<!-- more -->
+
 如果我們手算此結構的大小的話，會是：
 - A: 4 bytes;
 - B: 3 bytes;
@@ -34,11 +36,11 @@ struct sample {
 這是因為 compiler 所有元素對齊，也就是把每一格切成 4 bytes，B 就會自動對齊成 4 bytes。<br>
 也可以說是寫成：
 
-```c diff:true
+```c
 struct sample {
     int  memberA;
     char memberB[3];
-+    char padding;
+    char padding;
     int  memberC;
 };
 ```
@@ -71,13 +73,13 @@ struct sample {
 此時 `sizeof(struct sample) = 16`
 也就是 A+B=7 bytes，沒有超過我們給定的 8，但加上 C 就會超過了，所以在 B 跟 C 中間塞個 1 byte 來對齊；然後在 C 的後面塞 4 bytes；也就是：
 
-```c diff:true
+```c
 struct sample {
     int  memberA;
     char memberB[3];
-+    char padding1;
+    char padding1;
     int  memberC;
-+    int  padding2;
+    int  padding2;
 }__attribute__((aligned(8)));
 ```
 
@@ -154,6 +156,4 @@ void sample_fun(){
 }
 ```
 
-{% note info %}
 ### section 補充
-{% endnote %}

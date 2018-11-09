@@ -6,6 +6,7 @@ categories: vim
 tag: [vim, 筆記, 指令]
 description: 記錄一些常用指令，及我目前的設定檔
 images: https://i.imgur.com/YKgbBoC.png
+toc: true
 ---
 ## 編輯
 
@@ -20,6 +21,8 @@ images: https://i.imgur.com/YKgbBoC.png
 | `ESC` | 退出編輯模式 |
 
 [^1]: [vi 與 vim 的指令整理](http://www.vixual.net/blog/archives/234)
+
+<!-- more -->
 
 ## 刪除
 
@@ -115,14 +118,14 @@ images: https://i.imgur.com/YKgbBoC.png
 - `:w !sudo tee %`：當要存檔的時候需要權限，可以用此指令來提升。
 - `"+y`：將選取的內容複製到 + 暫存器（剪貼簿)，方便在其他程式中貼上。[^2]
 
-{% note info %}
+
 vim 在複製、刪除時，會把資料放在預設暫存器中，有 0-9A-Za-z+" 這些暫存器可選擇，其中：
 - 0-9：vim 會用到 0-9，0 存放最近一次的資料
 - “：預設暫存器
 - +：剪貼簿暫存器
 
 因此將資料放進 + 暫存器等同於將資料放進剪貼簿。
-{% endnote %}
+
 
 [^2]:[如何将 Vim 剪贴板里面的东西粘贴到 Vim 之外的地方？](https://www.zhihu.com/question/19863631)
 
@@ -131,7 +134,7 @@ vim 在複製、刪除時，會把資料放在預設暫存器中，有 0-9A-Za-z
 ## vim.rc 設定檔
 記錄我目前的設定檔。
 
-```vim :vim.rc
+```vim 
 set nu
 set incsearch
 set smartindent

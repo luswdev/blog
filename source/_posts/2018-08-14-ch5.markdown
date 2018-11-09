@@ -8,6 +8,7 @@ tag: [xv6, schedluler, context switch, sleep, wakeup, kill, wait, exit, c, asm, 
 copyright: true
 description: 解釋 xv6 context switch 的流程，及睡眠與喚醒之介紹。
 images: https://i.imgur.com/8VEzDwI.png
+toc: trues
 ---
 ## Multiplexing
 - 如果 process 需要等待 I/O 或是子 process 結束，xv6 讓其進入睡眠狀態，接著將處理器 switch 給其他 process。 
@@ -26,7 +27,9 @@ images: https://i.imgur.com/8VEzDwI.png
 - 每個 process 都有自己的 kernel stack 及暫存器集合，每個 CPU 有自己的 scheduler stack。
 - context 即 process 的暫存器集合，用一個 `struct context *` 表示。
 
-```c :context
+<!-- more -->
+
+```c context
 // file: proc.h (44)
 struct context {
   uint edi;
@@ -57,7 +60,7 @@ swtch:
 - 將 `%eax` 指向 `struct context ** old`，`%ebx` 指向 `struct context * new`。
 
 ![swtch](https://i.imgur.com/x6xyt5u.png "Context switch step. 1")
-```x86asm first_line:12
+```x86asm
   # Save old callee-save registers
   pushl %ebp
   pushl %ebx
@@ -67,7 +70,7 @@ swtch:
 - 依序將 context push 進堆疊
 
 ![swtch](https://i.imgur.com/5CA2yBo.png "Context switch step. 2") 
-```x86asm first_line:17
+```x86asm
   # Switch stacks
   movl %esp, (%eax)
   movl %edx, %esp
@@ -77,7 +80,7 @@ swtch:
 ）
 ![swtch](https://i.imgur.com/eCDXykk.png "Context switch step. 3")
 
-```x86asm first_line:20
+```x86asm
   # Load new callee-save registers
   popl %edi
   popl %esi
@@ -179,7 +182,7 @@ mycpu(void)
 ```
 - `myproc` 呼叫 `mycpu`，從正確的 CPU 上尋找當前的 process。
 
-```c :myproc()
+```c myproc()
 struct proc*
 myproc(void) {
   struct cpu *c;
@@ -340,7 +343,7 @@ sleep(void *chan, struct spinlock *lk)
 ```
 - 首先確保 process 存在，及持有鎖。
 
-```c first_line:12
+```c
   if(lk != &ptable.lock){  //DOC: sleeplock0
     acquire(&ptable.lock);  //DOC: sleeplock1
     release(lk);
@@ -348,7 +351,7 @@ sleep(void *chan, struct spinlock *lk)
 ```
 - 接著檢查是否持有 `ptable->lock`，如果沒有則要求一個，把 `lk` 釋出。
 
-```c first_line:16
+```c
   // Go to sleep.
   p->chan = chan;
   p->state = SLEEPING;
@@ -357,7 +360,7 @@ sleep(void *chan, struct spinlock *lk)
 ```
 - 睡眠，並呼叫 `sched`
 
-```c first_line:21
+```c
   // Tidy up.
   p->chan = 0;
 
@@ -402,7 +405,7 @@ wakeup(void *chan)
 - 當 pipe 為空時，`nread == nwrite`
 - 當 pipe 為滿時，`nwrite == nread % PIPESIZE`
 
-```c :struct pipe 
+```c struct pipe 
 struct pipe {
   struct spinlock lock;
   char data[PIPESIZE];

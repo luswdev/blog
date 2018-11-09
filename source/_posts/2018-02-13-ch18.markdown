@@ -8,6 +8,7 @@ tag: [計算機概論, big-O, overflow, underflow]
 copyright: true
 description: 講解一些運算的限制，及演算法分析。
 images: https://i.imgur.com/TKgslbS.jpg
+toc: true
 ---
 ## 18.1 硬體
 算數上的限制
