@@ -39,7 +39,9 @@ insert(int data)
 - 問題：此時 list 上將會遺失原本 process A `insert` 的節點。
 
 ### 圖解
+
 - 一開始的 list
+
 ![](https://i.imgur.com/nRSnZn6.png "list")
 - 假設 pocess A 及 B 同時將自己的資料插在 list 的第一顆
 ![](https://i.imgur.com/vzKF44W.png "both a and b insert same time")

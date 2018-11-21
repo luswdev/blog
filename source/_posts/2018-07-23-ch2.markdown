@@ -48,7 +48,7 @@ toc: true
 [^1]:[記憶體管理／分頁架構](https://www.csie.ntu.edu.tw/~wcchen/asm98/asm/proj/b85506061/chap2/paging.html)
 
 
-#### WT 的補充
+>#### WT 的補充
 **write-through**
 **write-back**
 
@@ -220,7 +220,9 @@ switchkvm(void)
 ---
 
 ## 分配物理記憶體
+
 kernel 在運行時須為以下物件分配物理記憶體：
+
 - Page table
 - Process 的 user 記憶體
 - kernel stack
@@ -309,8 +311,8 @@ kfree(char *v)
 ## Code: sbrk
 - 用途：增長/收縮 process 的記憶體。
 
-### sys_sbrk
-```c
+```c sys_sbrk
+// file: sysproc.c (44)
 int
 sys_sbrk(void)
 {
@@ -326,8 +328,10 @@ sys_sbrk(void)
 }
 ```
 
-### growproc
-```c
+- `sbrk` 透過呼叫 `growproc` 來完成工作。
+
+```c growproc
+// file: proc.c (105)
 // Grow current process's memory by n bytes.
 // Return 0 on success, -1 on failure.
 int
@@ -348,6 +352,90 @@ growproc(int n)
   return 0;
 }
 ```
+
+- 如果 n>0：`allocuvm`
+- 如果 n<0：`deallocuvm`
+
+### allocuvm、deallocuvm
+```c allocuvm
+// file: vm.c (218)
+// Allocate page tables and physical memory to grow process from oldsz to
+// newsz, which need not be page aligned.  Returns new size or 0 on error.
+int
+allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
+{
+  char *mem;
+  uint a;
+
+  if(newsz >= KERNBASE)
+    return 0;
+  if(newsz < oldsz)
+    return oldsz;
+
+```
+
+- 首先檢查是否有要超過大小，及動作是否合法。
+
+```c
+
+  a = PGROUNDUP(oldsz);
+  for(; a < newsz; a += PGSIZE){
+    mem = kalloc();
+    if(mem == 0){
+      cprintf("allocuvm out of memory\n");
+      deallocuvm(pgdir, newsz, oldsz);
+      return 0;
+    }
+    memset(mem, 0, PGSIZE);
+    mappages(pgdir, (char*)a, PGSIZE, v2p(mem), PTE_W|PTE_U);
+  }
+  return newsz;
+}
+```
+
+- 接著透過 `kalloc()` 來要記憶體，並將要到的記憶體清空
+- 最後回傳 process 目前總共的大小
+---
+```c deallocuvm
+// file: vm.c (245)
+// Deallocate user pages to bring the process size from oldsz to
+// newsz.  oldsz and newsz need not be page-aligned, nor does newsz
+// need to be less than oldsz.  oldsz can be larger than the actual
+// process size.  Returns the new process size.
+int
+deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
+{
+  pte_t *pte;
+  uint a, pa;
+
+  if(newsz >= oldsz)
+    return oldsz;
+
+```
+
+- 一樣先檢查動作是否合法
+
+```c
+
+  a = PGROUNDUP(newsz);
+  for(; a  < oldsz; a += PGSIZE){
+    pte = walkpgdir(pgdir, (char*)a, 0);
+    if(!pte)
+      a += (NPTENTRIES - 1) * PGSIZE;
+    else if((*pte & PTE_P) != 0){
+      pa = PTE_ADDR(*pte);
+      if(pa == 0)
+        panic("kfree");
+      char *v = p2v(pa);
+      kfree(v);
+      *pte = 0;
+    }
+  }
+  return newsz;
+}
+```
+
+- 接著一個一個 pte free，先將 flags 歸0，再透過 `kfree` 完成工作。
 
 ## Code: exec
 - 功用：創建 user part address space

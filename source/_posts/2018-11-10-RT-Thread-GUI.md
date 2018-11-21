@@ -35,6 +35,8 @@ RT-Thread 的 GUI 放在 package 中（[git 原始碼](https://github.com/RT-Thr
 |            |-- gb2312.h
 ```
 
+<!-- more -->
+
 ## Image
 處理圖片格式相關的
 
@@ -134,8 +136,3 @@ RT-Thread 的 GUI 放在 package 中（[git 原始碼](https://github.com/RT-Thr
 |            |-- rtgui.h
 |            |-- tree.h
 ```
-
----
-
-
-

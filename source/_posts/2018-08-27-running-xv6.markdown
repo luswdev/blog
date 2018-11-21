@@ -62,7 +62,7 @@ CFLAGS = -fno-builtin -O2 -Wall -MD -ggdb -m32
 `gcc -M file.c`[^1] 會將 file.c 有 include 的 .h （包含標準函式庫）關聯起來，即輸出為：</br>
 `file.o: file.c header.h stdio.h`</br>
 `gcc -M -MF file.c` 將 `-M` 的輸出存入 file.d 裡。</br>
-**註**：`-M` 會自動帶 `-E`，如果使用 `-MD` 替代 `-M -MF` 時則不會帶 `-E`。
+>**註**：`-M` 會自動帶 `-E`，如果使用 `-MD` 替代 `-M -MF` 時則不會帶 `-E`。
 
 - `-ggdb`：為 GDB 生成更多的 debug 資訊。 
 - `-m32`：生成 32 位元的程式碼。
@@ -87,7 +87,7 @@ xv6.img: bootblock kernel fs.img
 - `notrunc` 在輸出檔案時會比對輸入的檔案，只會輸出與輸入檔案不一樣的地方。
 - `seek` 會略過數個 blocks 之後再輸出，block 大小由 `obs=BTYES` 宣告（預設為 512）。
 
-/dev/zero 為一個特殊檔案，讀取時會提供無限的空字元，44 行為生成一個大小為 10000（個 block）的空白檔案 xv6.img（或是把 xv6.img 的前 10000 個 block 清除。）
+>/dev/zero 為一個特殊檔案，讀取時會提供無限的空字元，44 行為生成一個大小為 10000（個 block）的空白檔案 xv6.img（或是把 xv6.img 的前 10000 個 block 清除。）
 
 
 ```makefile
@@ -123,7 +123,7 @@ bootblock: bootasm.S bootmain.c
 | `-S` |去除所有符號資訊|
 | `-O binary` |輸出為二進位的文件|
 
-反組譯的用意是為了 debug
+>反組譯的用意是為了 debug
 
 ```makefile
 bootother: bootother.S

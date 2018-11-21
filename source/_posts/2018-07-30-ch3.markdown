@@ -10,7 +10,7 @@ description: 説明 trap handler 與 interrupt handler 運作的模式，與 IDE
 images: https://i.imgur.com/ruXCSVM.jpg
 toc: true
 ---
-- CPU 執行一個 porcess 時，是不斷的進行：讀取指令、增加程式計數器、執行指令的迴圈；但有時候一個程式需要進入 kernel，而不是執行下一行指令；包括：設備信號的發出、使用者程式做一些非法的事或是呼叫一個 system call。
+>CPU 執行一個 porcess 時，是不斷的進行：讀取指令、增加程式計數器、執行指令的迴圈；但有時候一個程式需要進入 kernel，而不是執行下一行指令；包括：設備信號的發出、使用者程式做一些非法的事或是呼叫一個 system call。
 
 - 處理上述情況有三大挑戰：
     1. Kernel 需使處理器能夠從 user mode 轉至 kernel mode（再轉回來）。
@@ -37,9 +37,7 @@ toc: true
 - Trap：當前 process 引起
 - 中斷：由設備引起
 
-
-xv6 用 trap 來表示中斷，這是因為此術語被 PDP11/40 使用，也是 UNIX 的傳統術語。
-
+>xv6 用 trap 來表示中斷，這是因為此術語被 PDP11/40 使用，也是 UNIX 的傳統術語。
 
 ---
 ## X86 的保護機制

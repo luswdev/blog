@@ -164,9 +164,7 @@ start32:
 - 實際上沒有設備連接到 0x8a00。
 - 如果使用模擬器，boot loader 會把控制權還給模擬器。
 
-
-真正的 boot loader 會印出一些錯誤訊息。
-
+>真正的 boot loader 會印出一些錯誤訊息。
 
 ```x86asm
   # If bootmain returns (it shouldnt), trigger a Bochs
@@ -226,9 +224,7 @@ bootmain(void)
 ```
 - 接著確認是否為 ELF 文件。
 
-
-正常情況下 *bootmain* 不會`return`，這裡`return`會跳回 *bootasm.S* 中，由 *bootasm.S* 來處理此錯誤。
-
+>正常情況下 *bootmain* 不會`return`，這裡`return`會跳回 *bootasm.S* 中，由 *bootasm.S* 來處理此錯誤。
 
 ```c
   // Is this an ELF executable?
@@ -261,7 +257,7 @@ bootmain(void)
 }
 ```
 
-**函數指標**的補充[^1]：
+>**函數指標**的補充[^1]：
 上述用一個 `void (*entry)(void)` 指標即為一個函數指標，此指標指向一個函數，於上述 42 行將此指標指向 `elf->entry`，此動作將 `entry` 指標指向一個函數的進入點位置（`elf->entry`）。
 此時呼叫 `entry()` 會進入此指標位置，並當作一個副函式執行；因此執行完上述程式碼會進入 *entry.S*，並執行其中的程式碼。
 
