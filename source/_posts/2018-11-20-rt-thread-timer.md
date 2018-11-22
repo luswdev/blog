@@ -147,6 +147,8 @@ rt_timer_t rt_timer_create(const char *name,
 RTM_EXPORT(rt_timer_create);
 ```
 
+- 同樣也是透過 `_rt_timer_init` 完成動作
+
 ---
 ### 啟動、停止 timer
 ```c rt_timer_start
@@ -317,6 +319,8 @@ rt_err_t rt_timer_stop(rt_timer_t timer)
 RTM_EXPORT(rt_timer_stop);
 ```
 
+- 首先將 timer 從鏈結移出，再將 flag 設為 `RT_TIMER_FLAG_DEACTIVATED `
+
 ---
 ### 刪除 timer
 ```c
@@ -352,6 +356,9 @@ rt_err_t rt_timer_delete(rt_timer_t timer)
 RTM_EXPORT(rt_timer_delete);
 ```
 
+- 透過 `_rt_timer_remove` 移除鏈結
+- 透過 `rt_object_delete` 移除 timer
+
 ---
 ```c rt_timer_detach
 /**
@@ -376,8 +383,7 @@ rt_err_t rt_timer_detach(rt_timer_t timer)
 
     _rt_timer_remove(timer);
 
-    /* enable interrupt */
-    rt_hw_interrupt_enable(level);
+    /* enable interrupt */  rt_hw_interrupt_enable(level);
 
     rt_object_detach((rt_object_t)timer);
 
@@ -385,6 +391,9 @@ rt_err_t rt_timer_detach(rt_timer_t timer)
 }
 RTM_EXPORT(rt_timer_detach);
 ```
+
+- 透過 `_rt_timer_remove` 移除鏈結
+- 透過 `rt_object_detach` 移除 timer
 
 ---
 ### 控制 timer
@@ -410,15 +419,27 @@ rt_err_t rt_timer_control(rt_timer_t timer, int cmd, void *arg)
     case RT_TIMER_CTRL_GET_TIME:
         *(rt_tick_t *)arg = timer->init_tick;
         break;
+```
 
+- 如果需要尋找 timer 的值，將 `arg` 設為 `init_tick`
+
+```c
     case RT_TIMER_CTRL_SET_TIME:
         timer->init_tick = *(rt_tick_t *)arg;
         break;
+```
 
+- 如果需要設定 tick，將 `init_tick` 設為 `arg`
+
+```c
     case RT_TIMER_CTRL_SET_ONESHOT:
         timer->parent.flag &= ~RT_TIMER_FLAG_PERIODIC;
         break;
+```
 
+- 如果要設定 timer 為一次性的，添加 `RT_TIMER_FLAG_ONE_SHOT` 的 flag（即為 `~RT_TIMER_FLAG_PERIODIC`）
+
+```c
     case RT_TIMER_CTRL_SET_PERIODIC:
         timer->parent.flag |= RT_TIMER_FLAG_PERIODIC;
         break;
@@ -429,3 +450,4 @@ rt_err_t rt_timer_control(rt_timer_t timer, int cmd, void *arg)
 RTM_EXPORT(rt_timer_control);
 ```
 
+- 如果要設定 timer 為週期性的，添加 `RT_TIMER_FLAG_PERIODIC`
