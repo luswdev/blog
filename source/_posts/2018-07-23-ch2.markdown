@@ -2,13 +2,7 @@
 layout: post
 title: "XV6 Ch2 Page tables"
 date: 2018-07-23 14:14:35 +0800
-comments: true
-categories: xv6
-tag: [xv6, page table, memory, 虛擬記憶體, 頁表, 分頁, 記憶體管理, kernel, c]
-copyright: true
-description: 解釋 xv6 建立頁表的過程，包括 kernel 及 user。
-images: https://i.imgur.com/4qq54zV.png
-toc: true
+tag: [xv6, page table,虛擬記憶體, 分頁, 記憶體管理, kernel]
 ---
 ## 分頁硬體
 - PTE：Page table entry，包含 20-bit PPN 及 flags

@@ -2,13 +2,7 @@
 layout: post
 title: "計概06：低階程式語言與虛擬碼"
 date: 2018-02-7 10:18:07 +0800
-comments: true
-categories: 計算機概論
-tag: [計算機概論, 組合語言, Pep/8, 演算法, pseudocode]
-description: 介紹 Pep/8 及虛擬碼。
-images: https://i.imgur.com/3tuxNJg.png
-copyright: true
-toc: true
+tag: [計算機概論]
 ---
 ## 6.1 電腦的動作
 即可程式化 programmable、儲存 store、擷取 retrieve 及運算 process。

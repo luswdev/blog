@@ -2,13 +2,7 @@
 layout: post
 title: "XV6 Ch0 OS 介面"
 date: 2018-07-09 12:53:37 +0800
-comments: true
-categories: xv6
-tag: [xv6, inode]
-copyright: true
-description: 簡單介紹作業系統。
-images: https://i.imgur.com/42HcaQC.jpg
-toc: true
+tag: [xv6]
 ---
 - OS的工作：有效率的在電腦上執行數個程式。
 - Kernel：提供 process 服務

@@ -2,13 +2,7 @@
 layout: post
 title: "計概02：二進位系統"
 date: 2018-02-02 01:30:56 +0800
-comments: true
-categories: 
-計算機概論tag: [計算機概論, 位置表示法]
-copyright: true
-description: 介紹位置表示法的邏輯，及二進位的概念。
-images: https://i.imgur.com/2KWdaOI.jpg
-toc: true
+tag: [計算機概論, 位置表示法]
 ---
 ## 2.2 位置表示法
 >基底 base：由 0 開始，等於基底時進位。

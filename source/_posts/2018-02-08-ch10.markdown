@@ -2,13 +2,7 @@
 layout: post
 title: "計概10：作業系統"
 date: 2018-02-08 10:18:22 +0800
-comments: true
-categories: 計算機概論
-tag: [計算機概論, 作業系統, CPU排程]
-copyright: true
-description: 介紹作業系統如何管理資源。
-images: https://i.imgur.com/Ztnoez4.jpg
-toc: true
+tag: [計算機概論]
 ---
 ## 10.1 作業系統的角色
 ### 記憶體、程序與CPU管理

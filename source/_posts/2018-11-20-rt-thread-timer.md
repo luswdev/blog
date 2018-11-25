@@ -1,10 +1,7 @@
 ---
 title: RT-Thread Timer
-copyright: true
-toc: true
 date: 2018-11-20 15:47:05
-categories: RT-Thread
-tag: [RT-Thread, kernel, c, timer]
+tag: [RT-Thread, kernel,timer]
 ---
 - timer 的作用：當時間到時，觸發一個事件；如文本的圖：
 ![](https://i.imgur.com/Uv79P6M.png)

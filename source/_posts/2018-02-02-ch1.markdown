@@ -2,13 +2,7 @@
 layout: post
 title: "計概01：簡介"
 date: 2018-02-02 01:26:02 +0800
-comments: true
-categories: 計算機概論
 tag: [計算機概論]
-copyright: true
-description: 對電腦基本的了解，一些先備知識。
-images: https://i.imgur.com/qS2rhcO.jpg
-toc: true
 ---
 ## 1.1 電腦系統
 >電腦系統如洋蔥由許多層組成，由內而外為：

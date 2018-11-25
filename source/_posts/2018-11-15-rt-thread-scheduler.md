@@ -1,12 +1,7 @@
 ---
 title: RT-Thread Scheduler
-copyright: true
-toc: true
 date: 2018-11-15 00:22:23
-categories: RT-Thread
-tag: [RT-Thread, scheduler, kernel, c]
-description: 
-images:
+tag: [RT-Thread, scheduler, kernel]
 ---
 ## File: scheduler.c
 - 於 *components.c* 中 的 `rtthread_startup()` 首先呼叫 `rt_system_scheduler_init()` 初始化 scheduler

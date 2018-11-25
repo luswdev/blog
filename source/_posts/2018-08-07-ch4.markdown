@@ -2,13 +2,7 @@
 layout: post
 title: "XV6 Ch4 鎖"
 date: 2018-08-07 14:14:40 +0800
-comments: true
-categories: xv6
-tag: [xv6, kernel, c, lock, race conditions]
-copyright: true 
-description: 鎖
-images: https://i.imgur.com/T6893f9.png
-toc: true
+tag: [xv6, kernel,lock ,race conditions]
 ---
 ## Race conditions
 ### 例子

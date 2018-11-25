@@ -2,13 +2,7 @@
 layout: post
 title: "XV6 Appendix B The Boot loader"
 date: 2018-08-27 14:15:00 +0800
-comments: true
-categories: xv6 
-tag: [xv6, boot, bootstrap, elf, 函數指標, c,  asm]
-copyright: true
-description: 詳解 xv6 的開機流程，及 kernel 啟動方式。
-images: https://i.imgur.com/DMQi16S.png
-toc: true
+tag: [xv6 ,bootstrap,elf ,函數指標]
 ---
 - x86 開機時，會先呼叫位於主機板上的 BIOS。
 - BIOS 的工作：準備硬體，將控制權轉給 OS (xv6)。

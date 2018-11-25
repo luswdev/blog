@@ -2,13 +2,7 @@
 layout: post
 title: "計概03：資料表示法"
 date: 2018-02-06 01:30:58 +0800
-comments: true
-categories: 計算機概論
-tag: [計算機概論, 壓縮, 數字表示, 二進位]
-copyright: true
-description: 介紹一些資料型態是如何表示的，如圖片、音訊。
-images: https://i.imgur.com/pN6GCCx.png
-toc: true
+tag: [計算機概論, 數字表示, 二進位]
 ---
 ## 3.1 資料與電腦
 - 資料 data：事實的基本數值。

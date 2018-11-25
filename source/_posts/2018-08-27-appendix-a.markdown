@@ -2,13 +2,7 @@
 layout: post
 title: "XV6 Appendix A PC 硬體"
 date: 2018-08-27 14:14:57 +0800
-comments: true
-categories: xv6
-tag: [xv6, 硬體, 暫存器, eflags]
-copyright: true
-description: 列出一些 xv6 會用到的暫存器（x86）。
-images: https://i.imgur.com/dI0r9br.jpg
-toc: true
+tag: [xv6 ,暫存器 ,x86]
 ---
 ## 通用暫存器
 | Name   | Function          |

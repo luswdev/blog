@@ -2,11 +2,7 @@
 title: vim 指令筆記
 copyright: true
 date: 2018-08-31 14:25:51
-categories: vim
-tag: [vim, 筆記, 指令]
-description: 記錄一些常用指令，及我目前的設定檔
-images: https://i.imgur.com/YKgbBoC.png
-toc: true
+tag: [vim, note, 指令]
 ---
 ## 編輯
 

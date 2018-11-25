@@ -1,10 +1,7 @@
 ---
 title: RT-Thread 理解 RTM_EXPORT
-copyright: true
-toc: true
 date: 2018-11-15 00:24:05
-categories: RT-Thread
-tag: [RT-Thread, kernel, c, RTM_EXPORT, EXPORT_SYMBOL]
+tag: [RT-Thread, kernel, RTM_EXPORT, EXPORT_SYMBOL]
 ---
 在 RT-Thread 的 kernel 中，許多副程式的結尾都有 `RTM_EXPORT`，如：
 

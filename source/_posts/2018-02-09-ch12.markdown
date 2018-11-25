@@ -2,13 +2,7 @@
 layout: post
 title: "計概12：資訊系統"
 date: 2018-02-09 10:18:29 +0800
-comments: true
-categories: 計算機概論
-tag: [計算機概論, SQL]
-copyright: true
-description: 介紹資訊如何保存，及 簡單的 SQL 語言。
-images: https://i.imgur.com/CI28UOQ.jpg
-toc: true
+tag: [計算機概論]
 ---
 ## 12.1 管理資訊
 有三種普遍的資訊系統：電子試算表、資料庫管理系統及電子商務。

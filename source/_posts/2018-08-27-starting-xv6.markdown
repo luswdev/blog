@@ -2,13 +2,7 @@
 layout: post
 title: "XV6 啟動流程"
 date: 2018-08-27 14:15:29 +0800
-comments: true
-categories: xv6
-tag: [xv6, main, c]
-copyright: true
-description: 認識 xv6 啟動其他 CPU 的方式，及 main 中的函數詳解。
-images: https://i.imgur.com/YHwrSg2.png
-toc: true
+tag: [xv6, mp]
 ---
 >BIOS -> boot section -> main -> scheduler 的詳細流程在 [Ch1](https://omuskywalker.github.io/blog/2018/07/16/ch1/)、[Ch5](https://omuskywalker.github.io/blog/2018/08/14/ch5/)及[Appendix B](https://omuskywalker.github.io/blog/2018/08/27/appendix-b/)，本文強調 CPU0 以外的 CPU 啟動流程及更詳細的 main 解析。
 

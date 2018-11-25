@@ -1,12 +1,7 @@
 ---
 title: C語言 attribute
-copyright: true
 date: 2018-10-12 13:11:49
-categories: C
-tag: [C, attribute]
-description: 介紹常用的 attribute 屬性
-images: https://i.imgur.com/itHAfw6.png
-toc: true
+tag: [C, attribute, note]
 ---
 有分三種： ① 對副函式的　② 對資料的　③ 對結構的
 

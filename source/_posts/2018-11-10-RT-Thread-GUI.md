@@ -1,12 +1,7 @@
 ---
 title: RT-Thread GUI engine - 架構
-copyright: true
-toc: true
 date: 2018-11-10 21:57:14
-categories: RT-Thread
 tag: [RT-Thread, GUI]
-description:
-images:
 ---
 RT-Thread 的 GUI 放在 package 中（[git 原始碼](https://github.com/RT-Thread-packages/gui_engine.git)），本文將簡單將此 GUI engine 分工。
 

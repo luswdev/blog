@@ -2,13 +2,7 @@
 layout: post
 title: "計概11：檔案系統及目錄"
 date: 2018-02-09 10:18:26 +0800
-comments: true
-categories: 計算機概論
-tag: [計算機概論, 檔案系統]
-copyright: true
-description: 介紹檔案如何被存取，以及磁碟的操作設計。
-images: https://i.imgur.com/HcZMlW8.jpg
-toc: true
+tag: [計算機概論]
 ---
 ## 11.1 檔案系統
 - 檔案：一個命名的資料集合。

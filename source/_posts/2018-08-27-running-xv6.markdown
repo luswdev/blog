@@ -2,13 +2,7 @@
 layout: post
 title: "運行 xv6"
 date: 2018-08-27 14:15:18 +0800
-comments: true
-categories: xv6
-tag: [xv6, c, makefile, QEMU, ld, link script, gcc, GNU, objcopy, objdump]
-copyright: true
-description: 詳解 makefile 的各種參數、如何在虛擬機器上運行 xv6，及一些 linkscript 的解釋。
-images: https://i.imgur.com/prBjQ9C.jpg
-toc: true
+tag: [xv6, makefile, QEMU, gcc, GNU, objcopy, objdump]
 ---
 ## Makefile 解析
 

@@ -4,7 +4,7 @@ copyright: true
 toc: true
 date: 2018-11-19 13:08:24
 categories: RT-Thread
-tag: [RT-Thread, thread, kernel, c]
+tag: [RT-Thread, thread, kernel]
 ---
 ## 結構
 ```c struct thread

@@ -2,13 +2,7 @@
 layout: post
 title: "XV6 Ch1 OS 組織"
 date: 2018-07-16 13:58:18 +0800
-comments: true
-categories: xv6
-tag: [xv6, c, process, kernel, exec, asm]
-copyright: true
-description: 說明第一個 process 如何初始化，並執行。
-images: https://i.imgur.com/TgbSjgz.jpg
-toc: true
+tag: [xv6, process, kernel, exec]
 ---
 - OS 必須具備三項技能：多工、獨立及交流。
 

@@ -2,13 +2,7 @@
 layout: post
 title: "XV6 Ch5 Scheduling"
 date: 2018-08-14 14:14:42 +0800
-comments: true
-categories: xv6
-tag: [xv6, schedluler, context switch, sleep, wakeup, kill, wait, exit, c, asm, kernel]
-copyright: true
-description: 解釋 xv6 context switch 的流程，及睡眠與喚醒之介紹。
-images: https://i.imgur.com/8VEzDwI.png
-toc: trues
+tag: [xv6, schedluler, context switch, sleep, wakeup,kernel]
 ---
 ## Multiplexing
 - 如果 process 需要等待 I/O 或是子 process 結束，xv6 讓其進入睡眠狀態，接著將處理器 switch 給其他 process。 

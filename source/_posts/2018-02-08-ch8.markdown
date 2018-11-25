@@ -2,13 +2,7 @@
 layout: post
 title: "計概08：抽象資料型態與副程式"
 date: 2018-02-08 10:18:16 +0800
-comments: true
-categories: 計算機概論
 tag: [計算機概論, 資料結構, 堆疊, 佇列, 二元樹, 圖]
-description: 介紹基本的資料結構。
-images: https://i.imgur.com/OiaGpQ7.jpg
-copyright: true
-toc: true
 ---
 ## 8.1 抽象資料型態
 Abstract data type, ADT，就是一種容器。

@@ -2,13 +2,7 @@
 layout: post
 title: "計概15：網路"
 date: 2018-02-12 10:18:39 +0800
-comments: true
-categories: 計算機概論
 tag: [計算機概論, 網路]
-copyright: true
-description: 介紹網路架構及協定。
-images: https://i.imgur.com/dnBpSae.png
-toc: true
 ---
 ## 15.1 網路連接
 - 網路的任一裝置被稱作節點或是主機 host。
