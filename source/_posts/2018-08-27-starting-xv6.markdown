@@ -3,14 +3,14 @@ layout: post
 title: "XV6 啟動流程"
 date: 2018-08-27 14:15:29 +0800
 tag: [xv6, mp]
+category: xv6
 ---
 >BIOS -> boot section -> main -> scheduler 的詳細流程在 [Ch1](https://omuskywalker.github.io/blog/2018/07/16/ch1/)、[Ch5](https://omuskywalker.github.io/blog/2018/08/14/ch5/)及[Appendix B](https://omuskywalker.github.io/blog/2018/08/27/appendix-b/)，本文強調 CPU0 以外的 CPU 啟動流程及更詳細的 main 解析。
 
 ## Code: startothers
 - 在 main 初始化一些設備後，會先呼叫 startothers，再呼叫 mpmain 來完成 cpu 的設定及呼叫 scheduler。
 
-```c startothers()
-// file: main.c (68)
+```c :file: main.c::startothers =68
 static void
 startothers(void)
 {
@@ -27,7 +27,7 @@ startothers(void)
 ```
 - entryother.S 的入口被 linked 到 `0x7000`，這裡將 code 指向 `0x7000` 作為 entryother.S 的進入點。
 
-```c
+```c =81
   for(c = cpus; c < cpus+ncpu; c++){
     if(c == cpus+cpunum())  // We've started already.
       continue;
@@ -43,13 +43,13 @@ startothers(void)
 - 為待會的 entryother 建立一個堆疊 ...
 <!-- more -->
 
-```c
+```c =92
     lapicstartap(c->id, v2p(code));
 ```
 - 正式的啟動 CPU `c`，即進入 entryother.S
 - entryother.S 做完設定後會呼叫 `mpenter()`，`mpmenter` 最後會呼叫 `mpmain()`。
 
-```c
+```c =93
     // wait for cpu to finish mpmain()
     while(c->started == 0)
       ;
@@ -61,8 +61,7 @@ startothers(void)
 
 ### lapicstartup
 
-```c
-// file: lapic.c(137)
+```c :file: lapic.c =137
 void
 lapicstartap(uchar apicid, uint addr)
 {
@@ -99,8 +98,7 @@ lapicstartap(uchar apicid, uint addr)
 }
 ```
 
-```c mpenter()
-// file: main.c (46)
+```c :file: main.c::mpenter =46
 static void
 mpenter(void)
 {
@@ -111,8 +109,7 @@ mpenter(void)
 }
 ```
 
-```c mpmain()
-// file: main.c (56)
+```c :file: main.c::mpmain =56
 static void
 mpmain(void)
 {
@@ -127,8 +124,7 @@ mpmain(void)
 ## Main 解析
 ### main()
 
-```c
-// file: main.c (17)
+```c :file: main.c =17
 int
 main(void)
 {

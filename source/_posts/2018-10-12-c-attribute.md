@@ -2,6 +2,7 @@
 title: C語言 attribute
 date: 2018-10-12 13:11:49
 tag: [C, attribute, note]
+category: Note
 ---
 有分三種： ① 對副函式的　② 對資料的　③ 對結構的
 

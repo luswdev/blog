@@ -3,8 +3,10 @@ layout: post
 title: "XV6 Ch1 OS 組織"
 date: 2018-07-16 13:58:18 +0800
 tag: [xv6, process, kernel, exec]
+category: xv6
+copyright: true
 ---
-- OS 必須具備三項技能：多工、獨立及交流。
+>OS 必須具備三項技能：多工、獨立及交流。
 
 ## kernel 組織
 - **Monolithic kernel**：整個 OS 都位於 kernel 中，如此一來所有 system calls 都會在 kernel 中執行（xv6）。
@@ -52,7 +54,7 @@ tag: [xv6, process, kernel, exec]
 
     ![address space](https://i.imgur.com/jhNNkts.jpg "Layout of a virtual address space")
 
-```x86asm entry.s
+```x86asm :file: entry.s
 _start = V2P_WO(entry)
 
 # Entering xv6 on boot processor, with paging off.
@@ -91,8 +93,7 @@ entry:
 - `Allocproc` 掃描 proc tabel，找到 `p->state` 是 `UNUSED`，接著設定為 `EMBRYO` 來標示被使用，並給予一組唯一的 pid。
 
 ### allocproc()
-```c
-//file: proc.c (29)
+```c =29 :file: proc.c
 // Look in the process table for an UNUSED proc.
 // If found, change state to EMBRYO and initialize
 // state required to run in the kernel.
@@ -117,7 +118,7 @@ found:
 ```
 - 接著嘗試請求分配一個 kernel stack，如果失敗，把 `p->state` 改回 `UNUSED`。
 
-```c
+```c =51
   // Allocate kernel stack.
   if((p->kstack = kalloc()) == 0){
     p->state = UNUSED;
@@ -134,7 +135,7 @@ found:
 - Allocproc 通過設定返回程式計數器的值來導致新 process 的 kernel thread 會先在 forkret 中執行，再回到 trapret。
 - Kernel thread 從 p->context 的拷貝開始執行，因此設定 p->context->eip 指向 forkret 會導致 kernel thread 從 forkret 的開頭開始執行。
 
-```c
+```c =61
   // Set up new context to start executing at forkret,
   // which returns to trapret.
   sp -= 4;
@@ -160,8 +161,7 @@ found:
 <p id="userinit"></p>
 
 ### userinit()
-```c
-// file: proc.c (79)
+```c =79 :file: proc.c
 userinit(void)
 {
   struct proc *p;
@@ -174,12 +174,12 @@ userinit(void)
 ```
 - `inituvm` 請求一個 page 大小的實體記憶體，將虛擬記憶體 0 映射到此記憶體，並將 `_binary_initcode_start_` 及 `_binary_initcode_size_` 拷貝到 page。
 
-```c
+```c =89
   inituvm(p->pgdir, _binary_initcode_start, (int)_binary_initcode_size);
 ```
 - 把 trap frame 設定為初始使用者模式。
 
-```c
+```c =90
   p->sz = PGSIZE;
   memset(p->tf, 0, sizeof(*p->tf));
   p->tf->cs = (SEG_UCODE << 3) | DPL_USER;
@@ -192,13 +192,13 @@ userinit(void)
 ```
 - `p->name` 設為 `"initcode"` 是為了 debug，`p->cwd` 設在 process 的現在目錄。
 
-```c
+```c =99
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
 ```
 - 設定 `p->state` 為 `RUNNABLE`。
 
-```c
+```c =101
   p->state = RUNNABLE;
 }
 ```
@@ -207,8 +207,7 @@ userinit(void)
 ## Code: 執行第一個 process
 - 當 *main* 呼叫完 *userinit* 後，呼叫 *mpmain*，*mpmain* 接著呼叫 *scheduler* 開始運行 process。
 
-```c mpmain()
-// file: main.c (55)
+```c  =55 :file: main.c::mpmain()
 // Common CPU setup code.
 static void
 mpmain(void)
@@ -220,8 +219,7 @@ mpmain(void)
 }
 ```
 
-```c scheduler()
-// file: proc.c (249)
+```c =249 :file: proc.c::scheduler() 
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
@@ -237,14 +235,14 @@ scheduler(void)
 ```
 - 第一行指令：`sti`，啟動處理器中斷；開機的時候在 *bootasm.S* 中將中斷禁止(`cli`)，在 xv6 準備完成後重新開啟。
 
-```c
+```c =261
   for(;;){
     // Enable interrupts on this processor.
     sti();
 ```
 - *Scheduler* 找到一個`p->state`為`RUNNABLE`的 process，此時是唯一的：`initproc`。
 
-```c
+```c =264
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
@@ -254,26 +252,7 @@ scheduler(void)
 - 接著把 pre-cpu 的變量 `proc` 設為此 process。
 - 呼叫 `switchuvm` 通知硬體開始使用目標 process 的  page table。
 
-```c switchuvm()
-    // file: vm.c (163)
-    // Switch TSS and h/w page table to correspond to process p.
-    void
-    switchuvm(struct proc *p)
-    {
-      pushcli();
-      cpu->gdt[SEG_TSS] = SEG16(STS_T32A, &cpu->ts, sizeof(cpu->ts)-1, 0);
-      cpu->gdt[SEG_TSS].s = 0;
-      cpu->ts.ss0 = SEG_KDATA << 3;
-      ltr(SEG_TSS << 3);
-      if(p->pgdir == 0)
-        panic("switchuvm: no pgdir");
-      lcr3(v2p(p->pgdir));  // switch to new address space
-      popcli();
-    }
-```
-- `switchuvm` 同時設置好任務狀態段 `SEG_TSS`，讓硬體在 process 的 kernel stack 中執行 system call 與中斷。
-
-```c
+```c =269
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
       // before jumping back to us.
@@ -283,7 +262,7 @@ scheduler(void)
 - 接著把 `p->state` 設為 `RUNNING`。
 - 呼叫 `swtch`，context switch 到目標程序的 kernel thread。
 
-```c
+```c =274
       p->state = RUNNING;
       swtch(&cpu->scheduler, proc->context);
       switchkvm();
@@ -333,8 +312,7 @@ swtch:
 - `allocproc` 把 `initproc` 的 `p->context->eip` 設為 `forkret`，使得 `ret` 開始執行 `forkret`。
 - 第一次執行 `forkret` 時會呼叫一些初始化函數(`initlog`)，接著返回。
 
-```c forkret()
-// file: proc.c (320)
+```c :file: proc.c::forkret() =320
 // A fork child's very first scheduling by scheduler()
 // will swtch here.  "Return" to user space.
 void
@@ -363,8 +341,7 @@ forkret(void)
 - `addl` 跳過 `trapno` 和 `errcode` 兩個數據
 - 最後 `iret` pop `%gs`、`%fs`、`%es`、`%ds` 出堆疊。
 
-```x86asm trapret
-  # file: trapasm.S (26)
+```x86asm :file: trapasm.S =26
   # Return falls through to trapret...
 .globl trapret
 trapret:

@@ -2,12 +2,12 @@
 title: RT-Thread 理解 RTM_EXPORT
 date: 2018-11-15 00:24:05
 tag: [RT-Thread, kernel, RTM_EXPORT, EXPORT_SYMBOL]
+category: RT-Thread
 ---
 在 RT-Thread 的 kernel 中，許多副程式的結尾都有 `RTM_EXPORT`，如：
 
-```c=
+```c :file: scheduler.c =360
 /** 
- * file: scheduler.c (360)
  * This function will lock the thread scheduler.
  */
 void rt_enter_critical(void)
@@ -36,7 +36,7 @@ RTM_EXPORT(rt_enter_critical);
 - `RTM_EXPORT` 可被定義的方式有三種：
 
 ### 1. _MSC_VER
-```c=
+```c=20 :file: rtm.h
 #if defined(_MSC_VER)
 #pragma section("RTMSymTab$f",read)
 #define RTM_EXPORT(symbol)                                            \
@@ -46,13 +46,13 @@ __declspec(allocate("RTMSymTab$f"))const char __rtmsym_##symbol##_name[] = "__vs
 ```
 
 ### 2. __MINGW32_
-```c=
+```c=26
 #elif defined(__MINGW32__)
 #define RTM_EXPORT(symbol)
 ```
 
 ### 3. else
-```c=
+```c=29
 #else
 #define RTM_EXPORT(symbol)                                            \
 const char __rtmsym_##symbol##_name[] SECTION(".rodata.name") = #symbol;     \
@@ -82,7 +82,7 @@ const struct rt_module_symtab __rtmsym_rt_enter_critical  \
 
 [^1]:[C/C++ 的預處理定義 : # , #@ , ##](https://blog.xuite.net/jesonchung/scienceview/93554778-C%2FC%2B%2B+的預處理定義+%3A+%23+%2C++%23%40+%2C+%23%23)
 
-```c struct rt_module_symtab
+```c=14 :struct rt_module_symtab
 struct rt_module_symtab
 {
     void       *addr;

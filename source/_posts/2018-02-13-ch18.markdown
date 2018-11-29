@@ -3,6 +3,8 @@ layout: post
 title: "計概18：電腦運算的限制"
 date: 2018-02-13 10:18:47 +0800
 tag: [計算機概論, overflow, underflow]
+category: 計算機概論
+copyright: true
 ---
 ## 18.1 硬體
 算數上的限制

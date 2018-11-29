@@ -3,6 +3,8 @@ layout: post
 title: "計概13：人工智慧"
 date: 2018-02-11 10:18:33 +0800
 tag: [計算機概論]
+category: 計算機概論
+copyright: true
 ---
 ## 13.1 能思考的機器
 ### 杜林試驗（圖靈試驗）

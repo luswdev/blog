@@ -3,6 +3,8 @@ layout: post
 title: "計概17：電腦安全性"
 date: 2018-02-13 10:18:45 +0800
 tag: [計算機概論]
+category: 計算機概論
+copyright: true
 ---
 ## 17.1 各層級的安全
 - 資訊安全 — CIA 鐵三角

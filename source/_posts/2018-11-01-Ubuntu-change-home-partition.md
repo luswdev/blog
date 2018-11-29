@@ -2,6 +2,7 @@
 title: Ubuntu 更改家目錄位置
 date: 2018-11-01 10:18:59
 tag: [linux, Ubuntu, note]
+category: Note
 ---
 之前為了解決我的問題，上網[^1]找到的解答，紀錄一下。
 
@@ -11,13 +12,13 @@ tag: [linux, Ubuntu, note]
 
 - command:
 
-```shell
+```shell line_number:false
 sudo blkid
 ```
 
 - result:
 
-```shell
+```shell line_number:false
 /dev/sda1: UUID="1a2b3c4d-1a2b-1a2b-1a2b-1a2b3c4d5e6f" TYPE="ext4" PARTUUID="12345678-01"
 ```
 
@@ -31,25 +32,25 @@ sudo blkid
 
 - 備份 (Duplicate)
 
-```shell
+```shell line_number:false
 sudo cp /etc/fstab /etc/fstab.$(date +%Y-%m-%d)
 ```
 
 - 比較兩檔案
 
-```shell
+```shell line_number:false
 cmp /etc/fstab /etc/fstab.$(date +%Y-%m-%d)
 ```
 
 - 開啟文字編輯器修改 fstab
 
-```shell
+```shell line_number:false
 sudo gedit /etc/fstab 
 ```
 
 (gedit 可替換成任何文字編輯器，如 vim)
 加入以下文字：
-```
+``` line_number:false
 # (identifier)  (location, eg sda5)   (format, eg ext3 or ext4)      (some settings) 
 UUID=1a2b3c4d-1a2b-1a2b-1a2b-1a2b3c4d5e6f   /media/home    ext4          defaults       0       2 
 ```
@@ -59,7 +60,7 @@ UUID=1a2b3c4d-1a2b-1a2b-1a2b-1a2b3c4d5e6f   /media/home    ext4          default
 
 - 建立新資料夾
 
-```shell
+```shell line_number:false
 sudo mkdir /media/home
 ```
 
@@ -69,13 +70,13 @@ sudo mkdir /media/home
 
 ## 3. 複製原本的 home 到新分割
 
-```shell
+```shell line_number:false
 sudo rsync -aXS --progress --exclude='/*/.gvfs' /home/. /media/home/.
 ```
 
 - 檢查是否全複製過去了
 
-```shell
+```shell line_number:false
 sudo diff -r /home /media/home -x ".gvfs/*"
 ```
 
@@ -83,20 +84,20 @@ sudo diff -r /home /media/home -x ".gvfs/*"
 
 - 開啟
 
-```shell
+```shell line_number:false
 sudo gedit /etc/fstab
 ```
 
 - 修改上次新增的部分，將 `/media/home` 改成 `default`:
 
-```shell
+```shell line_number:false
 # (identifier)  (location, eg sda5)   (format, eg ext3 or ext4)      (some settings) 
 UUID=????????   /home    ext3          defaults       0       2
 ```
 
 ## 5. 備份舊的家目錄
 
-```shell
+```shell line_number:false
 cd / && sudo mv /home /old_home && sudo mkdir /home
 ```
 
@@ -109,7 +110,7 @@ cd / && sudo mv /home /old_home && sudo mkdir /home
 
 如果磁碟空間不夠，或是想清理磁碟的話，可透過以下指令刪除。
 
-```shell
+```shell line_number:false
 cd /
 sudo rm -rI /old_home
 ```

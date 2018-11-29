@@ -2,11 +2,13 @@
 title: RT-Thread Timer
 date: 2018-11-20 15:47:05
 tag: [RT-Thread, kernel,timer]
+category: RT-Thread
 ---
 - timer 的作用：當時間到時，觸發一個事件；如文本的圖：
 ![](https://i.imgur.com/Uv79P6M.png)
 - timer 的實作是一條鏈，即當前 tick 到達指定的 timer 時，會觸發該 timer 的 `timeout_func`，同時將該 timer 從鏈結移除
 - 以上圖為例，當 `rt_tick` = 70 時，將會觸發 timer #1 的 `timeout_func`，並將 timer #1 移除
+
 <!-- more -->
 ---
 - 而在新增一個 timer 時，會按照 timeout 的大小排列插入，如圖：
@@ -16,9 +18,8 @@ tag: [RT-Thread, kernel,timer]
 
 ---
 ## 結構
-```c
+```c=426 :rt_timer_t (rtdef.h)
 /**
- * file: rtdef.h (426)
  * timer structure
  */
 struct rt_timer
@@ -40,13 +41,13 @@ typedef struct rt_timer *rt_timer_t;
 - `timeout_tick` = `init_tick` + 當前的 system tick
 
 ---
-## 管理
+## File: timer.c
 ### 初始化、建立 timer
 - 在建立一個 thread 時，`_rt_thread_init` 會呼叫 `rt_timer_init` 來初始化 timer
 
-```c rt_timer_init
+若使用靜態記憶體管理：
+```c=155 :rt_timer_init
 /**
- * file: timer.c (155)
  * This function will initialize a timer, normally this function is used to
  * initialize a static timer object.
  *
@@ -77,7 +78,7 @@ RTM_EXPORT(rt_timer_init);
 
 - 與 thread 類似，使用 `_rt_timer_init` 完成初始化
 
-```c _rt_timer_init
+```c=68 :_rt_timer_init
 static void _rt_timer_init(rt_timer_t timer,
                            void (*timeout)(void *parameter),
                            void      *parameter,
@@ -109,9 +110,9 @@ static void _rt_timer_init(rt_timer_t timer,
 - 設定 flag 為 decativated，設定 timeout_func、tick、timerlist
 
 ---
-```c rt_timer_create
+若使用動態記憶體管理：
+```c=214 :rt_timer_create
 /**
- * file: timer.c (214)
  * This function will create a timer
  *
  * @param name the name of timer
@@ -148,9 +149,8 @@ RTM_EXPORT(rt_timer_create);
 
 ---
 ### 啟動、停止 timer
-```c rt_timer_start
+```c=277 :rt_timer_start
 /**
- * file: timer.c (277)
  * This function will start the timer
  *
  * @param timer the timer to be started
@@ -177,7 +177,11 @@ rt_err_t rt_timer_start(rt_timer_t timer)
     /* change status of timer */
     timer->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED;
     rt_hw_interrupt_enable(level);
+```
 
+- 如果需要，先停止 timer 
+
+```c=304
     RT_OBJECT_HOOK_CALL(rt_object_take_hook, (&(timer->parent)));
 
     /*
@@ -189,7 +193,11 @@ rt_err_t rt_timer_start(rt_timer_t timer)
 
     /* disable interrupt */
     level = rt_hw_interrupt_disable();
+```
 
+- 設定 timer 的 `timeout_tick`
+
+```c=315
 #ifdef RT_USING_TIMER_SOFT
     if (timer->parent.flag & RT_TIMER_FLAG_SOFT_TIMER)
     {
@@ -232,7 +240,15 @@ rt_err_t rt_timer_start(rt_timer_t timer)
         if (row_lvl != RT_TIMER_SKIP_LIST_LEVEL - 1)
             row_head[row_lvl + 1] = row_head[row_lvl] + 1;
     }
+```
 
+- 尋找 timer 正確的位置
+
+{%note default%}
+如果有一樣的 timeout，將此 timer 插到最後
+{%endnote%}
+
+```c=357
     /* Interestingly, this super simple timer insert counter works very very
      * well on distributing the list height uniformly. By means of "very very
      * well", I mean it beats the randomness of timer->timeout_tick very easily
@@ -277,10 +293,11 @@ rt_err_t rt_timer_start(rt_timer_t timer)
 RTM_EXPORT(rt_timer_start);
 ```
 
+- 接著插入 timer 並啟動
+
 ---
-```c rt_timer_stop
+```c=403 :rt_timer_stop
 /**
- * file: timer.c (403)
  * This function will stop the timer
  *
  * @param timer the timer to be stopped
@@ -320,9 +337,9 @@ RTM_EXPORT(rt_timer_stop);
 
 ---
 ### 刪除 timer
-```c
+若使用動態記憶體管理：
+```c=246 :rt_timer_delete
 /**
- * file: timer.c (246)
  * This function will delete a timer and release timer memory
  *
  * @param timer the timer to be deleted
@@ -357,9 +374,9 @@ RTM_EXPORT(rt_timer_delete);
 - 透過 `rt_object_delete` 移除 timer
 
 ---
-```c rt_timer_detach
+若使用靜態記憶體管理：
+```c=183 rt_timer_detach
 /**
- * file: timer.c (183)
  * This function will detach a timer from timer management.
  *
  * @param timer the static timer object
@@ -394,9 +411,8 @@ RTM_EXPORT(rt_timer_detach);
 
 ---
 ### 控制 timer
-```c rt_timer_control
+```c=438 rt_timer_control
 /**
- * file: timer.c (438)
  * This function will get or set some options of the timer
  *
  * @param timer the timer to be get or set
@@ -420,7 +436,7 @@ rt_err_t rt_timer_control(rt_timer_t timer, int cmd, void *arg)
 
 - 如果需要尋找 timer 的值，將 `arg` 設為 `init_tick`
 
-```c
+```c=458
     case RT_TIMER_CTRL_SET_TIME:
         timer->init_tick = *(rt_tick_t *)arg;
         break;
@@ -428,7 +444,7 @@ rt_err_t rt_timer_control(rt_timer_t timer, int cmd, void *arg)
 
 - 如果需要設定 tick，將 `init_tick` 設為 `arg`
 
-```c
+```c=461
     case RT_TIMER_CTRL_SET_ONESHOT:
         timer->parent.flag &= ~RT_TIMER_FLAG_PERIODIC;
         break;
@@ -436,7 +452,7 @@ rt_err_t rt_timer_control(rt_timer_t timer, int cmd, void *arg)
 
 - 如果要設定 timer 為一次性的，添加 `RT_TIMER_FLAG_ONE_SHOT` 的 flag（即為 `~RT_TIMER_FLAG_PERIODIC`）
 
-```c
+```c=464
     case RT_TIMER_CTRL_SET_PERIODIC:
         timer->parent.flag |= RT_TIMER_FLAG_PERIODIC;
         break;
@@ -448,3 +464,73 @@ RTM_EXPORT(rt_timer_control);
 ```
 
 - 如果要設定 timer 為週期性的，添加 `RT_TIMER_FLAG_PERIODIC`
+
+---
+### 檢查 timer
+```c=476 :rt_timer_check
+/**
+ * This function will check timer list, if a timeout event happens, the
+ * corresponding timeout function will be invoked.
+ *
+ * @note this function shall be invoked in operating system timer interrupt.
+ */
+void rt_timer_check(void)
+{
+    struct rt_timer *t;
+    rt_tick_t current_tick;
+    register rt_base_t level;
+
+    RT_DEBUG_LOG(RT_DEBUG_TIMER, ("timer check enter\n"));
+
+    current_tick = rt_tick_get();
+
+    /* disable interrupt */
+    level = rt_hw_interrupt_disable();
+
+    while (!rt_list_isempty(&rt_timer_list[RT_TIMER_SKIP_LIST_LEVEL - 1]))
+    {
+        t = rt_list_entry(rt_timer_list[RT_TIMER_SKIP_LIST_LEVEL - 1].next,
+                          struct rt_timer, row[RT_TIMER_SKIP_LIST_LEVEL - 1]);
+
+        /*
+         * It supposes that the new tick shall less than the half duration of
+         * tick max.
+         */
+        if ((current_tick - t->timeout_tick) < RT_TICK_MAX / 2)
+        {
+            RT_OBJECT_HOOK_CALL(rt_timer_timeout_hook, (t));
+
+            /* remove timer from timer list firstly */
+            _rt_timer_remove(t);
+
+            /* call timeout function */
+            t->timeout_func(t->parameter);
+
+            /* re-get tick */
+            current_tick = rt_tick_get();
+
+            RT_DEBUG_LOG(RT_DEBUG_TIMER, ("current tick: %d\n", current_tick));
+
+            if ((t->parent.flag & RT_TIMER_FLAG_PERIODIC) &&
+                (t->parent.flag & RT_TIMER_FLAG_ACTIVATED))
+            {
+                /* start it */
+                t->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED;
+                rt_timer_start(t);
+            }
+            else
+            {
+                /* stop timer */
+                t->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED;
+            }
+        }
+        else
+            break;
+    }
+
+    /* enable interrupt */
+    rt_hw_interrupt_enable(level);
+
+    RT_DEBUG_LOG(RT_DEBUG_TIMER, ("timer check leave\n"));
+}
+```

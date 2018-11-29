@@ -3,6 +3,7 @@ layout: post
 title: "XV6 Ch5 Scheduling"
 date: 2018-08-14 14:14:42 +0800
 tag: [xv6, schedluler, context switch, sleep, wakeup,kernel]
+category: xv6
 ---
 ## Multiplexing
 - 如果 process 需要等待 I/O 或是子 process 結束，xv6 讓其進入睡眠狀態，接著將處理器 switch 給其他 process。 
@@ -23,8 +24,7 @@ tag: [xv6, schedluler, context switch, sleep, wakeup,kernel]
 
 <!-- more -->
 
-```c context
-// file: proc.h (44)
+```c :file: proc.h::struct context =44
 struct context {
   uint edi;
   uint esi;
@@ -54,7 +54,7 @@ swtch:
 - 將 `%eax` 指向 `struct context ** old`，`%ebx` 指向 `struct context * new`。
 
 ![swtch](https://i.imgur.com/x6xyt5u.png "Context switch step. 1")
-```x86asm
+```x86asm =12
   # Save old callee-save registers
   pushl %ebp
   pushl %ebx
@@ -64,7 +64,7 @@ swtch:
 - 依序將 context push 進堆疊
 
 ![swtch](https://i.imgur.com/5CA2yBo.png "Context switch step. 2") 
-```x86asm
+```x86asm =17
   # Switch stacks
   movl %esp, (%eax)
   movl %edx, %esp
@@ -74,7 +74,7 @@ swtch:
 ）
 ![swtch](https://i.imgur.com/eCDXykk.png "Context switch step. 3")
 
-```x86asm
+```x86asm =20
   # Load new callee-save registers
   popl %edi
   popl %esi
@@ -90,8 +90,7 @@ swtch:
 - `sched` 會再次檢查以上動作，並且確定此時中斷是關閉的，最後呼叫 `swtch`，將 process 的暫存器保存在 proc->context，switch 到 cpu->scheduler。
 
 ### sched()
-```c
-// file: proc.c (292)
+```c :file: proc.c =292
 void
 sched(void)
 {
@@ -113,7 +112,7 @@ sched(void)
 - `swtch` 會 return 回 scheduler 的堆疊上，scheduler 繼續執行迴圈：找到一個 process 運行，`swtch` 到該 process，repeat。
 
 ### scheduler()
-```c
+```c =249 :file: proc.c::scheduler
 void
 scheduler(void)
 {
@@ -155,7 +154,7 @@ scheduler(void)
 - `mycpu` 尋找當前的 `lapicid` 是哪顆 CPU 的。
 
 ### mycpu()
-```c
+```c :file: proc.c::mycpu =37
 struct cpu*
 mycpu(void)
 {
@@ -176,7 +175,7 @@ mycpu(void)
 ```
 - `myproc` 呼叫 `mycpu`，從正確的 CPU 上尋找當前的 process。
 
-```c myproc()
+```c :file: proc.c::myproc() =57
 struct proc*
 myproc(void) {
   struct cpu *c;
@@ -220,14 +219,14 @@ recv(struct q * q)
 ### 方案 1
 - 加入 `sleep` 及 `wakeup` 機制，`sleep(chan)` 將 process 在 `chan` 中睡眠（一個 wait channel），`wakeup(chan)` 將 `chan` 上睡眠的 process 喚醒。
 
-```c
+```c diff:true
 void*
 send(struct q *q, void *p)
 {
     while(q->ptr != 0)
         ;
     q->ptr = p;
-    wakeup(q);    /*wake recv*/
++    wakeup(q);    /*wake recv*/
 }
 
 void*
@@ -235,7 +234,7 @@ recv(struct q *q)
 {
     void *p;
     while((p = q->ptr) == 0)
-        sleep(q);
++        sleep(q);
     q->ptr = 0;
     return p;
 }
@@ -249,7 +248,7 @@ recv(struct q *q)
 ### 方案 2
 - 讓 `send` 及 `recv` 在睡眠及喚醒前都持有鎖。
 
-```c
+```c diff:true
 struct q {
     struct spinlock lock;
     void *ptr;
@@ -258,23 +257,23 @@ struct q {
 void *
 send(struct q *q, void *p)
 {
-    acquire(&q->lock);
++    acquire(&q->lock);
     while(q->ptr != 0)
         ;
     q->ptr = p;
     wakeup(q);
-    release(&q->lock);
++    release(&q->lock);
 }
 
 void*
 recv(struct q *q)
 {
     void *p;
-    acquire(&q->lock);
++    acquire(&q->lock);
     while((p = q->ptr) == 0)
         sleep(q);
     q->ptr = 0;
-    release(&q->lock);
++    release(&q->lock);
     return p;
 }
 ```
@@ -283,7 +282,7 @@ recv(struct q *q)
 ### 方案 3
 - 在 `sleep` 時一併釋放鎖，也就是將鎖當成參數傳進去。
 
-```c
+```c diff:true
 struct q {
     struct spinlock lock;
     void *ptr;
@@ -306,7 +305,7 @@ recv(struct q *q)
     void *p;
     acquire(&q->lock);
     while((p = q->ptr) == 0)
-        sleep(q, &q->lock);
++        sleep(q, &q->lock);
     q->ptr = 0;
     release(&q->lock);
     return p;
@@ -322,8 +321,7 @@ recv(struct q *q)
 | `wakeup` | 尋找狀態為 `SLEEPING` 的 process，改成 `RUNNABLE`|
 
 ### sleep()
-```c
-// file: proc.c (418)
+```c :file: proc.c =418
 void
 sleep(void *chan, struct spinlock *lk)
 {
@@ -337,7 +335,7 @@ sleep(void *chan, struct spinlock *lk)
 ```
 - 首先確保 process 存在，及持有鎖。
 
-```c
+```c =428
   if(lk != &ptable.lock){  //DOC: sleeplock0
     acquire(&ptable.lock);  //DOC: sleeplock1
     release(lk);
@@ -345,7 +343,7 @@ sleep(void *chan, struct spinlock *lk)
 ```
 - 接著檢查是否持有 `ptable->lock`，如果沒有則要求一個，把 `lk` 釋出。
 
-```c
+```c =432
   // Go to sleep.
   p->chan = chan;
   p->state = SLEEPING;
@@ -354,7 +352,7 @@ sleep(void *chan, struct spinlock *lk)
 ```
 - 睡眠，並呼叫 `sched`
 
-```c
+```c =437
   // Tidy up.
   p->chan = 0;
 
@@ -367,8 +365,8 @@ sleep(void *chan, struct spinlock *lk)
 ```
 
 ### wakeup1()
-```c
-// file: proc.c (458)
+```c :file: proc.c =458
+// 
 static void
 wakeup1(void *chan)
 {
@@ -381,8 +379,7 @@ wakeup1(void *chan)
 ```
 
 ### wakeup()
-```c
-// file: proc.c (468)
+```c :file: proc.c =468
 void
 wakeup(void *chan)
 {
@@ -399,7 +396,7 @@ wakeup(void *chan)
 - 當 pipe 為空時，`nread == nwrite`
 - 當 pipe 為滿時，`nwrite == nread % PIPESIZE`
 
-```c struct pipe 
+```c :file: pipe.c::struct pipe =12
 struct pipe {
   struct spinlock lock;
   char data[PIPESIZE];
@@ -411,7 +408,7 @@ struct pipe {
 ```
 
 ### pipewrite()
-```c
+```c :file: pipe.c =77
 int
 pipewrite(struct pipe *p, char *addr, int n)
 {
@@ -438,7 +435,7 @@ pipewrite(struct pipe *p, char *addr, int n)
 - `pipewrite` 從 0 開始將資料讀入 `buf`，更新 `nwrite` 計數器，當 `buf` 滿了，則喚醒 `piperead` 並睡眠；或是讀入完畢，一樣喚醒 `pipiread`。
 
 ### piperead()
-```c
+```c :file: pipe.c =99
 int
 piperead(struct pipe *p, char *addr, int n)
 {
@@ -470,7 +467,7 @@ piperead(struct pipe *p, char *addr, int n)
 ---
 ## Code: Wait, exit and kill
 ### wait()
-```c
+```c :file: proc.c::wait =208
 int
 wait(void)
 {
@@ -518,7 +515,7 @@ wait(void)
 - 如果找到已退出的子 process，紀錄該子 process 的 pid，清理 `struct proc`，釋放相關記憶體。
 
 ### exit()
-```c
+```c :file: proc.c::wait =166
 void
 exit(void)
 {
@@ -566,7 +563,7 @@ exit(void)
 - 喚醒父 process，將子 process 交給 *initproc*，修改狀態，呼叫 `sched` switch 至 scheduler。
 
 ### kill()
-```c
+```c :file: proc.c::wait =402
 int
 kill(int pid)
 {

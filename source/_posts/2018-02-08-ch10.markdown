@@ -3,6 +3,8 @@ layout: post
 title: "計概10：作業系統"
 date: 2018-02-08 10:18:22 +0800
 tag: [計算機概論]
+category: 計算機概論
+copyright: true
 ---
 ## 10.1 作業系統的角色
 ### 記憶體、程序與CPU管理

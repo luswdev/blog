@@ -2,7 +2,9 @@
 layout: post
 title: "計概06：低階程式語言與虛擬碼"
 date: 2018-02-7 10:18:07 +0800
-tag: [計算機概論]
+tag: 計算機概論
+category: 計算機概論
+copyright: true
 ---
 ## 6.1 電腦的動作
 即可程式化 programmable、儲存 store、擷取 retrieve 及運算 process。
@@ -80,19 +82,19 @@ tag: [計算機概論]
 
 - 輸入/輸出
 
-``` 
+```line_number:false
 Write “Hello word!”
 Read num
 ```
 - 選擇
 
-``` 
+```line_number:false
 IF(sum<0)…
 ELSE …
 ```
 
 - 重複
 
-``` 
+```line_number:false
 WHILE(counter < limit) …
 ```

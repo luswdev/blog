@@ -2,7 +2,7 @@
 @require "../_common/components/highlight/diff"
 
 .highlight figcaption {
-  //font-size: 1.2em;
+  font-size: 1.2em;
   line-height: 1.8em;
   padding: 0 .5em;
   color: $highlight-figcaptionFont;
@@ -91,7 +91,7 @@ pre {
 
 
 figure pre {
-  //font-size: 1em;
+  font-size: 1em;
 }
 
 li>figure:first-child {
@@ -108,11 +108,11 @@ code {
   background: $highlight-emphasisBK; //强调背景
   border: 1px solid $highlight-emphasisBK;
   padding: .1em .4em;
-  //font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   font-size: 0.96em;
   border-radius: $code-border-radius;
   font-size $code-font-size;
-  vertical-align: bottom;
+  //vertical-align: bottom;
   word-wrap: break-word;
   border-radius: 3px;
 }
@@ -135,10 +135,10 @@ pre {
     margin: 0;
     width: 100%;
     border: none;
-    //font-size: 14px;
+    font-size: 14px;
 
     display: flex;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .figcode>.gutter{
@@ -160,8 +160,8 @@ pre {
     padding-right: 10px;
     .line:hover {
       background-color: $highlight-selection!important;
-      // margin: 0 -5px 0 -10px;
-      // padding: 0 5px 0 10px;
+      margin: 0 -5px 0 -10px;
+      padding: 0 5px 0 10px;
     }
 }
 

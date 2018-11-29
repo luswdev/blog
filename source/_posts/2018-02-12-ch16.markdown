@@ -3,6 +3,8 @@ layout: post
 title: "計概16：全球資訊網"
 date: 2018-02-12 10:18:42 +0800
 tag: [計算機概論]
+category: 計算機概論
+copyright: true
 ---
 ## 16.1 建構網路
 - 全球資訊網 WWW（網路 web）：一種分散資訊架構。

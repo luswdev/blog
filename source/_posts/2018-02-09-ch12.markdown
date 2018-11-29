@@ -3,6 +3,8 @@ layout: post
 title: "計概12：資訊系統"
 date: 2018-02-09 10:18:29 +0800
 tag: [計算機概論]
+category: 計算機概論
+copyright: true
 ---
 ## 12.1 管理資訊
 有三種普遍的資訊系統：電子試算表、資料庫管理系統及電子商務。
@@ -37,31 +39,31 @@ tag: [計算機概論]
 
 - 查詢：
 
-```sql
+```sql line_number:false
 SELECT attribute-list FROM table-list WHERE condition
 ```
 如欲取回整個紀錄，可以用 *，需要字串比對，可以用 like：
 
-```sql
+```sql line_number:false
 SELECT * FROM table-list WHERE condition like '%doc%'
 ```
 也可以用 order by 來排序
 
-```sql
+```sql line_number:false
 SELECT attribute-list FROM table-list WHERE condition order by id
 ```
 
 - 修改：
 
-```sql insert 插入
+```sql :insert 插入 line_number:false
 	insert into attribute-list values (some , 'value')
 ```
 
-```sql update 更新
+```sql :update 更新 line_number:false
 	update attribute-list set field_name = 'value' where another_field = 'value2'
 ```
 
-```sql delete 刪除
+```sql :delete 刪除 line_number:false
 	delete from attribute-list where field_name = 'value'
 ```
 ### 資料庫的設計

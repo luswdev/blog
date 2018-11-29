@@ -1,12 +1,12 @@
 @import highlight;
 
 body {
-  background: $black-light;
+  background: #b1b5b8;
   background-repeat: no-repeat;
   background-attachment:fixed;
 }
 .main { 
-  margin-top: -4em;
+  //margin-top: .2em;
 }
 
 // Index
@@ -47,8 +47,9 @@ img.img-topic {
 .header {
   background-color: #fff;
   width: $content-desktop ;
-  margin: 0 auto;
-  padding: 3em 4em 4em;
+  margin: 0 auto -.5em;
+  padding: 0 4em 0;
+  border-radius: 4px;
   +desktop-large() {
     & { width: $content-desktop-large; }
   }
@@ -62,7 +63,7 @@ img.img-topic {
 }
 .container .header-inner {
   width: 100%;
-  background-color: $black-dim;
+  //background-color: $black-dim;
   border-radius: 15px;
   
 }
@@ -84,7 +85,7 @@ img.img-topic {
 }
 .site-brand-wrapper {
   border-radius: 15px;
-  background-color: $black-dim;
+  //background-color: $black-dim;
 }
 
 // nav
@@ -92,7 +93,7 @@ img.img-topic {
 nav.site-nav ul.menu > li > a:hover{ color: $grey; }
 .page-home .menu-item-home a { border-bottom-color: #fff; }
 .menu a {
-  color: #fff;
+  //color: #fff;
   padding-bottom: 8px;
 }
 
@@ -121,7 +122,7 @@ li.active > ol > li > ol > li > ol > li > a { padding-left: 55px; }
 // sidebar
 // --------------------------------------------------
 .fa.fa-history.fa-{ padding: 0 }
-.sidebar-toggle-line{ background-color: $black-light; }
+.sidebar-toggle-line{ background-color: #b1b5b8; }
 .links-of-author {margin-top: 16px;}
 .feed-link {
     margin-top: 15px;
@@ -136,11 +137,11 @@ li.active > ol > li > ol > li > ol > li > a { padding-left: 55px; }
 }
 .sidebar-nav .sidebar-nav-active { 
   border-color: $sidebar-highlight; 
-  background: $sidebar-highlight;
-  color: $whitesmoke;
+  background: rgba(0, 0, 0, 0);
+  color: $orange;
 }
 
-.back-to-top { color: $black-light; }
+.back-to-top { color: #b1b5b8; }
 .links-of-blogroll-list { color: $text-color !important; }
 .links-of-blogroll-title { margin-top: 1em; }
 .links-of-author a{ border:none; }
@@ -157,12 +158,14 @@ a.link_to_about .site-author-name:hover
   border-radius: 3px; 
 }
 .sidebar-nav li {
-  border: 1px solid $sidebar-nav-color;
+  border: 2px solid $sidebar-nav-color;
   border-radius: 15px;
   padding: 0 9px;
+  font-weight: bold;
   &:hover {
     border-color: $orange;
     color : $whitesmoke;
+    background: $orange;
   }
 }
 
@@ -171,11 +174,12 @@ a.link_to_about .site-author-name:hover
 div.footnotes > div.footnotelist > ol > li { list-style: none !important; }
 .post-meta .post-category a
 .post-meta .post-time time {
-  border-bottom:     none;
+  border-bottom: none;
 }
 .main-inner {
   padding: 0 4em 2em;
   background-color: #fff;
+  border-radius: 4px;
 }
 .page-number {
   border-radius: 100%;
@@ -185,6 +189,10 @@ div.footnotes > div.footnotelist > ol > li { list-style: none !important; }
     color: $black-deep;
   }
 }
+.collection-title >h1 {
+  margin-top: -1.06em;
+}
+.footnote-list {border-bottom: none;}
 
 // gitment
 // --------------------------------------------------
@@ -214,7 +222,7 @@ div.footnotes > div.footnotelist > ol > li { list-style: none !important; }
 // --------------------------------------------------
 .footer .author a {
 	border-bottom:     none;
-  color:             $whitesmoke; 
+  color:             #3555; 
   &:hover{
     color:           $footer-link-hover-color;
   }
@@ -233,6 +241,15 @@ div.footnotes > div.footnotelist > ol > li { list-style: none !important; }
   }
   
 }
+
+// gitalk
+// --------------------------------------------------
+.gt-header a, .gt-comments a, .gt-popup a
+  border-bottom: none;
+.gt-container .gt-popup .gt-action.is--active:before
+  top: 0.7em;
+
+.post-title {border-bottom:none;}
 
 // trash
 // --------------------------------------------------

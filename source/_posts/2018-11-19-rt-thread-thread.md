@@ -1,15 +1,12 @@
 ---
 title: 'RT-Thread Thread'
-copyright: true
-toc: true
 date: 2018-11-19 13:08:24
-categories: RT-Thread
 tag: [RT-Thread, thread, kernel]
+category: RT-Thread
 ---
 ## 結構
-```c struct thread
+```c=492 :rt_thread_t (rtdef.h)
 /**
- * file: rtdef.h (492)
  * Thread structure
  */
 struct rt_thread
@@ -25,16 +22,17 @@ struct rt_thread
 ```
 
 - 一些基本資料，如名字等
+
 <!-- more -->
 
-```c
+```c=505
     rt_list_t   list;                                   /**< the object list */
     rt_list_t   tlist;                                  /**< the thread list */
 ```
 
 - 兩條鏈：thread list、object list
 
-```c
+```c=507
     /* stack point and entry */
     void       *sp;                                     /**< stack point */
     void       *entry;                                  /**< entry */
@@ -45,7 +43,7 @@ struct rt_thread
 
 - stack 相關的
 
-```
+```c=513
     /* error code */
     rt_err_t    error;                                  /**< error code */
 
@@ -54,7 +52,7 @@ struct rt_thread
 
 - 狀態，下面會列出來所有可能
 
-```c
+```c=517
     /* priority */
     rt_uint8_t  current_priority;                       /**< current priority */
     rt_uint8_t  init_priority;                          /**< initialized priority */
@@ -67,7 +65,7 @@ struct rt_thread
 
 - 與權限相關的
   
-```c
+```c=525
 #if defined(RT_USING_EVENT)
     /* thread event */
     rt_uint32_t event_set;
@@ -91,7 +89,7 @@ struct rt_thread
 
 - event、sig、tick
 
-```c
+```c=544
     void (*cleanup)(struct rt_thread *tid);             /**< cleanup function when thread exit */
 
     /* light weight process if present */
@@ -110,7 +108,7 @@ typedef struct rt_thread *rt_thread_t;
 ## 狀態
 - 一共有 6 種狀態
 
-```c
+```c=471 :file: rtdef.h
 #define RT_THREAD_INIT                  0x00                /**< Initialized status */
 #define RT_THREAD_READY                 0x01                /**< Ready status */
 #define RT_THREAD_SUSPEND               0x02                /**< Suspend status */
@@ -121,15 +119,15 @@ typedef struct rt_thread *rt_thread_t;
 ```
 
 ---
-## 管理
+## File: thread.h
 - 下圖為官方文本的 thread 流向圖，接著一個一個的看下去
 ![](https://i.imgur.com/rZ9j5nd.png)
 
 ---
 ### 初始化、建立 thread
-```c rt_thread_init
+若使用靜態記憶體管理：
+```c=199 :rt_thread_init
 /**
- * file: thread.c (199)
  * This function will initialize a thread, normally it's used to initialize a
  * static thread object.
  *
@@ -174,10 +172,7 @@ RTM_EXPORT(rt_thread_init);
 
 - 透過 `_rt_thread_init` 完成初始化
 
-```c _rt_thread_init
-/**
- * file: thread.h (118)
- */ 
+```c=118 :_rt_thread_init
 static rt_err_t _rt_thread_init(struct rt_thread *thread,
                                 const char       *name,
                                 void (*entry)(void *parameter),
@@ -200,7 +195,7 @@ static rt_err_t _rt_thread_init(struct rt_thread *thread,
 
 - 首先將傳入的資料填入結構
 
-```c
+```c=136
     /* init thread stack */
     rt_memset(thread->stack_addr, '#', thread->stack_size);
     thread->sp = (void *)rt_hw_stack_init(thread->entry, thread->parameter,
@@ -210,7 +205,7 @@ static rt_err_t _rt_thread_init(struct rt_thread *thread,
 
 - 接著設定堆疊，使用 `rt_hw_stack_init` 來完成（根據不同 cpu 有不同的方式，`rt_hw_stack_init` 在 /libcpu 中針對不同的 cpu 有不同的函式宣告）
 
-```
+```c=141
     /* priority init */
     RT_ASSERT(priority < RT_THREAD_PRIORITY_MAX);
     thread->init_priority    = priority;
@@ -225,7 +220,7 @@ static rt_err_t _rt_thread_init(struct rt_thread *thread,
 
 - 設定 priority 及 mask
 
-```c
+```c=151
     /* tick init */
     thread->init_tick      = tick;
     thread->remaining_tick = tick;
@@ -269,9 +264,9 @@ static rt_err_t _rt_thread_init(struct rt_thread *thread,
 - 最後依序完成 tick、sig、hook 等的初始化
 
 ---
-```c rt_thread_create
+若使用動態記憶體管理：
+```c=344 :rt_thread_create
 /**
- * file: thread.h (344)
  * This function will create a thread object and allocate thread object memory
  * and stack.
  *
@@ -327,9 +322,8 @@ RTM_EXPORT(rt_thread_create);
 
 ---
 ### 啟動 thread 
-```c rt_thread_startup
+```c=252 :rt_thread_startup
 /**
- * file: thread.h (252)
  * This function will start a thread and put it to system ready queue
  *
  * @param thread the thread to be started
@@ -349,7 +343,7 @@ rt_err_t rt_thread_startup(rt_thread_t thread)
 
 - 設定 priority
 
-```c
+```c=268
     /* calculate priority attribute */
 #if RT_THREAD_PRIORITY_MAX > 32
     thread->number      = thread->current_priority >> 3;            /* 5bit */
@@ -362,7 +356,7 @@ rt_err_t rt_thread_startup(rt_thread_t thread)
 
 - 這些參數是用來計算權限的，`scheudler` 會用到
 
-```c
+```c=276
     RT_DEBUG_LOG(RT_DEBUG_THREAD, ("startup a thread:%s with priority:%d\n",
                                    thread->name, thread->init_priority));
     /* change thread stat */
@@ -385,9 +379,8 @@ RTM_EXPORT(rt_thread_startup);
 
 ---
 ### 暫停、復原 thread
-```c rt_thread_suspend
+```c=630 :rt_thread_suspend
 /**
- * file: thread.c (630)
  * This function will suspend the specified thread.
  *
  * @param thread the thread to be suspended
@@ -437,9 +430,8 @@ RTM_EXPORT(rt_thread_suspend);
 - 首先將狀態修改為 `RT_THREAD_SUSPEND`，接著將 thread 從 tlist 移除，結束 timer
 
 ---
-```c rt_thread_delay
+```c=519 :rt_thread_delay
 /**
- * file: thread.c (519)
  * This function will let current thread delay for some ticks.
  *
  * @param tick the delay ticks
@@ -455,9 +447,8 @@ RTM_EXPORT(rt_thread_delay);
 
 - 透過 `rt_thread_sleep` 實作
 
-```c rt_thread_sleep
+```c=481 :rt_thread_sleep
 /**
- * file: thread.c (481)
  * This function will let current thread sleep for some ticks.
  *
  * @param tick the sleep ticks
@@ -497,9 +488,8 @@ rt_err_t rt_thread_sleep(rt_tick_t tick)
 ```
 
 ---
-```c rt_thread_resume
+```c=676 :rt_thread_resume
 /**
- * file: thread.c (676)
  * This function will resume a thread and put it to system ready queue.
  *
  * @param thread the thread to be resumed
@@ -549,10 +539,7 @@ RTM_EXPORT(rt_thread_resume);
 
 ---
 ### 離開、刪除 thread
-```c rt_thread_exit
-/**
- * file: thread.c (81)
- */
+```c=81 :rt_thread_exit
 void rt_thread_exit(void)
 {
     struct rt_thread *thread;
@@ -575,7 +562,7 @@ void rt_thread_exit(void)
 
 - 首先從 ready list 中移除，修改狀態為 `RT_THREAD_CLOSE`，從 timer list 中移除
 
-```c
+```c=99
     if ((rt_object_is_systemobject((rt_object_t)thread) == RT_TRUE) &&
         thread->cleanup == RT_NULL)
     {
@@ -600,9 +587,9 @@ void rt_thread_exit(void)
 - 否則，將 thread 插入至 `rt_thread_defunct`，此鏈上面的 thread 會由 idle 清除。
 
 ---
-```c rt_thread_delete
+若使用動態記憶體管理：
+```c=394 :rt_thread_delete
 /**
- * file: thread.c (394)
  * This function will delete a thread. The thread object will be removed from
  * thread queue and deleted from system object management in the idle thread.
  *
@@ -628,7 +615,7 @@ rt_err_t rt_thread_delete(rt_thread_t thread)
 
 -  如果此 thread 已經啟動過了，將此 thread 從 ready list 移除
 
-```c
+```c=416
     /* release thread timer */
     rt_timer_detach(&(thread->thread_timer));
 
@@ -652,9 +639,9 @@ RTM_EXPORT(rt_thread_delete);
 - 接著將 timer 還回去，修改狀態為 `RT_THREAD_CLOSE`，插入至 `rt_thread_defunct`
 
 ---
-```c rt_thread_detach
+若使用靜態記憶體管理：
+```c=294 :rt_thread_detach
 /**
- * file: thread.c (294)
  * This function will detach a thread. The thread object will be removed from
  * thread queue and detached/deleted from system object management.
  *
@@ -706,9 +693,8 @@ RTM_EXPORT(rt_thread_detach);
 - 與 delete 不同的差在第32行
 
 ### 控制 thread
-```c rt_thread_control
+```c=549 :rt_thread_control
 /**
- * file: thread.c (549)
  * This function will control thread behaviors according to control command.
  *
  * @param thread the specified thread to be controlled

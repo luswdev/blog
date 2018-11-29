@@ -27,13 +27,16 @@ h1, h2, h3, h4, h5, h6 {
 
 h1, h2, h3, h4, h5, h6 { margin: 20px 0 15px; }
 
+h2, h3, h4, h5, h6 { border-bottom: 1px solid #eee; }
+
 h1 {font-size: 50px;}
+h2 {font-size: 1.5em;}
+h3 {font-size: 1.25em;}
+
+h4, h5, h6 {font-size: 1em;}
+
 
 for headline in (2..6) {
-  h{headline} {
-    font-size: $font-size-headings-base - $font-size-headings-step * headline;
-  }
-
   +mobile() {
     h{headline} {
       font-size: $font-size-headings-base - $font-size-headings-step * headline - 4px;

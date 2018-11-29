@@ -3,6 +3,8 @@ layout: post
 title: "XV6 Ch2 Page tables"
 date: 2018-07-23 14:14:35 +0800
 tag: [xv6, page table,虛擬記憶體, 分頁, 記憶體管理, kernel]
+category: xv6
+copyright: true
 ---
 ## 分頁硬體
 - PTE：Page table entry，包含 20-bit PPN 及 flags
@@ -42,9 +44,11 @@ tag: [xv6, page table,虛擬記憶體, 分頁, 記憶體管理, kernel]
 [^1]:[記憶體管理／分頁架構](https://www.csie.ntu.edu.tw/~wcchen/asm98/asm/proj/b85506061/chap2/paging.html)
 
 
->#### WT 的補充
+{% note info %}
+#### WT 的補充
 **write-through**
 **write-back**
+{%endnote%}
 
 
 ### 名詞解釋
@@ -72,8 +76,7 @@ tag: [xv6, page table,虛擬記憶體, 分頁, 記憶體管理, kernel]
 <p id="kvmalloc"></p>
 
 ### kvmalloc
-```c
-// file: vm.c (146)
+```c :file: vm.c =146
 // Allocate one page table for the machine for the kernel address
 // space for scheduler processes.
 void
@@ -86,8 +89,7 @@ kvmalloc(void)
 - 建立頁表的工作由 `setupkvm` 完成
 
 ### setupkvm
-```c
-// file: vm.c (127)
+```c :file: vm.c =127
 // Set up kernel part of a page table.
 pde_t*
 setupkvm(void)
@@ -100,7 +102,7 @@ setupkvm(void)
 ```
 - 首先分配一頁來存放目錄
 
-```c
+```c =136
   memset(pgdir, 0, PGSIZE);
   if (p2v(PHYSTOP) > (void*)DEVSPACE)
     panic("PHYSTOP too high");
@@ -114,8 +116,7 @@ setupkvm(void)
 - 接著呼叫 `mappages` 來建立 kernel 所需的映射。
 - 映射存放在 kmap 裡
 
-```c struct kmap
-// file: vm.c (115)
+```c :file: vm.c::struct kmap =115
 // This table defines the kernel's mappings, which are present in
 // every process's page table.
 static struct kmap {
@@ -135,8 +136,7 @@ static struct kmap {
 
 
 ### mappages
-```c
-// file: vm.c (67)
+```c :file: vm.c =67
 // Create PTEs for virtual addresses starting at va that refer to
 // physical addresses starting at pa. va and size might not
 // be page-aligned.
@@ -154,13 +154,13 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
 ```
 - 首先呼叫 `walkpgdir` 來找到對應的 PTE
 
-```c
+```c =81
     if(*pte & PTE_P)
       panic("remap");
 ```
 - 接著確認 PTE_P flags
 
-```c
+```c =83
     *pte = pa | perm | PTE_P;
     if(a == last)
       break;
@@ -173,8 +173,7 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
 - 最後初始化 PTE。
 - 問題：如何初始化
 
-## walkpgdir
-```c
+```c :file: vm.c::walkpgdir =42
 // Return the address of the PTE in page table pgdir
 // that corresponds to virtual address va.  If alloc!=0,
 // create any required page table pages.
@@ -201,9 +200,7 @@ walkpgdir(pde_t *pgdir, const void *va, int alloc)
 }
 ```
 
-### switchkvm
-```c
-// file: vm.c (157)
+```c :file: vm.c::switchkvm =157
 void
 switchkvm(void)
 {
@@ -229,8 +226,7 @@ kernel 在運行時須為以下物件分配物理記憶體：
 <p id="kinit" ></p>
 
 ### kinit1 / 2
-``` c kinit1
-// file: kalloc.c (31)
+``` c :file: kalloc.c::kinit1 =31
 void
 kinit1(void *vstart, void *vend)
 {
@@ -239,8 +235,7 @@ kinit1(void *vstart, void *vend)
   freerange(vstart, vend);
 }
 ```
-```c kinit2
-// file: kalloc.c (38)
+```c :file: kalloc.c::kinit2 =38
 void
 kinit2(void *vstart, void *vend)
 {
@@ -251,8 +246,7 @@ kinit2(void *vstart, void *vend)
 - `kinit1 / 2` 呼叫 `freerange` 將記憶體加入 free list
 
 ### freerange
-```c
-// file: kalloc.c (45)
+```c :file: kalloc.c =45
 void
 freerange(void *vstart, void *vend)
 {
@@ -265,8 +259,7 @@ freerange(void *vstart, void *vend)
 - `freerange` 呼叫 `kfree` 來完成工作
 
 ### kfree
-```c
-// file: kalloc.c (54)
+```c :file: kalloc.c =54
 //PAGEBREAK: 21
 // Free the page of physical memory pointed at by v,
 // which normally should have been returned by a
@@ -285,7 +278,7 @@ kfree(char *v)
 ```
 - 首先將每個字節設為 1
 
-```c
+```c =69
   if(kmem.use_lock)
     acquire(&kmem.lock);
   r = (struct run*)v;
@@ -305,8 +298,7 @@ kfree(char *v)
 ## Code: sbrk
 - 用途：增長/收縮 process 的記憶體。
 
-```c sys_sbrk
-// file: sysproc.c (44)
+```c :file: sysproc.c::sys_sbrk =44
 int
 sys_sbrk(void)
 {
@@ -324,8 +316,7 @@ sys_sbrk(void)
 
 - `sbrk` 透過呼叫 `growproc` 來完成工作。
 
-```c growproc
-// file: proc.c (105)
+```c :file: proc.c::growproc =105
 // Grow current process's memory by n bytes.
 // Return 0 on success, -1 on failure.
 int
@@ -351,8 +342,7 @@ growproc(int n)
 - 如果 n<0：`deallocuvm`
 
 ### allocuvm、deallocuvm
-```c allocuvm
-// file: vm.c (218)
+```c :file: vm.c::allocuvm =218
 // Allocate page tables and physical memory to grow process from oldsz to
 // newsz, which need not be page aligned.  Returns new size or 0 on error.
 int
@@ -370,8 +360,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
 - 首先檢查是否有要超過大小，及動作是否合法。
 
-```c
-
+```c =230
   a = PGROUNDUP(oldsz);
   for(; a < newsz; a += PGSIZE){
     mem = kalloc();
@@ -390,8 +379,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 - 接著透過 `kalloc()` 來要記憶體，並將要到的記憶體清空
 - 最後回傳 process 目前總共的大小
 ---
-```c deallocuvm
-// file: vm.c (245)
+```c :file: vm.c::deallocuvm =245
 // Deallocate user pages to bring the process size from oldsz to
 // newsz.  oldsz and newsz need not be page-aligned, nor does newsz
 // need to be less than oldsz.  oldsz can be larger than the actual
@@ -409,8 +397,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
 - 一樣先檢查動作是否合法
 
-```c
-
+```c =257
   a = PGROUNDUP(newsz);
   for(; a  < oldsz; a += PGSIZE){
     pte = walkpgdir(pgdir, (char*)a, 0);
@@ -436,8 +423,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 - 概觀：打開及讀取 ELF 文件來初始化 user part
 
 ### struct elfhdr
-```c
-// File: elf.h (6)
+```c :file: elf.h =6
 // File header
 struct elfhdr {
   uint magic;  // must equal ELF_MAGIC
@@ -460,8 +446,7 @@ struct elfhdr {
 - 一個 ELF 文件包含一個 elfhdr、program setion hdr(struct proghdr)
 
 ### struct proghdr
-```c
-// file: elf.h (24)
+```c :file: elf.h =24
 // Program section header
 struct proghdr {
   uint type;
@@ -506,7 +491,7 @@ exec(char *path, char **argv)
 ```
 - 用 `namei` 打開二進制文件（ch6 會說明）
 
-```c
+```c =23
   ilock(ip);
   pgdir = 0;
 
@@ -518,7 +503,7 @@ exec(char *path, char **argv)
 ```
 - 接著確認 ELF 是否正確（藉由 ELF_magic）
 
-```c
+```c =31
   if((pgdir = setupkvm()) == 0)
     goto bad;
 
@@ -539,11 +524,12 @@ exec(char *path, char **argv)
   iunlockput(ip);
   ip = 0;
 ```
+
 1. `setupkvm` 分配一個沒有 user part 的頁
 2. `allocuvm` 分配給每個 ELF 的 program section 記憶體。
 3. `loaduvm` 將 section 載入至記憶體
 
-```c 
+```c =50
   // Allocate two pages at the next page boundary.
   // Make the first inaccessible.  Use the second as the user stack.
   sz = PGROUNDUP(sz);

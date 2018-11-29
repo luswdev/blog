@@ -3,6 +3,7 @@ layout: post
 title: "運行 xv6"
 date: 2018-08-27 14:15:18 +0800
 tag: [xv6, makefile, QEMU, gcc, GNU, objcopy, objdump]
+category: xv6
 ---
 ## Makefile 解析
 
@@ -56,20 +57,23 @@ CFLAGS = -fno-builtin -O2 -Wall -MD -ggdb -m32
 `gcc -M file.c`[^1] 會將 file.c 有 include 的 .h （包含標準函式庫）關聯起來，即輸出為：</br>
 `file.o: file.c header.h stdio.h`</br>
 `gcc -M -MF file.c` 將 `-M` 的輸出存入 file.d 裡。</br>
->**註**：`-M` 會自動帶 `-E`，如果使用 `-MD` 替代 `-M -MF` 時則不會帶 `-E`。
+
+{%note info%}
+**註**：`-M` 會自動帶 `-E`，如果使用 `-MD` 替代 `-M -MF` 時則不會帶 `-E`。
+{%endnote%}
 
 - `-ggdb`：為 GDB 生成更多的 debug 資訊。 
 - `-m32`：生成 32 位元的程式碼。
 
 [^1]:[Linux Makefile 生成 .d 依赖文件及 gcc -M -MF -MP 等相关选项说明](https://blog.csdn.net/QQ1452008/article/details/50855810)
 
-```makefile
+```makefile =39
 CFLAGS += $(shell $(CC) -fno-stack-protector -E -x c /dev/null >/dev/null 2>&1 && echo -fno-stack-protector)
 ASFLAGS = -m32
 # FreeBSD ld wants ``elf_i386_fbsd''
 LDFLAGS += -m $(shell $(LD) -V | grep elf_i386 2>/dev/null)
 ```
-```makefile
+```makefile =43
 xv6.img: bootblock kernel fs.img
 	dd if=/dev/zero of=xv6.img count=10000
 	dd if=bootblock of=xv6.img conv=notrunc
@@ -81,10 +85,11 @@ xv6.img: bootblock kernel fs.img
 - `notrunc` 在輸出檔案時會比對輸入的檔案，只會輸出與輸入檔案不一樣的地方。
 - `seek` 會略過數個 blocks 之後再輸出，block 大小由 `obs=BTYES` 宣告（預設為 512）。
 
->/dev/zero 為一個特殊檔案，讀取時會提供無限的空字元，44 行為生成一個大小為 10000（個 block）的空白檔案 xv6.img（或是把 xv6.img 的前 10000 個 block 清除。）
+{%note info%}
+/dev/zero 為一個特殊檔案，讀取時會提供無限的空字元，44 行為生成一個大小為 10000（個 block）的空白檔案 xv6.img（或是把 xv6.img 的前 10000 個 block 清除。）
+{%endnote%}
 
-
-```makefile
+```makefile =47
 bootblock: bootasm.S bootmain.c
 	$(CC) $(CFLAGS) -O -nostdinc -I. -c bootmain.c
 	$(CC) $(CFLAGS) -nostdinc -I. -c bootasm.S
@@ -117,9 +122,11 @@ bootblock: bootasm.S bootmain.c
 | `-S` |去除所有符號資訊|
 | `-O binary` |輸出為二進位的文件|
 
->反組譯的用意是為了 debug
+{%note info%}
+反組譯的用意是為了 debug
+{%endnote%}
 
-```makefile
+```makefile =54
 bootother: bootother.S
 	$(CC) $(CFLAGS) -nostdinc -I. -c bootother.S
 	$(LD) $(LDFLAGS) -N -e start -Ttext 0x7000 -o bootother.out bootother.o
@@ -128,7 +135,7 @@ bootother: bootother.S
 ```
 - 啟動其他的 CPU
 
-```makefile
+```makefile =59
 initcode: initcode.S
 	$(CC) $(CFLAGS) -nostdinc -I. -c initcode.S
 	$(LD) $(LDFLAGS) -N -e start -Ttext 0 -o initcode.out initcode.o
@@ -137,7 +144,7 @@ initcode: initcode.S
 ```
 - 建立 initcode
 
-```makefile
+```makefile =64
 kernel: $(OBJS) bootother initcode
 	$(LD) $(LDFLAGS) -Ttext 0x100000 -e main -o kernel $(OBJS) -b binary initcode bootother
 	$(OBJDUMP) -S kernel > kernel.asm
@@ -145,7 +152,7 @@ kernel: $(OBJS) bootother initcode
 ```
 - 建立 kernel
 
-```makefile
+```makefile =68
 tags: $(OBJS) bootother.S _init
 	etags *.S *.c
 
@@ -154,7 +161,7 @@ vectors.S: vectors.pl
 ```
 - 使用 vectors.pl 生成 vectors.S
 
-```makefile
+```makefile =73
 ULIB = ulib.o usys.o printf.o umalloc.o
 
 _%: %.o $(ULIB)
@@ -169,7 +176,7 @@ _%: %.o $(ULIB)
 |$^|代表所有必要條件，即 `%.o $(ULIB)`|
 |$*|代表第一個必要條件，但不包含副檔名|
 
-```makefile
+```makefile =79
 _forktest: forktest.o $(ULIB)
 	# forktest has less library code linked in - needs to be small
 	# in order to be able to max out the proc table.
@@ -201,7 +208,7 @@ fs.img: mkfs README $(UPROGS)
 
 - fs 指的是 file system
 
-```makefile
+```makefile =106
 -include *.d
 
 clean: 
@@ -286,7 +293,7 @@ tar:
 
 - 輸入以下代碼[^2]
 
-```shell
+```shell line_number:false
 qemu-system-i386 -serial mon:stdio -hdb fs.img xv6.img -smp 1 -m 512
 ```
 ![QEMU](https://i.imgur.com/prBjQ9C.jpg "Running xv6 in QEMU")
@@ -315,7 +322,7 @@ SECTIONS
 - 設定記憶體位置到 `0x8010000`（虛擬地址，分頁硬體會映射至實體位置 `0x0010000`）
 - *bootmain.c* 將 ELF 指標指向 `0x100000` 接著將 kernel 讀入。
 
-```armasm
+```armasm =13
 	.text : AT(0x100000) {
 		*(.text .stub .text.* .gnu.linkonce.t.*)
 	}

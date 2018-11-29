@@ -3,6 +3,8 @@ layout: post
 title: "計概09：物件導向與高階程式語言"
 date: 2018-02-08 10:18:18 +0800
 tag: [計算機概論]
+category: 計算機概論
+copyright: true
 ---
 ## 9.1 物件導向方法論
 ### 物件導向 OOP

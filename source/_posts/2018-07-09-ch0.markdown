@@ -3,6 +3,8 @@ layout: post
 title: "XV6 Ch0 OS 介面"
 date: 2018-07-09 12:53:37 +0800
 tag: [xv6]
+category: xv6
+copyright: true
 ---
 - OS的工作：有效率的在電腦上執行數個程式。
 - Kernel：提供 process 服務
@@ -44,7 +46,7 @@ tag: [xv6]
     - 2 standard error
 - Shell 確保上述三個描述符每次都會被打開。
 
-```c
+```c line_number:false
 // read something from file descriptor to "buf"
 read(fd, buf, n);
 // write something from "buf" to file descriptor
@@ -56,7 +58,7 @@ write(fd, buf, n);
 ## Pipes
 - 如同一條水管，pipes 的兩端連接不同的 process，其中一端寫入資料，其中一端讀取其資料。也就是說，pipes 提供使兩個不同的 process 互相溝通的方法。
 
-```shell
+```shell line_number:false
 # sample of pipes
 echo hello world | wc
 # another way call "temporary files"
@@ -74,7 +76,7 @@ echo hello world >/tmp/xyz; wc </tmp/xyz
 - 目錄的結構為樹，且有一個**根目錄 /**（例如：/a/b/c）。
 - 任何不從根目錄開始的路徑稱作 process 的當前目錄。
 
-```shell
+```shell line_number:false
 # create a new director
 mkdir("/dir");
 # open with 0_CREATE flag create a new file

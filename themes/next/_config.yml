@@ -66,11 +66,11 @@ footer:
   icon:
     # Icon name in fontawesome, see: https://fontawesome.com/v4.7.0/icons
     # `heart` is recommended with animation in red (#ff0000).
-    name: bullseye
+    name: bolt
     # If you want to animate the icon, set it to true.
     animated: false
     # Change the color of icon, using Hex Code.
-    color: "#f5f5f5"
+    color: "#3555"
 
   # If not defined, will be used `author` from Hexo main config.
   copyright:
@@ -117,11 +117,9 @@ index_with_subtitle: true
 # Value before `||` delimeter is the target link.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, question icon will be loaded.
 menu:
-  home: / || home
-  archives: /archives/ || archive 
-  categories: /categories/ || th
-  tags: /tags/ || tags
-  about: /about/ || user 
+  XV6: /tags/xv6 || tags
+  RT-Thread: /tags/RT-Thread || tags
+  NOTE: /tags/note || tags
   #schedule: /schedule/ || calendar
   #sitemap: /sitemap.xml || sitemap
   #commonweal: /404/ || heartbeat
@@ -157,8 +155,6 @@ site_state: true
 social:
   GitHub: https://github.com/omuskywalker || github
   E-Mail: mailto:610721230@gms.ndhu.edu.tw || envelope
-  Google: https://plus.google.com/110457010426750604946?rel=author || google
-  twitter: https://twitter.com/callumUNL || twitter
   #FB Page: https://www.facebook.com/yourname || facebook
   #VK Group: https://vk.com/yourname || vk
   StackOverflow: https://stackoverflow.com/users/10298225/omu-skywalker || stack-overflow
@@ -185,24 +181,25 @@ social_icons:
 # Blog rolls
 links_icon: globe
 links_title: 有用連結
-#links_layout: block
-links_layout: inline
+links_layout: block
+#links_layout: inline
 links:
   6.828: https://pdos.csail.mit.edu/6.828/2018/
   DCLab: https://hackmd.io/s/Bk15R0-5m
+  RT-Thread: https://www.rt-thread.org
 
 # Sidebar Avatar
 avatar:
   #directory: /images/icn.png
   # in site  directory(source/uploads): /uploads/avatar.gif
   # You can also use other linking images.
-  url: /images/sith_2.png
+  url: https://i.imgur.com/eavS2d8.png
   # If true, the avatar would be dispalyed in circle.
   rounded: false
   # The value of opacity should be choose from 0 to 1 to set the opacity of the avatar.
   opacity: 1
   # If true, the avatar would be rotated with the cursor.
-  rotated: true
+  rotated: false
 
 # Table Of Contents in the Sidebar
 toc:
@@ -236,9 +233,9 @@ sidebar:
   #  - always  expand for all pages automatically
   #  - hide    expand only when click on the sidebar toggle icon.
   #  - remove  Totally remove sidebar including sidebar toggle.
-  display: hide
+  #display: post
   #display: always
-  #display: hide
+  display: hide
   #display: remove
 
   # Sidebar offset from top menubar in pixels (only for Pisces | Gemini).
@@ -422,13 +419,13 @@ font:
   # Fallback to `global` font settings.
   logo:
     external: true
-    family: Megrim
+    family: Philosopher
     size: 70
 
   # Font settings for <code> and code blocks.
   codes:
     external: true
-    family: Oxygen Mono
+    family:
     size:
 
 
@@ -509,13 +506,13 @@ valine:
   verify: false # Verification code
   placeholder: Leave some word. # comment box placeholder
   avatar: mm # gravatar style
-  guest_info: nick,mail,link # custom comment header
+  guest_info: nick,mail # custom comment header
   pageSize: 10 # pagination size
   visitor: false # leancloud-counter-security is not supported for now. When visitor is set to be true, appid and appkey are recommended to be the same as leancloud_visitors' for counter compatibility. Article reading statistic https://valine.js.org/visitor.html
 
 # Support for LiveRe comments system.
 # You can get your uid from https://livere.com/insight/myCode (General web site)
-livere_uid: MTAyMC80MDkwMC8xNzQyNQ==
+# livere_uid: MTAyMC80MDkwMC8xNzQyNQ==
 
 # Gitment
 # Introduction: https://imsun.net/posts/gitment-introduction/
@@ -532,6 +529,15 @@ gitment:
   client_secret: 6140d208bae6bbbc69c65e3e332a46d090094fc8 # EITHER this or proxy_gateway, Github access secret token for the Gitment
   proxy_gateway: # Address of api proxy, See: https://github.com/aimingoo/intersect
   redirect_protocol: # Protocol of redirect_uri with force_redirect_protocol when mint enabled
+
+gitalk:
+  enable: true
+  githubID: omuskywalker  # 例：asdfv1929   
+  repo: gitment-comments   # 例：asdfv1929.github.io
+  ClientID: 97c34b7bba491c6a5007
+  ClientSecret: 6140d208bae6bbbc69c65e3e332a46d090094fc8
+  adminUser: omuskywalker #指定可初始化评论账户
+  distractionFreeMode: true
 
 # Baidu Share
 # Available value:

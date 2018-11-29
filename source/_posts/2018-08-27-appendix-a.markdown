@@ -3,6 +3,7 @@ layout: post
 title: "XV6 Appendix A PC 硬體"
 date: 2018-08-27 14:14:57 +0800
 tag: [xv6 ,暫存器 ,x86]
+category: xv6
 ---
 ## 通用暫存器
 | Name   | Function          |

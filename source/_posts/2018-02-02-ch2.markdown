@@ -3,6 +3,8 @@ layout: post
 title: "計概02：二進位系統"
 date: 2018-02-02 01:30:56 +0800
 tag: [計算機概論, 位置表示法]
+category: 計算機概論
+copyright: true
 ---
 ## 2.2 位置表示法
 >基底 base：由 0 開始，等於基底時進位。

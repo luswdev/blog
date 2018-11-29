@@ -91,7 +91,7 @@ $font-weight-bolder       = 700
 
 
 // Font size
-$font-size-base           = 14px
+$font-size-base           = 16px
 $font-size-base           = unit(hexo-config('font.global.size'), px) if hexo-config('font.global.size') is a 'unit'
 $font-size-small          = $font-size-base - 2px
 $font-size-smaller        = $font-size-base - 4px
@@ -209,7 +209,7 @@ $gap-between-main-and-footer    = 100px
 // Headband
 // --------------------------------------------------
 $headband-height                = 3px
-$headband-bg                    = $black-dim
+$headband-bg                    = white
 
 
 
@@ -221,9 +221,9 @@ $head-bg                        = transparent
 
 // Site Meta
 $site-meta-text-align           = center
-$brand-color                    = white
-$brand-hover-color              = white
-$brand-bg                       = $black-dim
+$brand-color                    = $black-light
+$brand-hover-color              = $black-light
+$brand-bg                       = white
 
 $logo-font-size                 = 20px
 $logo-font-size                 = unit(hexo-config('font.logo.size'), px) if hexo-config('font.logo.size') is a 'unit'
@@ -262,7 +262,7 @@ $posts-collapse-left-mobile     = 5px
 // Sidebar
 // Variables for sidebar section elements.
 // --------------------------------------------------
-$sidebar-nav-color                    = $whitesmoke 
+$sidebar-nav-color                    = $text-color
 $sidebar-nav-hover-color              = $black-deep
 $sidebar-highlight                    = $orange
 
@@ -273,9 +273,9 @@ $site-author-image-border-width       = 2px
 $site-author-image-border-color       = $black-dim
 
 $site-author-name-margin              = 5px 0 0
-$site-author-name-color               = $whitesmoke 
+$site-author-name-color               = $text-color
 $site-author-name-align               = center
-$site-author-name-weight              = normal
+$site-author-name-weight              = bold
 
 $site-description-font-size           = 14px
 $site-description-color               = $grey-dark
@@ -289,7 +289,7 @@ $site-state-item-name-font-size       = 13px
 $site-state-item-name-color           = $text-color
 $site-state-item-border-color         = $orange
 
-$toc-link-color                       = $whitesmoke
+$toc-link-color                       = #3555
 $toc-link-border-color                = $black-light
 $toc-link-hover-color                 = $orange
 $toc-link-hover-border-color          = $grey-light

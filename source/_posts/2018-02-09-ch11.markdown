@@ -3,6 +3,8 @@ layout: post
 title: "計概11：檔案系統及目錄"
 date: 2018-02-09 10:18:26 +0800
 tag: [計算機概論]
+category: 計算機概論
+copyright: true
 ---
 ## 11.1 檔案系統
 - 檔案：一個命名的資料集合。

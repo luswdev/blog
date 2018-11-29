@@ -3,6 +3,8 @@ layout: post
 title: "計概05：電腦元件"
 date: 2018-02-07 10:17:59 +0800
 tag: [計算機概論, 電腦]
+category: 計算機概論
+copyright: true
 ---
 ## 5.1 個別電腦元件
 - 處理器速度 Hz 表示，如 2.7GHz。

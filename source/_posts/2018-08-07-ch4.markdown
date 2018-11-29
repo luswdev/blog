@@ -3,6 +3,7 @@ layout: post
 title: "XV6 Ch4 鎖"
 date: 2018-08-07 14:14:40 +0800
 tag: [xv6, kernel,lock ,race conditions]
+category: xv6
 ---
 ## Race conditions
 ### 例子
@@ -45,7 +46,7 @@ insert(int data)
 ![](https://i.imgur.com/3fr2iqX.png "b change the list")
 
 ### 使用鎖
-```c
+```c diff:true
 struct list *list = 0;
 struct lock listlock;
 
@@ -53,12 +54,12 @@ void
 insert(int data)
 {
     struct list *l;
-    acquire(&listlock);
++    acquire(&listlock);
     l = malloc(sizeof *l);
     l->data = data;
     l->next = list;
     list = l;
-    release(&listlock);
++    release(&listlock);
 }
 ```
 
@@ -100,8 +101,7 @@ acquire(struct spinlock *lk)
 - 但是我們發現，可能會有多個 CPU 執行至第五行，發現 `lk->locked` 為 `0`，接著都拿到了鎖，ㄋ即違反了互斥
 - xv6 使用 x86 的特殊指令 `xchg` 來完成動作。
 
-```c acquire
-// file: spinlock.c (20)
+```c :file: spinlock.c::acquire =20
 // Acquire the lock.
 // Loops (spins) until the lock is acquired.
 // Holding a lock for a long time may cause
@@ -124,8 +124,7 @@ acquire(struct spinlock *lk)
   getcallerpcs(&lk, lk->pcs);
 }
 ```
-```c release
-// file: spinlock.c (42)
+```c :file: spinlock.c::release =42
 // Release the lock.
 void
 release(struct spinlock *lk)
@@ -150,8 +149,7 @@ release(struct spinlock *lk)
   popcli();
 }
 ```
-```c xchg
-// file: x86.h (120)
+```c :file: x86.h::xchg =120
 static inline uint
 xchg(volatile uint *addr, uint newval)
 {

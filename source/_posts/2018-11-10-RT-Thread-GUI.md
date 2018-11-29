@@ -2,13 +2,14 @@
 title: RT-Thread GUI engine - 架構
 date: 2018-11-10 21:57:14
 tag: [RT-Thread, GUI]
+category: RT-Thread
 ---
 RT-Thread 的 GUI 放在 package 中（[git 原始碼](https://github.com/RT-Thread-packages/gui_engine.git)），本文將簡單將此 GUI engine 分工。
 
 ## Font
 處理文字編碼，及字型相關的
 
-```
+``` line_number:false
 |-- src
 |    |-- asc12font.c
 |    |-- asc16font.c
@@ -35,7 +36,7 @@ RT-Thread 的 GUI 放在 package 中（[git 原始碼](https://github.com/RT-Thr
 ## Image
 處理圖片格式相關的
 
-```
+``` line_number:false
 |-- src
 |    |-- blit.c
 |    |-- image_bmp.c
@@ -56,7 +57,7 @@ RT-Thread 的 GUI 放在 package 中（[git 原始碼](https://github.com/RT-Thr
 ## Draw
 協助使用者繪製一些圖形等
 
-```
+``` line_number:false
 |-- src
 |    |-- color.c
 |    |-- dc_blend.c
@@ -78,7 +79,7 @@ RT-Thread 的 GUI 放在 package 中（[git 原始碼](https://github.com/RT-Thr
 ## Widgets
 一些相關的 widgets，如按鈕、視窗等
 
-```
+``` line_number:false
 |-- src
 |    |-- box.c
 |    |-- container.c
@@ -105,7 +106,7 @@ RT-Thread 的 GUI 放在 package 中（[git 原始碼](https://github.com/RT-Thr
 ## System
 系統層面的工作、及協助外部硬體，如鍵盤等。
 
-```
+``` line_number:false
 |-- src
 |    |-- filerw.c
 |    |-- mouse.c

@@ -2,16 +2,16 @@
 title: RT-Thread Scheduler
 date: 2018-11-15 00:22:23
 tag: [RT-Thread, scheduler, kernel]
+category: RT-Thread
 ---
 ## File: scheduler.c
 - 於 *components.c* 中 的 `rtthread_startup()` 首先呼叫 `rt_system_scheduler_init()` 初始化 scheduler
 - 於 `rtthread_startup()` 的最後呼叫 `rt_system_scheduler_start()` 開始 scheduler
 
 ---
-### rt_system_scheduler_init
-```c
+### 初始化 scheduler
+```c :rt_system_scheduler_init =102
 /**
- * file: scheduler.c (102)
  * @ingroup SystemInit
  * This function will initialize the system scheduler
  */
@@ -26,7 +26,7 @@ void rt_system_scheduler_init(void)
 
 - `rt_scheduler_lock_nest` 為 scheduler 的鎖，在進入 critical region 時會 `++`，離開時會 `--`
 
-```c
+```c =111
     RT_DEBUG_LOG(RT_DEBUG_SCHEDULER, ("start scheduler: max priority 0x%02x\n",
                                       RT_THREAD_PRIORITY_MAX));
 
@@ -39,14 +39,14 @@ void rt_system_scheduler_init(void)
 - `RT_THREAD_PRIORITY_MAX` 根據不同的 *BSP* 可設定為不同的值，如 256；即優先級為 0~255，數字越小越等級越高
 - 初始化 `rt_thread_priority_table`
 
-```c
+```c =118
     rt_current_priority = RT_THREAD_PRIORITY_MAX - 1;
     rt_current_thread = RT_NULL;
 ```
 
 - 設定當前的優先級為最低，及空。
 
-```c
+```c =120
     /* initialize ready priority group */
     rt_thread_ready_priority_group = 0;
 
@@ -63,12 +63,11 @@ void rt_system_scheduler_init(void)
 - 初始化 `rt_thread_ready_priority_group` 及 `rt_thread_defunct`
 
 ---
-### rt_system_scheduler_start
+### 啟動 scheduler
 - 此函數會找到一個 priorty 最高的 thread 並執行
 
-```c
+```c :rt_system_scheduler_start =135
 /**
- * file: scheduler.c (135)
  * @ingroup SystemInit
  * This function will startup scheduler. It will select one thread
  * with the highest priority level, then switch to it.
@@ -90,7 +89,7 @@ void rt_system_scheduler_start(void)
 
 - 使用 `rt_ffs` 來尋找 priority 最高的鏈結
 
-```c
+```c=153
     /* get switch to thread */
     to_thread = rt_list_entry(rt_thread_priority_table[highest_ready_priority].next,
                               struct rt_thread,
@@ -108,12 +107,11 @@ void rt_system_scheduler_start(void)
 - 找到該鏈的第一顆，context switch 至該 thread
  
 ---
-### rt_scheduler
+### Scheduler
 - 呼叫此函式，系統會重新計算所有 thread 的 priority，如果存在更高的（與呼叫此函式的 thread 比較），系統將會 switch 至該 thread。
 
-```c
+```c=173 :rt_schedule
 /**
- * file: scheduler.c (173)
  * This function will perform one schedule. It will select one thread
  * with the highest priority level, then switch to it.
  */
@@ -129,7 +127,7 @@ void rt_schedule(void)
 
 - 首先將中斷關閉
 
-```c
+```c=185
     /* check the scheduler is enabled or not */
     if (rt_scheduler_lock_nest == 0)
     {
@@ -147,7 +145,7 @@ void rt_schedule(void)
 
 - 檢查鎖的狀態，並找到 priority 最高的鍊
 
-```c
+```c=198
         /* get switch to thread */
         to_thread = rt_list_entry(rt_thread_priority_table[highest_ready_priority].next,
                                   struct rt_thread,
@@ -156,7 +154,7 @@ void rt_schedule(void)
 
 - 找到該鏈的第一顆
 
-```c
+```c=202
         /* if the destination thread is not the same as current thread */
         if (to_thread != rt_current_thread)
         {
@@ -199,7 +197,7 @@ void rt_schedule(void)
 - 如果找到的 thread 與當前的 thread 不相符，且 `rt_interrupt_nest == 0`，即這次調度不是在中斷下運作的，直接 switch 至該 thread 
 - 最後恢復中斷
 
-```c
+```c=239
             else
             {
                 RT_DEBUG_LOG(RT_DEBUG_SCHEDULER, ("switch in interrupt\n"));
@@ -215,7 +213,7 @@ void rt_schedule(void)
 - 如果 `rt_interrupt_nest != 0`，即這次調度是在中斷下運作的，則用中斷 switch 至該 thread
 - 最後恢復中斷
 
-```c
+```c=249
         else
         {
             /* enable interrupt */
@@ -233,10 +231,9 @@ void rt_schedule(void)
 - 如果找到的一樣，或是沒要到鎖，直接開啟中斷，結束調度
 
 ---
-### rt_schedule_insert_thread
-```c
+### 插入 thread
+```c :rt_schedule_insert_thread =265
 /**
- * file: scheduler.c (265)
  * This function will insert a thread to system ready queue. The state of
  * thread will be set as READY and remove from suspend queue.
  *
@@ -258,7 +255,7 @@ void rt_schedule_insert_thread(struct rt_thread * thread)
 
 - 首先關閉中斷，及更改 thread 的狀態為 `RT_THREAD_READY`
 
-```c
+```c=283
     /* insert thread to ready list */
     rt_list_insert_before(&(rt_thread_priority_table[thread->current_priority]),
                           &(thread->tlist));
@@ -266,7 +263,7 @@ void rt_schedule_insert_thread(struct rt_thread * thread)
 
 - 接著呼叫 `rt_list_insert_before` 將 thread 插到第一顆
 
-```c
+```c=286
     /* set priority mask */
 #if RT_THREAD_PRIORITY_MAX <= 32
     RT_DEBUG_LOG(RT_DEBUG_SCHEDULER, ("insert thread[%.*s], the priority: %d\n",
@@ -294,10 +291,9 @@ void rt_schedule_insert_thread(struct rt_thread * thread)
 - 最後恢復中斷
 
 ---
-### rt_schedule_remove_thread
-```c
+### 移除 thread
+```c :rt_schedule_remove_thread =311
 /**
- * file: scheduler.c (311)
  * This function will remove a thread from system ready queue.
  *
  * @param thread the thread to be removed
@@ -333,7 +329,7 @@ void rt_schedule_remove_thread(struct rt_thread *thread)
 
 - 先關閉中斷，再呼叫 `rt_list_remove` 來刪除第一顆
 
-```c
+```c=343
     if (rt_list_isempty(&(rt_thread_priority_table[thread->current_priority])))
     {
 #if RT_THREAD_PRIORITY_MAX > 32
@@ -356,10 +352,9 @@ void rt_schedule_remove_thread(struct rt_thread *thread)
 - 最後開啟中斷
 
 ---
-### rt_enter_critical
-```c
+### 進入 scheuler 鎖
+```c=360 :rt_enter_critical
 /**
- * file: scheduler.c (360)
  * This function will lock the thread scheduler.
  */
 void rt_enter_critical(void)
@@ -384,10 +379,9 @@ RTM_EXPORT(rt_enter_critical);
 - 即，將 `rt_scheduler_lock_nest` 加一
 
 ---
-### rt_exit_critical
-```c
+### 離開 scheduler 鎖
+```c=381 :rt_exit_critical
 /**
- * file: scheduler.c (381)
  * This function will unlock the thread scheduler.
  */
 void rt_exit_critical(void)
@@ -402,7 +396,7 @@ void rt_exit_critical(void)
 
 - 即，將 `rt_scheduler_lock_nest` 減一
 
-```
+```c=392
     if (rt_scheduler_lock_nest <= 0)
     {
         rt_scheduler_lock_nest = 0;
@@ -422,8 +416,7 @@ void rt_exit_critical(void)
 - 如果 `rt_scheduler_lock_nest` 被減至 0 或以下，進行一次調度
 
 ---
-### rt_critical_level
-```c
+```c=409 :rt_critical_level
 /**
  * file: scheduler.c (409)
  * Get the scheduler lock level
