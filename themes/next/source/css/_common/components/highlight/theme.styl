@@ -20,6 +20,8 @@ if $highlight_theme == "normal"
   }
 
 if $highlight_theme == "night"
+  $highlight-emphasisBK   = #f9f2f4
+  $highlight-emphasisFont = #c7254e
   $highlight-background   = #1d1f21
   $highlight-current-line = #282a2e
   $highlight-selection    = #373b41
@@ -32,17 +34,21 @@ if $highlight_theme == "night"
   $highlight-aqua         = #8abeb7
   $highlight-blue         = #81a2be
   $highlight-purple       = #b294bb
+  $highlight-diffdeletion = #c63000
+  $highlight-diffaddition = #084
   $highlight-gutter       = {
     color: lighten($highlight-background, 50%),
     bg-color: darken($highlight-background, 100%)
   }
 
 if $highlight_theme == "night eighties"
+  $highlight-emphasisBK   = #555
+  $highlight-emphasisFont = #f9f2f4
   $highlight-background   = #2d2d2d
   $highlight-current-line = #393939
   $highlight-selection    = #515151
   $highlight-foreground   = #cccccc
-  $highlight-comment      = #999999
+  $highlight-comment      = #555
   $highlight-red          = #f2777a
   $highlight-orange       = #f99157
   $highlight-yellow       = #ffcc66
@@ -50,12 +56,16 @@ if $highlight_theme == "night eighties"
   $highlight-aqua         = #66cccc
   $highlight-blue         = #6699cc
   $highlight-purple       = #cc99cc
+  $highlight-diffdeletion = #c63000
+  $highlight-diffaddition = #084
   $highlight-gutter       = {
     color: $highlight-comment,
     bg-color: darken($highlight-background, 40%)
   }
 
 if $highlight_theme == "night blue"
+  $highlight-emphasisBK   = #f9f2f4
+  $highlight-emphasisFont = #c7254e
   $highlight-background   = #002451
   $highlight-current-line = #00346e
   $highlight-selection    = #003f8e
@@ -68,12 +78,16 @@ if $highlight_theme == "night blue"
   $highlight-aqua         = #99ffff
   $highlight-blue         = #bbdaff
   $highlight-purple       = #ebbbff
+  $highlight-diffdeletion = #ffeef0
+  $highlight-diffaddition = #e6ffed
   $highlight-gutter       = {
     color: $highlight-comment,
     bg-color: darken($highlight-background, 60%)
   }
 
 if $highlight_theme == "night bright"
+  $highlight-emphasisBK   = #f9f2f4
+  $highlight-emphasisFont = #c7254e
   $highlight-background   = #000000
   $highlight-current-line = #2a2a2a
   $highlight-selection    = #424242
@@ -86,6 +100,8 @@ if $highlight_theme == "night bright"
   $highlight-aqua         = #70c0b1
   $highlight-blue         = #7aa6da
   $highlight-purple       = #c397d8
+  $highlight-diffdeletion = #ffeef0
+  $highlight-diffaddition = #e6ffed
   $highlight-gutter       = {
     color: lighten($highlight-background, 40%),
     bg-color: lighten($highlight-background, 16%)

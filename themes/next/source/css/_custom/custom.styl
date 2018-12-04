@@ -1,12 +1,9 @@
 @import highlight;
 
 body {
-  background: #b1b5b8;
+  background: $dark-bg;
   background-repeat: no-repeat;
   background-attachment:fixed;
-}
-.main { 
-  //margin-top: .2em;
 }
 
 // Index
@@ -31,6 +28,7 @@ img.img-topic {
   margin-bottom:     24px;
   overflow:          hidden;
 }
+.posts-expand .post-title-link {color:$whitesmoke;}
 
 // header
 // --------------------------------------------------
@@ -45,7 +43,7 @@ img.img-topic {
   }
 }
 .header {
-  background-color: #fff;
+  background-color: $dark-bg;
   width: $content-desktop ;
   margin: 0 auto -.5em;
   padding: 0 4em 0;
@@ -59,6 +57,7 @@ img.img-topic {
   +mobile() { 
     width: auto; 
     padding: 1em 1em 4em;
+    margin-bottom: -4.5em !important;
   }
 }
 .container .header-inner {
@@ -71,6 +70,7 @@ img.img-topic {
 // logo
 // --------------------------------------------------
 .custom-logo-site-title {
+  background-color: $dark-bg;
   padding-top: 50px;
   padding-bottom: 20px; 
   +mobile() {
@@ -79,6 +79,7 @@ img.img-topic {
   }
 }
 .site-title{
+  color: $green;
   +mobile() {
     font-size: 50px;
   }
@@ -87,26 +88,29 @@ img.img-topic {
   border-radius: 15px;
   //background-color: $black-dim;
 }
+.brand { background-color: #282828; }
 
 // nav
 // --------------------------------------------------
-nav.site-nav ul.menu > li > a:hover{ color: $grey; }
-.page-home .menu-item-home a { border-bottom-color: #fff; }
-.menu a {
-  //color: #fff;
-  padding-bottom: 8px;
+nav.site-nav ul.menu > li > a:hover{ 
+  color: $green; 
+  border-bottom: none;
 }
+.page-home .menu-item-home a { border-bottom: none; }
+.menu a {
+}
+.menu-item-active a { color: $whitesmoke}
 
 // pace
 // --------------------------------------------------
 .pace-activity {
-  border-top-color: $orange !important;
-  border-left-color: $orange !important;
+  border-top-color: $green !important;
+  border-left-color: $green !important;
 }
 
 .pace-progress-inner
 .pace-progress {
-  background-color: $orange !important;
+  background-color: $green !important;
 }
 
 // toc
@@ -122,7 +126,7 @@ li.active > ol > li > ol > li > ol > li > a { padding-left: 55px; }
 // sidebar
 // --------------------------------------------------
 .fa.fa-history.fa-{ padding: 0 }
-.sidebar-toggle-line{ background-color: #b1b5b8; }
+.sidebar-toggle-line{ background-color: $dark-bg; }
 .links-of-author {margin-top: 16px;}
 .feed-link {
     margin-top: 15px;
@@ -136,22 +140,23 @@ li.active > ol > li > ol > li > ol > li > a { padding-left: 55px; }
   top: 1em;
 }
 .sidebar-nav .sidebar-nav-active { 
-  border-color: $sidebar-highlight; 
+  border-color: $green; 
   background: rgba(0, 0, 0, 0);
-  color: $orange;
+  color: $green;
 }
 
-.back-to-top { color: #b1b5b8; }
+.back-to-top { color: $dark-bg; }
 .links-of-blogroll-list { color: $text-color !important; }
 .links-of-blogroll-title { margin-top: 1em; }
 .links-of-author a{ border:none; }
 .links-of-blogroll-title-name
 {
-  color: $orange;}
+  color: $green;
+}
 .site-state-item > a:hover
 a.link_to_about .site-author-name:hover
 {
-  color: $orange !important;
+  color: $green !important;
 }
 .back-to-top
 .sidebar-toggle {
@@ -163,12 +168,17 @@ a.link_to_about .site-author-name:hover
   padding: 0 9px;
   font-weight: bold;
   &:hover {
-    border-color: $orange;
+    border-color: $green;
     color : $whitesmoke;
-    background: $orange;
+    background: $green;
   }
 }
-
+.site-state-posts
+.site-state-categories
+.site-state-tags
+{
+  &:hover {color : #3555}
+}
 // post
 // --------------------------------------------------
 div.footnotes > div.footnotelist > ol > li { list-style: none !important; }
@@ -178,21 +188,33 @@ div.footnotes > div.footnotelist > ol > li { list-style: none !important; }
 }
 .main-inner {
   padding: 0 4em 2em;
-  background-color: #fff;
+  background-color: $dark-bg;
   border-radius: 4px;
 }
 .page-number {
   border-radius: 100%;
   width: 10px;
   &:hover {
-    background-color: #eee;
-    color: $black-deep;
+    background-color: #555;
+    color: $whitesmoke;
   }
 }
 .collection-title >h1 {
   margin-top: -1.06em;
 }
-.footnote-list {border-bottom: none;}
+.footnotelist {
+  border-bottom: none;
+  ol {
+    font-size: .8em;
+    margin-left: 0;
+  }
+}
+h1, h2, h3, h4, h5, h6 {color: $whitesmoke;}
+h1{
+  +mobile(){
+    font-size: 2.5em;
+  }
+}
 
 // gitment
 // --------------------------------------------------
@@ -222,10 +244,7 @@ div.footnotes > div.footnotelist > ol > li { list-style: none !important; }
 // --------------------------------------------------
 .footer .author a {
 	border-bottom:     none;
-  color:             #3555; 
-  &:hover{
-    color:           $footer-link-hover-color;
-  }
+  color:            #555; 
 }
 
 // pages
@@ -248,6 +267,18 @@ div.footnotes > div.footnotelist > ol > li { list-style: none !important; }
   border-bottom: none;
 .gt-container .gt-popup .gt-action.is--active:before
   top: 0.7em;
+.gt-container .gt-comment-content{
+  background: #2d2d2d !important;
+  border-radius: 5px;
+  .gt-comment-body {
+  color: $text-color !important;
+  }
+}
+.gt-container .gt-comment-content:hover {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
 
 .post-title {border-bottom:none;}
 

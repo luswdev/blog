@@ -54,11 +54,10 @@ CFLAGS = -fno-builtin -O2 -Wall -MD -ggdb -m32
 
 <!-- more -->
 
+{%note info%}
 `gcc -M file.c`[^1] 會將 file.c 有 include 的 .h （包含標準函式庫）關聯起來，即輸出為：</br>
 `file.o: file.c header.h stdio.h`</br>
 `gcc -M -MF file.c` 將 `-M` 的輸出存入 file.d 裡。</br>
-
-{%note info%}
 **註**：`-M` 會自動帶 `-E`，如果使用 `-MD` 替代 `-M -MF` 時則不會帶 `-E`。
 {%endnote%}
 
@@ -122,7 +121,7 @@ bootblock: bootasm.S bootmain.c
 | `-S` |去除所有符號資訊|
 | `-O binary` |輸出為二進位的文件|
 
-{%note info%}
+{%note success%}
 反組譯的用意是為了 debug
 {%endnote%}
 
@@ -300,7 +299,9 @@ qemu-system-i386 -serial mon:stdio -hdb fs.img xv6.img -smp 1 -m 512
 
 [^2]:[【學習 Xv6 】在 Mac OSX 下運行 Xv6](http://leenjewel.github.io/blog/2014/07/24/%5B%28xue-xi-xv6-%29%5D-zai-mac-osx-xia-yun-xing-xv6/)
 
+{%note success%}
 註：make 好了以後，在 MacOS 的環境下使用 QEMU 模擬器即可運行。
+{%endnote%}
 
 ---
 ## Code: Kernel.ld

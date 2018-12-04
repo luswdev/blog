@@ -7,12 +7,14 @@ category: 計算機概論
 copyright: true
 ---
 ## 7.1 如何解決問題
->以問題取代未知數、以資訊取代資料、以解待取待理論。
+{%note default%}
+以問題取代未知數、以資訊取代資料、以解待取待理論。
+{%endnote%}
 
 - 一般的問題解決過程<br>
-提出問題 → 尋找熟悉的事物 → 分割並征服 → 演算法。
+提出問題 <i class="fa fa-long-arrow-right" aria-hidden="true"></i> 尋找熟悉的事物 <i class="fa fa-long-arrow-right" aria-hidden="true"></i> 分割並征服 <i class="fa fa-long-arrow-right" aria-hidden="true"></i> 演算法。
 - 電腦的問題解決過程<br>
-分析與定義階段 → 演算法開發階段 → 實作階段 → 維護階段。
+分析與定義階段 <i class="fa fa-long-arrow-right" aria-hidden="true"></i> 演算法開發階段 <i class="fa fa-long-arrow-right" aria-hidden="true"></i> 實作階段 <i class="fa fa-long-arrow-right" aria-hidden="true"></i> 維護階段。
 
 <!-- more -->
 

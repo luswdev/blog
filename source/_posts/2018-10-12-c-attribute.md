@@ -6,7 +6,7 @@ category: Note
 ---
 有分三種： ① 對副函式的　② 對資料的　③ 對結構的
 
-註：**attribute** 是給 compiler 看的。
+<i class="fa fa-bell" aria-hidden="true"></i> 註：**attribute** 是給 compiler 看的。
 
 ## 對結構的
 ### packed

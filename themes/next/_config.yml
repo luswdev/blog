@@ -45,9 +45,9 @@ cache:
 # For example, you put your favicons into `hexo-site/source/images` directory.
 # Then need to rename & redefine they on any other names, otherwise icons from Next will rewrite your custom icons in Hexo.
 favicon:
-  small: /images/sith16.png
-  medium: /images/sith32.png
-  apple_touch_icon: /images/sith128.png
+  small: /images/favicon-16x16.png
+  medium: /images/favicon-32x32.png
+  apple_touch_icon: /images/apple-touch-icon.png
   safari_pinned_tab: /images/safari-pinned-tab.svg
   android_manifest: /images/manifest.json
   ms_browserconfig: /images/browserconfig.xml
@@ -66,11 +66,11 @@ footer:
   icon:
     # Icon name in fontawesome, see: https://fontawesome.com/v4.7.0/icons
     # `heart` is recommended with animation in red (#ff0000).
-    name: bolt
+    name: anchor
     # If you want to animate the icon, set it to true.
     animated: false
     # Change the color of icon, using Hex Code.
-    color: "#3555"
+    color: "#555"
 
   # If not defined, will be used `author` from Hexo main config.
   copyright:
@@ -179,21 +179,21 @@ social_icons:
 #github_banner: https://github.com/yourname || Follow me on GitHub
 
 # Blog rolls
-links_icon: globe
-links_title: 有用連結
-links_layout: block
-#links_layout: inline
+links_icon: leaf
+links_title: 友情贊助 (並沒有)
+# links_layout: block
+links_layout: inline
 links:
   6.828: https://pdos.csail.mit.edu/6.828/2018/
   DCLab: https://hackmd.io/s/Bk15R0-5m
-  RT-Thread: https://www.rt-thread.org
+  RT-Thread.org: https://www.rt-thread.org
 
 # Sidebar Avatar
 avatar:
   #directory: /images/icn.png
   # in site  directory(source/uploads): /uploads/avatar.gif
   # You can also use other linking images.
-  url: https://i.imgur.com/eavS2d8.png
+  url: /images/avatar.png
   # If true, the avatar would be dispalyed in circle.
   rounded: false
   # The value of opacity should be choose from 0 to 1 to set the opacity of the avatar.
@@ -206,7 +206,7 @@ toc:
   enable: true
 
   # Automatically add list number to toc.
-  number: true
+  number: false
 
   # If true, all words will placed on next lines if header width longer then sidebar width.
   wrap: true
@@ -219,14 +219,14 @@ toc:
 
 sidebar:
   # Sidebar Position, available value: left | right (only for Pisces | Gemini).
-  position: right
+  position: left
   #position: right
 
   # Manual define the sidebar width.
   # If commented, will be default for:
   # Muse | Mist: 320
   # Pisces | Gemini: 240
-  #width: 300
+  width: 285
 
   # Sidebar Display, available value (only for Muse | Mist):
   #  - post    expand on posts automatically. Default.
@@ -234,8 +234,8 @@ sidebar:
   #  - hide    expand only when click on the sidebar toggle icon.
   #  - remove  Totally remove sidebar including sidebar toggle.
   #display: post
-  #display: always
-  display: hide
+  display: always
+  #display: hide
   #display: remove
 
   # Sidebar offset from top menubar in pixels (only for Pisces | Gemini).
@@ -249,7 +249,7 @@ sidebar:
   scrollpercent: false
 
   # Enable sidebar on narrow view (only for Muse | Mist).
-  onmobile: true
+  onmobile: false
 
 
 # ---------------------------------------------------------------
@@ -305,7 +305,7 @@ codeblock:
   copy_button:
     enable: false
     # Show text copy result
-    show_result: false
+    show_result: true
 
 # Wechat Subscriber
 #wechat_subscriber:
@@ -334,7 +334,7 @@ related_posts:
 
 # Declare license on posts
 post_copyright:
-  enable: true
+  enable: false
   license: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a>
 
 # Post edit
@@ -353,7 +353,7 @@ post_edit:
 mobile_layout_economy: true
 
 # Android Chrome header panel color ($brand-bg / $headband-bg => $black-deep).
-android_chrome_color: "#222"
+android_chrome_color: "#3555"
 
 # Custom Logo.
 # !!Only available for Default Scheme currently.
@@ -367,7 +367,7 @@ custom_logo:
 # Code Highlight theme
 # Available values: normal | night | night eighties | night blue | night bright
 # https://github.com/chriskempson/tomorrow-theme
-highlight_theme: custom light
+highlight_theme: night eighties
 
 # Enable "cheers" for archive page.
 cheers_enabled: false
@@ -425,8 +425,8 @@ font:
   # Font settings for <code> and code blocks.
   codes:
     external: true
-    family:
-    size:
+    family: 
+    size: 
 
 
 # ---------------------------------------------------------------
@@ -752,8 +752,8 @@ note:
   #  - modern    bs-callout new (v2-v3) alert style.
   #  - flat      flat callout style with background, like on Mozilla or StackOverflow.
   #  - disabled  disable all CSS styles import of note tag.
-  style: flat
-  icons: true
+  style: simple
+  icons: false
   border_radius: 3
   # Offset lighter of background in % for modern and flat styles (modern: -12 | 12; flat: -18 | 6).
   # Offset also applied to label tag variables. This option can work with disabled note tag.

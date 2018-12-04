@@ -5,7 +5,9 @@ date: 2018-08-27 14:15:29 +0800
 tag: [xv6, mp]
 category: xv6
 ---
->BIOS -> boot section -> main -> scheduler 的詳細流程在 [Ch1](https://omuskywalker.github.io/blog/2018/07/16/ch1/)、[Ch5](https://omuskywalker.github.io/blog/2018/08/14/ch5/)及[Appendix B](https://omuskywalker.github.io/blog/2018/08/27/appendix-b/)，本文強調 CPU0 以外的 CPU 啟動流程及更詳細的 main 解析。
+{%note default%}
+BIOS -> boot section -> main -> scheduler 的詳細流程在 [Ch1](/hexo/2018/07/16/ch1/)、[Ch5](/hexo/2018/08/14/ch5/)及[Appendix B](/hexo/2018/08/27/appendix-b/)，本文強調 CPU0 以外的 CPU 啟動流程及更詳細的 main 解析。
+{%endnote%}
 
 ## Code: startothers
 - 在 main 初始化一些設備後，會先呼叫 startothers，再呼叫 mpmain 來完成 cpu 的設定及呼叫 scheduler。
@@ -122,7 +124,7 @@ mpmain(void)
 
 ---
 ## Main 解析
-### main()
+### main
 
 ```c :file: main.c =17
 int
@@ -153,10 +155,8 @@ main(void)
   mpmain();
 }
 ```
-- `kinit1()`
-  - [In ch2](https://omuskywalker.github.io/hexo/2018/07/23/ch2/#kinit)
-- `kvmalloc()`
-  - [In Ch2](https://omuskywalker.github.io/hexo/2018/07/23/ch2/#kvmalloc)
+- `kinit1()` [In ch2](/hexo/2018/07/23/ch2/#kinit)
+- `kvmalloc()` [In Ch2](/hexo/2018/07/23/ch2/#kvmalloc)
 - `mpinit()`
 - `lapicinit()`
 - `seginit()`
@@ -165,18 +165,13 @@ main(void)
 - `consoleinit()`
 - `uartinit()`
 - `pinit()`
-- `tvinit()`
-	- [In Ch3](https://omuskywalker.github.io/hexo/2018/07/30/ch3/#tvinit)
+- `tvinit()` [In Ch3](/hexo/2018/07/30/ch3/#tvinit)
 - `binit()`
 - `fileinit()`
 - `iinit()`
-- `ideinit()`
-	- [In Ch3](https://omuskywalker.github.io/hexo/2018/07/30/ch3/#ideinit)
+- `ideinit()` [In Ch3](/hexo/2018/07/30/ch3/#ideinit)
 - `timerinit()`
-- `startothers()`
-	- [Above](#vtr-str)
-- `kinit2()`
-  - [In ch2](https://omuskywalker.github.io/hexo/2018/07/23/ch2/#kinit)
-- `userinit()`
-	- [In Ch1](https://omuskywalker.github.io/hexo/2018/07/16/ch1/#userinit)
+- `startothers()` [Above](#Code-startothers)
+- `kinit2()` [In ch2](/hexo/2018/07/23/ch2/#kinit)
+- `userinit()` [In Ch1](/hexo/2018/07/16/ch1/#userinit)
 - `mpmain()`

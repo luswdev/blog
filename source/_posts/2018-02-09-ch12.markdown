@@ -28,7 +28,9 @@ copyright: true
 	3. 資料庫綱要 schema：提供資料庫中資料的邏輯綱要。
 
 ### 關聯式模型 relational model
->資料項目與他們的關係組織成資料表 table，資料表示一些紀錄的集合 record，一筆紀錄是一些相關欄位 field 的集合，一個欄位對應一個值。
+{%note default%}
+資料項目與他們的關係組織成資料表 table，資料表示一些紀錄的集合 record，一筆紀錄是一些相關欄位 field 的集合，一個欄位對應一個值。
+{%endnote%}
 
 一筆紀錄稱作一個資料庫物件或是一個實體 entity，一筆紀錄的欄位稱作資料庫物件的屬性 attribute。
 

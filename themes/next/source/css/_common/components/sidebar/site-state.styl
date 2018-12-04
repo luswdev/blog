@@ -8,11 +8,14 @@
 .site-state .site-state-item {
   display: inline-block;
   padding: 0 15px;
-  border-left: 2px solid $site-state-item-border-color;
+  border-left: 2px solid $green;
 
   &:first-child { border-left: none; }
 
-  a { border-bottom: none; }
+  a { 
+    border-bottom: none;
+    &:hover { color: $bg-less; } 
+  }
 }
 .site-state-item-count {
   display: block;

@@ -31,7 +31,10 @@ insert(int data)
 ![](https://i.imgur.com/T6893f9.png "Example race")
 
 假設現在有兩個 process 同時在不同的 CPU 上執行上述程式碼，當兩個 process 都執行到 14 行，則兩條鏈結的 `next` 都設置為 `list`；接著，先執行的 process A 將 list 設定為自己的鏈結，後執行的 process B 也將 list 設為自己的鏈結。
-- 問題：此時 list 上將會遺失原本 process A `insert` 的節點。
+
+{%note danger%}
+**問題**：此時 list 上將會遺失原本 process A `insert` 的節點。
+{%endnote%}
 
 ### 圖解
 
@@ -98,7 +101,7 @@ acquire(struct spinlock *lk)
     }
 }
 ```
-- 但是我們發現，可能會有多個 CPU 執行至第五行，發現 `lk->locked` 為 `0`，接著都拿到了鎖，ㄋ即違反了互斥
+- 但是我們發現，可能會有多個 CPU 執行至第五行，發現 `lk->locked` 為 `0`，接著都拿到了鎖，即違反了互斥
 - xv6 使用 x86 的特殊指令 `xchg` 來完成動作。
 
 ```c :file: spinlock.c::acquire =20

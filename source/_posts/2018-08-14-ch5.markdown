@@ -89,7 +89,7 @@ swtch:
 - process 要讓出 CPU 前需要先取得 ptable.lock，釋放其他擁有的鎖，修改 p->state，呼叫 `sched`。
 - `sched` 會再次檢查以上動作，並且確定此時中斷是關閉的，最後呼叫 `swtch`，將 process 的暫存器保存在 proc->context，switch 到 cpu->scheduler。
 
-### sched()
+### sched
 ```c :file: proc.c =292
 void
 sched(void)
@@ -111,7 +111,7 @@ sched(void)
 ```
 - `swtch` 會 return 回 scheduler 的堆疊上，scheduler 繼續執行迴圈：找到一個 process 運行，`swtch` 到該 process，repeat。
 
-### scheduler()
+### scheduler
 ```c =249 :file: proc.c::scheduler
 void
 scheduler(void)
@@ -153,7 +153,7 @@ scheduler(void)
 - CPU 需要辨識目前正在執行的 process，xv6 有一個 struct cpu 的陣列，裡面包含了一些 CPU 的資訊，及當前 process 的資訊。
 - `mycpu` 尋找當前的 `lapicid` 是哪顆 CPU 的。
 
-### mycpu()
+### mycpu
 ```c :file: proc.c::mycpu =37
 struct cpu*
 mycpu(void)
@@ -240,11 +240,13 @@ recv(struct q *q)
 }
 ```
 - 如此一來 `recv` 能讓出 CPU，直到有人（`send`）將它喚醒。
-- **問題**：遺失的喚醒：
+
+{%note danger%}
+**問題**：遺失的喚醒：
 ![遺失的喚醒](https://i.imgur.com/WlIRC0w.png "Example lost wakeup problem")
 - 假設 `recv` 在 215 行查看隊伍，發現需要睡眠，就在要呼叫 `sleep` 之前發生中斷，`send` 在其他的 CPU 將資料放進隊伍中，呼叫 `wakeup`，發現沒有正在休眠的 process，於是不做事；接著 `recv` 終於呼叫 `sleep` 進入睡眠。
 - 此時，`revc` 正在等待 `send` 將它喚醒，但是 `send` 正在等待隊伍清空，清空的動作須由 `recv` 完成（休眠中），於是就產生了 **deadlock**。
-
+{%endnote%}
 ### 方案 2
 - 讓 `send` 及 `recv` 在睡眠及喚醒前都持有鎖。
 
@@ -320,7 +322,7 @@ recv(struct q *q)
 | `sleep`  | 將狀態改成 `SLEEPING`，呼叫 `sched` 釋放 CPU     |
 | `wakeup` | 尋找狀態為 `SLEEPING` 的 process，改成 `RUNNABLE`|
 
-### sleep()
+### sleep
 ```c :file: proc.c =418
 void
 sleep(void *chan, struct spinlock *lk)
@@ -364,7 +366,7 @@ sleep(void *chan, struct spinlock *lk)
 }
 ```
 
-### wakeup1()
+### wakeup1
 ```c :file: proc.c =458
 // 
 static void
@@ -378,7 +380,7 @@ wakeup1(void *chan)
 }
 ```
 
-### wakeup()
+### wakeup
 ```c :file: proc.c =468
 void
 wakeup(void *chan)
@@ -407,7 +409,7 @@ struct pipe {
 };
 ```
 
-### pipewrite()
+### pipewrite
 ```c :file: pipe.c =77
 int
 pipewrite(struct pipe *p, char *addr, int n)
@@ -434,7 +436,7 @@ pipewrite(struct pipe *p, char *addr, int n)
 - 首先須取得鎖。
 - `pipewrite` 從 0 開始將資料讀入 `buf`，更新 `nwrite` 計數器，當 `buf` 滿了，則喚醒 `piperead` 並睡眠；或是讀入完畢，一樣喚醒 `pipiread`。
 
-### piperead()
+### piperead
 ```c :file: pipe.c =99
 int
 piperead(struct pipe *p, char *addr, int n)
@@ -466,7 +468,7 @@ piperead(struct pipe *p, char *addr, int n)
 
 ---
 ## Code: Wait, exit and kill
-### wait()
+### wait
 ```c :file: proc.c::wait =208
 int
 wait(void)
@@ -514,7 +516,7 @@ wait(void)
 - 接著尋找是否有子 process，如果有，並且還沒退出，則睡眠，等待子 process 退出。
 - 如果找到已退出的子 process，紀錄該子 process 的 pid，清理 `struct proc`，釋放相關記憶體。
 
-### exit()
+### exit
 ```c :file: proc.c::wait =166
 void
 exit(void)
@@ -562,7 +564,7 @@ exit(void)
 - 首先須取得鎖。
 - 喚醒父 process，將子 process 交給 *initproc*，修改狀態，呼叫 `sched` switch 至 scheduler。
 
-### kill()
+### kill
 ```c :file: proc.c::wait =402
 int
 kill(int pid)

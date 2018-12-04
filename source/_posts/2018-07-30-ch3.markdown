@@ -5,7 +5,9 @@ date: 2018-07-30 14:14:38 +0800
 tag: [xv6,trap, interrupt, kernel]
 category: xv6
 ---
->CPU 執行一個 porcess 時，是不斷的進行：讀取指令、增加程式計數器、執行指令的迴圈；但有時候一個程式需要進入 kernel，而不是執行下一行指令；包括：設備信號的發出、使用者程式做一些非法的事或是呼叫一個 system call。
+{%note default%}
+CPU 執行一個 porcess 時，是不斷的進行：讀取指令、增加程式計數器、執行指令的迴圈；但有時候一個程式需要進入 kernel，而不是執行下一行指令；包括：設備信號的發出、使用者程式做一些非法的事或是呼叫一個 system call。
+{%endnote%}
 
 - 處理上述情況有三大挑戰：
     1. Kernel 需使處理器能夠從 user mode 轉至 kernel mode（再轉回來）。
@@ -269,7 +271,7 @@ trapret:
 
 ---
 ## Code: C trap handler
-### trap()
+### trap
 ```c :file: trap.c =36
 void
 trap(struct trapframe *tf)
@@ -363,7 +365,7 @@ trap(struct trapframe *tf)
 - 從 trap frame 中的 `%eax` 讀取 system call 號碼，及對應 syscall table 的索引。
 - 如果 system call 號碼是非法的，`return -1`。
 
-### syscall()
+### syscall
 ```c :file: syscall.c::syscall =126
 void
 syscall(void)
@@ -439,7 +441,7 @@ static int (*syscalls[])(void) = {
 
 ---
 ## Code: interrupts
-### Programmable Interrupt Controler **PIC**
+### PIC
 - 早期主機板（單核心）上有一塊 PIC，code: picirq.c
 - 多核心主機板的每顆 CPU 都需要一個 PIC，需要一個方法來分發中斷，操作方式分為兩部份：
     - IO APIC (ioapic.c)：於 I/O 系統上

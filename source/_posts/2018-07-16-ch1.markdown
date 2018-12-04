@@ -6,7 +6,9 @@ tag: [xv6, process, kernel, exec]
 category: xv6
 copyright: true
 ---
->OS 必須具備三項技能：多工、獨立及交流。
+{%note default%}
+OS 必須具備三項技能：多工、獨立及交流。
+{%endnote%}
 
 ## kernel 組織
 - **Monolithic kernel**：整個 OS 都位於 kernel 中，如此一來所有 system calls 都會在 kernel 中執行（xv6）。
@@ -92,7 +94,7 @@ entry:
 - `Allocproc` 在 process table 中分配一個 slot（`struct proc`），並初始化有關 kernel thread 的 process 片段。
 - `Allocproc` 掃描 proc tabel，找到 `p->state` 是 `UNUSED`，接著設定為 `EMBRYO` 來標示被使用，並給予一組唯一的 pid。
 
-### allocproc()
+### allocproc
 ```c =29 :file: proc.c
 // Look in the process table for an UNUSED proc.
 // If found, change state to EMBRYO and initialize
@@ -160,7 +162,7 @@ found:
 - `Userinit` 呼叫 `setupkvm` 來建立 page table 只映射到 kernel 會用到的記憶體。
 <p id="userinit"></p>
 
-### userinit()
+### userinit
 ```c =79 :file: proc.c
 userinit(void)
 {

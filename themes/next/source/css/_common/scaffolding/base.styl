@@ -25,9 +25,15 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $font-family-headings;
 }
 
-h1, h2, h3, h4, h5, h6 { margin: 20px 0 15px; }
+h1, h2, h3, h4, h5, h6 { margin: 0 0 15px; }
 
-h2, h3, h4, h5, h6 { border-bottom: 1px solid #eee; }
+h2, h3, h4, h5, h6 { 
+  border-bottom: 1px solid #eee; 
+  :before{
+    content: "# ";
+    color: $green;
+  }
+}
 
 h1 {font-size: 50px;}
 h2 {font-size: 1.5em;}
@@ -50,12 +56,12 @@ a {
   color: $link-color;
   text-decoration: none;
   outline: none;
-  border-bottom: 1px solid $grey-dark;
+  //border-bottom: 1px solid $grey-dark;
   word-wrap: break-word;
 
   &:hover {
-    color: $link-hover-color;
-    border-bottom-color: $link-decoration-hover-color;
+    color: $green;
+    //border-bottom-color: $link-decoration-hover-color;
   }
 }
 
@@ -73,17 +79,17 @@ img {
 
 
 hr {
-  margin: 40px 0;
-  height: 3px;
+  //margin: 40px 0;
+  height: 1px;
   border: none;
   background-color: $gray-lighter;
-  background-image: repeating-linear-gradient(
+  /*background-image: repeating-linear-gradient(
     -45deg,
     white,
     white 4px,
     transparent 4px,
     transparent 8px
-  );
+  );*/
 }
 
 blockquote {

@@ -42,9 +42,9 @@
     font-size: 16px
 
   .search-keyword
-    border-bottom: 1px dashed #f00
+    border-bottom: 1px dashed $green
     font-weight: bold
-    color: #f00
+    color: $green
 
   .local-search-header
     padding: 5px
@@ -52,6 +52,7 @@
     background: #f5f5f5
     border-top-left-radius: 5px
     border-top-right-radius: 5px
+    background: #555
 
   #local-search-result
     overflow: auto
@@ -89,7 +90,7 @@
     float: left
 
   .popup-btn-close
-    border-left: 1px solid #eee
+    //border-left: 1px solid #eee
     float: right
     cursor: pointer
 
@@ -99,4 +100,7 @@
     top: 50%
     -webkit-transform: translate(-50%, -50%)
     transform: translate(-50%, -50%)
-    color: #ccc
+    //color: #ccc
+
+#local-search-result
+  background: $dark-bg

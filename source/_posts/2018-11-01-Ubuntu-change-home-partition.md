@@ -27,8 +27,9 @@ sudo blkid
 - 其中 `UUID="1a2b3c4d-1a2b-1a2b-1a2b-1a2b3c4d5e6f"` 為此分割的 UUID，記著。
 
 ## 2. 設定 fstab
-
->fstab 是用來設定開機時哪些分割需要被載入，接下來會將原本的 fstab 備份，並於檔名中加入當前日期，接著修改該文件。
+{%note primary%}
+fstab 是用來設定開機時哪些分割需要被載入，接下來會將原本的 fstab 備份，並於檔名中加入當前日期，接著修改該文件。
+{%endnote%}
 
 - 備份 (Duplicate)
 

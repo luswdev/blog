@@ -95,7 +95,9 @@ seta20.2:
 - `lgdt` 指令將 GDT 暫存器(指向 gdt) 載入 gdtdesc 的值。
 
 <p id="gdt"></p>
-- 補充：在創建 GDT 的時候，第一項須為空(規定)，接著我們為此臨時的 GDT 設立 code 及 data 段。
+{%note info%}
+補充：在創建 GDT 的時候，第一項須為空(規定)，接著我們為此臨時的 GDT 設立 code 及 data 段。
+{%endnote%}
 
 ```x86asm :GDT line_number:false
 # Line 78 in bootasm.S

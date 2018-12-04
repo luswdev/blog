@@ -6,8 +6,10 @@ category: 計算機概論
 copyright: true
 ---
 ## 1.1 電腦系統
->電腦系統如洋蔥由許多層組成，由內而外為：
->資訊 →硬體 →程式設計 →作業系統 →應用 →通訊。
+{%note default%}
+電腦系統如洋蔥由許多層組成，由內而外為：<br>
+資訊 <i class="fa fa-long-arrow-right" aria-hidden="true"></i> 硬體 <i class="fa fa-long-arrow-right" aria-hidden="true"></i> 程式設計 <i class="fa fa-long-arrow-right" aria-hidden="true"></i> 作業系統 <i class="fa fa-long-arrow-right" aria-hidden="true"></i> 應用 <i class="fa fa-long-arrow-right" aria-hidden="true"></i> 通訊。
+{%endnote%}
 
 1. 資訊層（最內層）：對應電腦內資訊的表示方式，為純概念層；電腦上的資訊用2進位來管理。
 2. 硬體層：電腦系統中的實體硬體，包括邏輯閘、控制電流的電路等。

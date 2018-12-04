@@ -5,7 +5,9 @@ date: 2018-08-23 14:14:45 +0800
 tag: [xv6, file system, file descriptor]
 category: xv6
 ---
->本文沒有按照 xv6 官方文本的順序介紹
+{%note default%}
+本文沒有按照 xv6 官方文本的順序介紹
+{%endnote%}
 
 ## 概觀 
 - xv6 的檔案系統分為 6 層，本文將從上到下介紹。
@@ -60,7 +62,7 @@ struct {
 ```
 
 
-### filealloc、dup and close
+### Code: filealloc、dup and close
 ```c :file: file.c::filealloc =24
 // Allocate a file structure.
 struct file*
@@ -132,7 +134,7 @@ fileclose(struct file *f)
 ```
 - 若引用次數降為 0 時，則依據類型的不同釋放當前的 pipe 或是 inode。
 
-### filestat、read and write
+### Code: filestat、read and write
 ```c :file: file.c::filestat =81
 // Get metadata about file f.
 int

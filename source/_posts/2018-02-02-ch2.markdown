@@ -7,7 +7,9 @@ category: 計算機概論
 copyright: true
 ---
 ## 2.2 位置表示法
->基底 base：由 0 開始，等於基底時進位。
+{%note default%}
+基底 base：由 0 開始，等於基底時進位。
+{%endnote%}
 
 ### 位置表示法 positional notation
 base R，位元數為 n，di →第 i 個位元，則公式為：</br>

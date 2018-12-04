@@ -1,10 +1,10 @@
 .site-nav-toggle {
   display: none;
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 20px;
+  left: 8px;
   +mobile() {
-    display: none;
+    display: block;
   }
 
   button {
@@ -21,7 +21,8 @@
     margin: 0 -10px;
     padding: 0 10px;
     clear: both;
-    border-top: 1px solid $gray-lighter;
+    //border-top: 1px solid $gray-lighter;
+    background: $dark-bg !important;
   }
   +tablet() { display: block !important; }
   +desktop() { display: block !important; }

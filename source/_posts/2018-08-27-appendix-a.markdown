@@ -19,10 +19,11 @@ category: xv6
 
 - **程式計數器** `%eip`：Instruction Pointer 指令指針暫存器 
 
-
+{%note info%}
 `e` 指的是 extended，為 16 位元暫存器的 32 位元擴展。
 同時 `%ax` 為 `%eax` 的低位，以此類推；修改任意一個都會影響另一個。
 另外，前四個暫存器有另一套低位別名：`%al`、`%ah`...etc，低八位為 `%al`，高八位為 `%ah`。
+{%endnote%}
 
 <!-- more -->
 
