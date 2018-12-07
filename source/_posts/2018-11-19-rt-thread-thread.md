@@ -119,14 +119,28 @@ typedef struct rt_thread *rt_thread_t;
 ```
 
 ---
-## File: thread.h
+- <i class="fa fa-file-text-o" aria-hidden="true"></i> File: thread.h
 - 下圖為官方文本的 thread 流向圖，接著一個一個的看下去
 ![](https://i.imgur.com/rZ9j5nd.png)
 
 ---
-### 初始化、建立 thread
-若使用靜態記憶體管理：
-```c=199 :rt_thread_init
+## 初始化、建立 thread
+### 靜態記憶體管理
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_thread_init `
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 初始化 thread | `RT-EOK` |
+
+| `*thread` | `*name` | `*entry` | `*parameter` |
+| --------- | ------- | -------- | ------------ |
+| thread 本體 | 名字 | 要執行的副程式 | 副程式參數 |
+
+| `*stack_start` | `stack_size` | `priority` | `tick` |
+| -------------- | ------------ | ---------- | ------ |
+| thread 堆疊起點 | thread 堆疊大小 | 優先級 | 可執行的 tick 數 |
+
+```c =199
 /**
  * This function will initialize a thread, normally it's used to initialize a
  * static thread object.
@@ -264,8 +278,22 @@ static rt_err_t _rt_thread_init(struct rt_thread *thread,
 - 最後依序完成 tick、sig、hook 等的初始化
 
 ---
-若使用動態記憶體管理：
-```c=344 :rt_thread_create
+### 動態記憶體管理
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_thread_init `
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 建立 thread | thread |
+
+| `*name` | `*entry` | `*parameter` |
+| ------- | -------- | ------------ |
+| 名字 | 要執行的副程式 | 副程式參數 |
+
+| `*stack_start` | `stack_size` | `priority` | `tick` |
+| -------------- | ------------ | ---------- | ------ |
+| thread 堆疊起點 | thread 堆疊大小 | 優先級 | 可執行的 tick 數 |
+
+```c =344
 /**
  * This function will create a thread object and allocate thread object memory
  * and stack.
@@ -321,8 +349,18 @@ RTM_EXPORT(rt_thread_create);
 - 再呼叫 `_rt_thread_init` 完成初始化
 
 ---
-### 啟動 thread 
-```c=252 :rt_thread_startup
+## 啟動 thread 
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_thread_startup`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 啟動 thread | `RT_EOK` |
+
+| `thread` |
+| -------- |
+| 欲啟動的 thread |
+
+```c =252
 /**
  * This function will start a thread and put it to system ready queue
  *
@@ -378,8 +416,18 @@ RTM_EXPORT(rt_thread_startup);
 - 啟動完成後呼叫 `rt_scheduler()` 來執行一次調度
 
 ---
-### 暫停、復原 thread
-```c=630 :rt_thread_suspend
+## 暫停、復原 thread
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_thread_init `
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 暫停 thread | `RT-EOK` |
+
+| `*thread` |
+| --------- |
+| 欲暫停的 thread |
+
+```c =630
 /**
  * This function will suspend the specified thread.
  *
@@ -430,7 +478,17 @@ RTM_EXPORT(rt_thread_suspend);
 - 首先將狀態修改為 `RT_THREAD_SUSPEND`，接著將 thread 從 tlist 移除，結束 timer
 
 ---
-```c=519 :rt_thread_delay
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_thread_delay `
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 延遲 thread | `RT-EOK` |
+
+| `tick` |
+| --------- |
+| 欲延遲的時間 |
+
+```c =519
 /**
  * This function will let current thread delay for some ticks.
  *
@@ -446,8 +504,17 @@ RTM_EXPORT(rt_thread_delay);
 ```
 
 - 透過 `rt_thread_sleep` 實作
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_thread_sleep `
 
-```c=481 :rt_thread_sleep
+| 功能 | 回傳值 |
+| --- | ------ |
+| 使 thread 休眠 | `RT-EOK` |
+
+| `tick` |
+| --------- |
+| 欲睡眠的時間 |
+
+```c =481
 /**
  * This function will let current thread sleep for some ticks.
  *
@@ -488,7 +555,18 @@ rt_err_t rt_thread_sleep(rt_tick_t tick)
 ```
 
 ---
-```c=676 :rt_thread_resume
+### 復原 thread
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_thread_resume `
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 復原 thread | `RT-EOK` |
+
+| `*thread` |
+| --------- |
+| 欲復原的 thread |
+
+```c =676
 /**
  * This function will resume a thread and put it to system ready queue.
  *
@@ -538,8 +616,14 @@ RTM_EXPORT(rt_thread_resume);
 - `rt_schedule_insert_thread` 會將狀態修改成 `RT_THREAD_READY`
 
 ---
-### 離開、刪除 thread
-```c=81 :rt_thread_exit
+## 離開、刪除 thread
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_thread_exit `
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 暫停 thread | void |
+
+```c =81
 void rt_thread_exit(void)
 {
     struct rt_thread *thread;
@@ -587,8 +671,19 @@ void rt_thread_exit(void)
 - 否則，將 thread 插入至 `rt_thread_defunct`，此鏈上面的 thread 會由 idle 清除。
 
 ---
-若使用動態記憶體管理：
-```c=394 :rt_thread_delete
+### 刪除 thread
+#### 動態記憶體管理
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_thread_delete`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 刪除 thread | `RT-EOK` |
+
+| `*thread` |
+| --------- |
+| 欲刪除的 thread |
+
+```c =394
 /**
  * This function will delete a thread. The thread object will be removed from
  * thread queue and deleted from system object management in the idle thread.
@@ -639,8 +734,18 @@ RTM_EXPORT(rt_thread_delete);
 - 接著將 timer 還回去，修改狀態為 `RT_THREAD_CLOSE`，插入至 `rt_thread_defunct`
 
 ---
-若使用靜態記憶體管理：
-```c=294 :rt_thread_detach
+#### 靜態記憶體管理
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_thread_detach`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 刪除 thread | `RT-EOK` |
+
+| `*thread` |
+| --------- |
+| 欲刪除的 thread |
+
+```c =294
 /**
  * This function will detach a thread. The thread object will be removed from
  * thread queue and detached/deleted from system object management.
@@ -692,8 +797,18 @@ RTM_EXPORT(rt_thread_detach);
 
 - 與 delete 不同的差在第32行
 
-### 控制 thread
-```c=549 :rt_thread_control
+## 控制 thread
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_thread_control`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 控制 thread | `RT-EOK` |
+
+| `*thread` | `cmd` | `*argv` |
+| --------- | ----- | ------- |
+| 欲控制的 thread | 需執行的動作 | 伴隨動作的參數 |
+
+```c =549
 /**
  * This function will control thread behaviors according to control command.
  *

@@ -190,6 +190,10 @@ spin:
 - Kernel 為 ELF 格式的二進位檔。
 - ELF(Executable and Linking Format) ，為 UNIX 中的目錄檔格式。
 
+| 功能 | 回傳值 |
+| --- | ------ |
+| 開機程序（執行 kernel) | void |
+
 ```c
 // Boot loader.
 // 
@@ -268,7 +272,14 @@ bootmain(void)
 
 [^1]:[指標函數和函數指標有什麼區別](http://bluelove1968.pixnet.net/blog/post/222285883-%E6%8C%87%E6%A8%99%E5%87%BD%E6%95%B8%E5%92%8C%E5%87%BD%E6%95%B8%E6%8C%87%E6%A8%99%E6%9C%89%E4%BB%80%E9%BA%BC%E5%8D%80%E5%88%A5)
 
-```c :file: bootmain.c::waitdisk =50
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `waitdisk`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 等待磁碟 | void |
+
+```c =50
 void
 waitdisk(void)
 {
@@ -278,7 +289,18 @@ waitdisk(void)
 }
 ```
 
-```c :file: bootmain.c::readsect() =58
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `readsect`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 讀取一個磁碟區 | void |
+
+| `*dst` | `offset` |
+| ------ | -------- |
+| 目標磁碟 | 目標磁碟區 |
+
+```c =58
 // Read a single sector at offset into dst.
 void
 readsect(void *dst, uint offset)
@@ -298,7 +320,19 @@ readsect(void *dst, uint offset)
 }
 ```
 
-```c :file: bootmain.c::readseg() =76
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `readseg`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 讀取一段磁碟資料 | void |
+
+| `*pa` | `count | `offset` |
+| ----- | ------ | -------- |
+| 目標位址 | 數量 | 目標磁碟區 |
+
+
+```c =76
 // Read 'count' bytes at 'offset' from kernel into physical address 'pa'.
 // Might copy more than asked.
 void

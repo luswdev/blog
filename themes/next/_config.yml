@@ -145,7 +145,7 @@ scheme: Muse
 # ---------------------------------------------------------------
 
 # Posts / Categories / Tags in sidebar.
-site_state: true
+site_state: false
 
 # Social Links.
 # Usage: `Key: permalink || icon`
@@ -154,7 +154,7 @@ site_state: true
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
 social:
   GitHub: https://github.com/omuskywalker || github
-  E-Mail: mailto:610721230@gms.ndhu.edu.tw || envelope
+  #E-Mail: mailto:610721230@gms.ndhu.edu.tw || envelope
   #FB Page: https://www.facebook.com/yourname || facebook
   #VK Group: https://vk.com/yourname || vk
   StackOverflow: https://stackoverflow.com/users/10298225/omu-skywalker || stack-overflow
@@ -193,9 +193,9 @@ avatar:
   #directory: /images/icn.png
   # in site  directory(source/uploads): /uploads/avatar.gif
   # You can also use other linking images.
-  url: /images/avatar.png
+  url:
   # If true, the avatar would be dispalyed in circle.
-  rounded: false
+  rounded: true
   # The value of opacity should be choose from 0 to 1 to set the opacity of the avatar.
   opacity: 1
   # If true, the avatar would be rotated with the cursor.
@@ -204,9 +204,10 @@ avatar:
 # Table Of Contents in the Sidebar
 toc:
   enable: true
-
+  icon: bookmark
+  title: 文章目錄
   # Automatically add list number to toc.
-  number: false
+  number: true
 
   # If true, all words will placed on next lines if header width longer then sidebar width.
   wrap: true
@@ -226,7 +227,7 @@ sidebar:
   # If commented, will be default for:
   # Muse | Mist: 320
   # Pisces | Gemini: 240
-  width: 285
+  width: 260
 
   # Sidebar Display, available value (only for Muse | Mist):
   #  - post    expand on posts automatically. Default.
@@ -250,6 +251,9 @@ sidebar:
 
   # Enable sidebar on narrow view (only for Muse | Mist).
   onmobile: false
+
+sidebar_menu:
+  全部文章: /hexo/archives
 
 
 # ---------------------------------------------------------------
@@ -353,7 +357,7 @@ post_edit:
 mobile_layout_economy: true
 
 # Android Chrome header panel color ($brand-bg / $headband-bg => $black-deep).
-android_chrome_color: "#3555"
+android_chrome_color: #232323
 
 # Custom Logo.
 # !!Only available for Default Scheme currently.
@@ -361,8 +365,8 @@ android_chrome_color: "#3555"
 #   enabled: [true/false] - Replace with specific image
 #   image: url-of-image   - Images's url
 custom_logo:
-  enabled: false
-  image:
+  enabled: ture
+  image: https://i.imgur.com/EM7sySl.png
 
 # Code Highlight theme
 # Available values: normal | night | night eighties | night blue | night bright
@@ -477,6 +481,7 @@ pangu: false
 
 # Swiftype Search API Key
 #swiftype_key:
+
 
 # Baidu Analytics ID
 #baidu_analytics:
@@ -665,7 +670,7 @@ firestore:
 # Show Views/Visitors of the website/page with busuanzi.
 # Get more information on http://ibruce.info/2015/04/04/busuanzi/
 busuanzi_count:
-  enable: true
+  enable: false
   total_visitors: false
   total_visitors_icon: user-circle-o
   total_views: false
@@ -728,7 +733,7 @@ local_search:
 # Bookmark Support
 # Dependencies: https://github.com/theme-next/theme-next-bookmark
 bookmark:
-  enable: false
+  enable: auto
   # if auto
   #   - save the reading position when closing the page
   #   - or clicking the bookmark-icon
@@ -968,7 +973,7 @@ vendors:
 
 recent_posts_title: 近期文章
 recent_posts_layout: block
-recent_posts: false
+recent_posts: true
 
 # Assets
 css: css

@@ -8,12 +8,23 @@
     #}{{ __('title.category') + page_title_suffix }}{#
   #}{% elif page.type === "tags" and not page.title %}{#
     #}{{ __('title.tag') + page_title_suffix }}{#
+  #}{% elif page.type === "about" and not page.title %}{#
+    #}{{ __('title.about') + page_title_suffix }}{#
   #}{% else %}{#
     #}{{ page.title + page_title_suffix }}{#
   #}{% endif %}{#
 #}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  {% block page_class %}{#
+    #}page-post-{#
+  #}{% if page.type === "categories" %}{#
+    #}categories{#
+  #}{% elif page.type === "tags" %}{#
+    #}tags{#
+  #}{% elif not page.type %}{#
+    #}detail{#
+  #}{% endif %}{#
+#}{% endblock %}
 
 {% block content %}
 
@@ -40,7 +51,7 @@
                 {{ _p('counter.tag_cloud', visibleTags) }}
             </div>
             <div class="tag-cloud-tags">
-              {{ tagcloud({min_font: 12, max_font: 30, amount: 300, color: true, start_color: '#ccc', end_color: '#111'}) }}
+              {{ tagcloud({min_font: 12, max_font: 25, amount: 300, color: true, start_color: '#333', end_color: '#ccc'}) }}
             </div>
           </div>
         {% elif page.type === 'categories' %}

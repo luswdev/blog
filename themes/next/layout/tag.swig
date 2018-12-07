@@ -3,7 +3,7 @@
 {% import '_macro/sidebar.swig' as sidebar_template %}
 
 {% block title %}{{ __('title.tag') }}: {{ page.tag }} | {{ title }}{% endblock %}
-
+{% block page_class %}page-tags{% endblock %}
 {% block content %}
 
   {#################}

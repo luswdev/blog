@@ -36,7 +36,6 @@ copyright: true
 
 - `exit()`：用來結束子 process。
 - `wait()`：在主 process 中使用；當子 process 結束後，才繼續執行主 process（通常搭配 `exit()` 使用）。
-- `exec`
 
 ---
 ## I/O 及檔案描述符

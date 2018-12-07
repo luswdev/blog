@@ -4,6 +4,7 @@ title:
   category: 分類
   tag: 標籤
   schedule: 時間表
+  about: 關於
 menu:
   home: 首頁
   archives: 文章
@@ -33,9 +34,9 @@ post:
   views: 閱讀次數
   comments_count: 評論數
   related_posts: 相關文章
-  copy_button: 複製
-  copy_success: 複製成功
-  copy_failure: 複製失敗
+  copy_button: copy
+  copy_success: success
+  copy_failure: faile
   copyright:
     author: 文章作者
     title: 文章標題

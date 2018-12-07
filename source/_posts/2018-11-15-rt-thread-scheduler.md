@@ -4,13 +4,19 @@ date: 2018-11-15 00:22:23
 tag: [RT-Thread, scheduler, kernel]
 category: RT-Thread
 ---
-## File: scheduler.c
+- <i class="fa fa-file-text-o" aria-hidden="true"></i> File: scheduler.c
 - 於 *components.c* 中 的 `rtthread_startup()` 首先呼叫 `rt_system_scheduler_init()` 初始化 scheduler
 - 於 `rtthread_startup()` 的最後呼叫 `rt_system_scheduler_start()` 開始 scheduler
 
 ---
-### 初始化 scheduler
-```c :rt_system_scheduler_init =102
+## 初始化 scheduler
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_system_scheduler_init`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 初始化 scheduler | void |
+
+```c =102
 /**
  * @ingroup SystemInit
  * This function will initialize the system scheduler
@@ -63,8 +69,14 @@ void rt_system_scheduler_init(void)
 - 初始化 `rt_thread_ready_priority_group` 及 `rt_thread_defunct`
 
 ---
-### 啟動 scheduler
+## 啟動 scheduler
 - 此函數會找到一個 priorty 最高的 thread 並執行
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_system_scheduler_start`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 啟動 scheduler | void |
+
 
 ```c :rt_system_scheduler_start =135
 /**
@@ -107,10 +119,15 @@ void rt_system_scheduler_start(void)
 - 找到該鏈的第一顆，context switch 至該 thread
  
 ---
-### Scheduler
+## Scheduler
 - 呼叫此函式，系統會重新計算所有 thread 的 priority，如果存在更高的（與呼叫此函式的 thread 比較），系統將會 switch 至該 thread。
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_schedule`
 
-```c=173 :rt_schedule
+| 功能 | 回傳值 |
+| --- | ------ |
+| 執行一次調度 | void |
+
+```c =173
 /**
  * This function will perform one schedule. It will select one thread
  * with the highest priority level, then switch to it.
@@ -231,8 +248,18 @@ void rt_schedule(void)
 - 如果找到的一樣，或是沒要到鎖，直接開啟中斷，結束調度
 
 ---
-### 插入 thread
-```c :rt_schedule_insert_thread =265
+## 插入 thread
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_schedule_insert_thread `
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 將 thread 插入 list | void |
+
+| `*thread` |
+| ------- |
+| 欲插入的 thread |
+
+```c =265
 /**
  * This function will insert a thread to system ready queue. The state of
  * thread will be set as READY and remove from suspend queue.
@@ -291,8 +318,18 @@ void rt_schedule_insert_thread(struct rt_thread * thread)
 - 最後恢復中斷
 
 ---
-### 移除 thread
-```c :rt_schedule_remove_thread =311
+## 移除 thread
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_schedule_remove_thread `
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 從 list 中移除 thread | void |
+
+| `*thread` |
+| ------- |
+| 欲移除的 thread |
+
+```c =311
 /**
  * This function will remove a thread from system ready queue.
  *
@@ -350,84 +387,3 @@ void rt_schedule_remove_thread(struct rt_thread *thread)
 
 - 如果刪除後，原本的鏈為空，就修改一些參數（在 thread 會討論）
 - 最後開啟中斷
-
----
-### 進入 scheuler 鎖
-```c=360 :rt_enter_critical
-/**
- * This function will lock the thread scheduler.
- */
-void rt_enter_critical(void)
-{
-    register rt_base_t level;
-
-    /* disable interrupt */
-    level = rt_hw_interrupt_disable();
-
-    /*
-     * the maximal number of nest is RT_UINT16_MAX, which is big
-     * enough and does not check here
-     */
-    rt_scheduler_lock_nest ++;
-
-    /* enable interrupt */
-    rt_hw_interrupt_enable(level);
-}
-RTM_EXPORT(rt_enter_critical);
-```
-
-- 即，將 `rt_scheduler_lock_nest` 加一
-
----
-### 離開 scheduler 鎖
-```c=381 :rt_exit_critical
-/**
- * This function will unlock the thread scheduler.
- */
-void rt_exit_critical(void)
-{
-    register rt_base_t level;
-
-    /* disable interrupt */
-    level = rt_hw_interrupt_disable();
-
-    rt_scheduler_lock_nest --;
-```
-
-- 即，將 `rt_scheduler_lock_nest` 減一
-
-```c=392
-    if (rt_scheduler_lock_nest <= 0)
-    {
-        rt_scheduler_lock_nest = 0;
-        /* enable interrupt */
-        rt_hw_interrupt_enable(level);
-
-        rt_schedule();
-    }
-    else
-    {
-        /* enable interrupt */
-        rt_hw_interrupt_enable(level);
-    }
-}
-```
-
-- 如果 `rt_scheduler_lock_nest` 被減至 0 或以下，進行一次調度
-
----
-```c=409 :rt_critical_level
-/**
- * file: scheduler.c (409)
- * Get the scheduler lock level
- *
- * @return the level of the scheduler lock. 0 means unlocked.
- */
-rt_uint16_t rt_critical_level(void)
-{
-    return rt_scheduler_lock_nest;
-}
-RTM_EXPORT(rt_critical_level);
-```
-
-- 即，回傳 `rt_scheduler_lock_nest` 值

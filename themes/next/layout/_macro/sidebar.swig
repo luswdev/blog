@@ -14,7 +14,7 @@
 
       {% set display_toc = is_post and theme.toc.enable or is_page and theme.toc.enable %}
 
-      {% if display_toc and toc(page.content).length > 1 %}
+      {#{% if display_toc and toc(page.content).length > 1 %}
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             {{ __('sidebar.toc') }}
@@ -23,22 +23,28 @@
             {{ __('sidebar.overview') }}
           </li>
         </ul>
-      {% endif %}
+      {% endif %}#}
 
-      <section class="site-overview-wrap sidebar-panel{% if not display_toc or toc(page.content).length <= 1 %} sidebar-panel-active{% endif %}">
+      <div class="site-overview-wrap sidebar-panel{% if not display_toc or toc(page.content).length <= 1 %} sidebar-panel-active{% endif %}">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             {% if theme.avatar.url %}
-              <a href="/hexo/">
+              <a href="/hexo/about">
                 <img class="site-author-image" itemprop="image"
                   src="{{ url_for( theme.avatar.url | default(theme.images + '/avatar.gif') ) }}"
                   alt="{{ author }}" />
               </a>
             {% endif %}
-              <a href="/hexo/about" class="link_to_about"><p class="site-author-name" itemprop="name">{{ author }}</p></a>
+              {#<a href="/hexo/about" class="link_to_about"><p class="site-author-name" itemprop="name">{{ author }}</p></a>#}
               <p class="site-description motion-element" itemprop="description">{#
               #}{{ description }}{#
             #}</p>
+          </div>
+          <div class="sidebar-menu">
+            <a href="/hexo" rel="section" class="sidebar-menu-item sidebar-menu-item-home"><span><i class="sidebar-menu-item-icon fa fa-fw fa-home"></i>首頁</span></a>
+            <a href="/hexo/archives" rel="section" class="sidebar-menu-item sidebar-menu-item-archive"><span><i class="sidebar-menu-item-icon fa fa-fw fa-inbox"></i>全部文章</span></a>
+            <a href="/hexo/categories" rel="section"n class="sidebar-menu-item sidebar-menu-item-categories"><span><i class="sidebar-menu-item-icon fa fa-fw fa-columns"></i>所有分類</span></a>
+            <a href="/hexo/tags" rel="section" class="sidebar-menu-item sidebar-menu-item-tags"><span><i class="sidebar-menu-item-icon fa fa-fw fa-tags"></i>標籤雲</span></a>
           </div>
 
           {% if theme.site_state %}
@@ -98,7 +104,7 @@
           {% endif %}
           -->
 
-          {% if theme.social %}
+          <!--{% if theme.social %}
             <div class="links-of-author motion-element">
               {% for name, link in theme.social %}
                 <span class="links-of-author-item">
@@ -121,7 +127,7 @@
                 </span>
               {% endfor %}
             </div>
-          {% endif %}
+          {% endif %}-->
 
           {% set cc = {'by': 1, 'by-nc': 1, 'by-nc-nd': 1, 'by-nc-sa': 1, 'by-nd': 1, 'by-sa': 1, 'zero': 1} %}
           {% if theme.creative_commons in cc %}
@@ -131,8 +137,34 @@
               </a>
             </div>
           {% endif %}
+          
 
+      {% if display_toc and toc(page.content).length > 1 %}
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+            <div class="toc-title">
+              <span class="toc-title-name"><i class="fa  fa-fw fa-{{ theme.toc.icon | default('hashtag') | lower }}"></i>
+                  {{ theme.toc.title }}
+              <i class="fa  fa-fw fa-{{ theme.toc.icon | default('hashtag') | lower }}"></i></span>
+            </div>
+          <div class="post-toc">
+            
+            {% if page.toc_number === undefined %}
+              {% set toc = toc(page.content, { "class": "nav", list_number: theme.toc.number }) %}
+            {% else %}
+              {% set toc = toc(page.content, { "class": "nav", list_number: page.toc_number }) %}
+            {% endif %}
 
+            {% if toc.length <= 1 %}
+              <p class="post-toc-empty">{{ __('post.toc_empty') }}</p>
+            {% else %}
+              <div class="post-toc-content">{{ toc }}</div>
+            {% endif %}
+
+          </div>
+        </div>
+      <!--/noindex-->
+      {% endif %}
 
           {# Blogroll #}
           {% if theme.links %}
@@ -158,49 +190,10 @@
             {% set custom_sidebar = '../_custom/sidebar.swig' %}
           {% endif %}
           {% include custom_sidebar %}
+          {% include '../_partials/footer.swig' %}
+
         </div>
-      </section>
-
-      {% if display_toc and toc(page.content).length > 1 %}
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            {% if page.toc_number === undefined %}
-              {% set toc = toc(page.content, { "class": "nav", list_number: theme.toc.number }) %}
-            {% else %}
-              {% set toc = toc(page.content, { "class": "nav", list_number: page.toc_number }) %}
-            {% endif %}
-
-            {% if toc.length <= 1 %}
-              <p class="post-toc-empty">{{ __('post.toc_empty') }}</p>
-            {% else %}
-              <div class="post-toc-content">{{ toc }}</div>
-            {% endif %}
-
-          </div>
-        </section>
-      <!--/noindex-->
-      {% endif %}
-
-      {% if theme.recent_posts %}
-          <div class="links-of-blogroll motion-element {{ "links-of-blogroll-" + theme.recent_posts_layout  }}">
-            <div class="links-of-blogroll-title">
-              <!-- modify icon to fire by szw -->
-              <span class="links-of-blogroll-title-name"><i class="fa fa-history fa-{{ theme.recent_posts_icon | lower }}" aria-hidden="true"></i>
-              {{ theme.recent_posts_title }}
-              <i class="fa fa-history fa-{{ theme.recent_posts_icon | lower }}" aria-hidden="true"></i></span>
-            </div>
-            <ul class="links-of-blogroll-list">
-              {% set posts = site.posts.sort('-date') %}
-              {% for post in posts.slice('0', '5') %}
-                <li>
-                  <a href="{{ url_for(post.path) }}" title="{{ post.title }}">{{ post.title }}</a>
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
-      {% endif %}
+      </div>
 
       {% if theme.sidebar.b2t %}
         <div class="back-to-top">

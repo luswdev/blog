@@ -3,7 +3,6 @@ title:
 date: 2018-08-30 10:45:42
 type: "about"
 comments: false
-sidebar: false
 ---
 
 ## OMU Skywalker

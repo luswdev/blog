@@ -16,10 +16,11 @@ category: xv6
 ---
 
 ## 檔案描述符
+- <i class="fa fa-file-text-o" aria-hidden="true"></i> File: file.c
 - UNIX 大部分的資源都是一個文件，而此統一性由檔案描述符實現。
 - 每個 process 都有一個表記錄著開啟的文件（行 13），一個開啟的文件即為 `struct file`
 
-```c  file: proc.h::struct proc =54
+```c =54 :(proc.h)
 // Per-process state
 struct proc {
   uint sz;                     // Size of process memory (bytes)
@@ -40,7 +41,7 @@ struct proc {
 
 <!-- more -->
 
-```c :file: file.h::struct file
+```c :(file.h)
 struct file {
   enum { FD_NONE, FD_PIPE, FD_INODE } type;
   int ref; // reference count
@@ -54,7 +55,7 @@ struct file {
 
 - 所有的 open files 皆被存放在 `ftable` 中：
 
-```c :file: file.c::ftable =13
+```c =13 :(file.c)
 struct {
   struct spinlock lock;
   struct file file[NFILE];
@@ -63,7 +64,13 @@ struct {
 
 
 ### Code: filealloc、dup and close
-```c :file: file.c::filealloc =24
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `filealloc`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 建立一個檔案 | 檔案結構 |
+
+```c =24
 // Allocate a file structure.
 struct file*
 filealloc(void)
@@ -82,9 +89,21 @@ filealloc(void)
   return 0;
 }
 ```
+
 - `filealloc` 在 `ftable` 找到一個 `f->ref` 為零的，並返回。
 
-```c :file: file.c::filedup =42
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `filedup`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 再次一個檔案 | 開啟的檔案結構 |
+
+| `*f` |
+| ---- |
+| 欲開啟的檔案 |
+
+```c =42
 // Increment ref count for file f.
 struct file*
 filedup(struct file *f)
@@ -97,9 +116,21 @@ filedup(struct file *f)
   return f;
 }
 ```
+
 - `filedup` 增加引用次數。
 
-```c :file: file.c::fileclose =54
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `fileclose`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 關閉檔案 | void |
+
+| `*f` |
+| ---- |
+| 欲關閉的檔案 |
+
+```c =54
 // Close file f.  (Decrement ref count, close when reaches 0.)
 void
 fileclose(struct file *f)
@@ -114,6 +145,7 @@ fileclose(struct file *f)
     return;
   }
 ```
+
 - `fileclose` 減少引用次數。
 
 
@@ -132,10 +164,22 @@ fileclose(struct file *f)
   }
 }
 ```
+
 - 若引用次數降為 0 時，則依據類型的不同釋放當前的 pipe 或是 inode。
 
 ### Code: filestat、read and write
-```c :file: file.c::filestat =81
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `filestat`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 讀取檔案狀態 | 0 (ok) / -1 (err) |
+
+| `*f` | `*st` |
+| ---- | ----- |
+| 欲讀取的檔案 | 寫入狀態的結構 |
+
+
+```c =81
 // Get metadata about file f.
 int
 filestat(struct file *f, struct stat *st)
@@ -151,7 +195,18 @@ filestat(struct file *f, struct stat *st)
 ```
 - 須為 `inode` 才可使用 `filestat`，通過呼叫 `stati` 來實現操作。
 
-```c :file: fs.c::stati =421
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `stati`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 寫入檔案狀態 | void |
+
+| `*ip` | `*st` |
+| ---- | ----- |
+| 欲讀取的檔案 | 寫入狀態的結構 |
+
+```c =421 :(fs.c)
 // Copy stat information from inode.
 void
 stati(struct inode *ip, struct stat *st)
@@ -164,7 +219,18 @@ stati(struct inode *ip, struct stat *st)
 }
 ```
 
-```c :file: file.c::fileread =94
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `fileread`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 讀取檔案 | 讀取大小 |
+
+| `*f` | `*addr` | `n` |
+| ---- | ------- | --- |
+| 欲讀取的檔案 | 欲寫入資料的記憶體 | 欲寫入的大小 |
+
+```c =94
 // Read from file f.
 int
 fileread(struct file *f, char *addr, int n)
@@ -185,11 +251,23 @@ fileread(struct file *f, char *addr, int n)
   panic("fileread");
 }
 ```
+
 - `fileread` 針對不同類型有不同的操作：
     - pipe：呼叫 `piperead`，於 [ch5](https://omuskywalker.github.io/hexo/2018/08/14/ch5/#piperead) 介紹過。
     - inode：由 `readi` 完成動作，下面會介紹。
 
-```c :file: file.c::filewrite =114
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `filewrite`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 寫入檔案 | 寫入大小 |
+
+| `*f` | `*addr` | `n` |
+| ---- | ------- | --- |
+| 欲寫入的檔案 | 欲寫入的資料 | 欲寫入的大小 |
+
+```c =114
 //PAGEBREAK!
 // Write to file f.
 int
@@ -240,8 +318,19 @@ filewrite(struct file *f, char *addr, int n)
 ---
 
 ## Code: Path names
+- <i class="fa fa-file-text-o" aria-hidden="true"></i> File: fs.c
 
 ### namex
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `namex`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 從路徑尋找檔案 |  inode 結構 |
+
+| `*path` | `nameiparent` | `*name` |
+| ------- | ------------- | ------ |
+| 路徑名 | - | - |
+
 ```c :file:fs.c =601
 // Look up and return the inode for a path name.
 // If parent != 0, return the inode for the parent and copy the final
@@ -287,7 +376,7 @@ namex(char *path, int nameiparent, char *name)
 ## Code: 目錄
 - 目錄的 inode type 為 `T_DIR`，存在 `struct dirent` 中。
 
-```c :file: fs.h::struct dirent =51
+```c =51 :(fs.c)
 struct dirent {
   ushort inum;
   char name[DIRSIZ];

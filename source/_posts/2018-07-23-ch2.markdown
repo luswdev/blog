@@ -6,6 +6,8 @@ tag: [xv6, page table,虛擬記憶體, 分頁, 記憶體管理, kernel]
 category: xv6
 copyright: true
 ---
+- <i class="fa fa-file-text-o" aria-hidden="true"></i> File: vm.c
+
 ## 分頁硬體
 - PTE：Page table entry，包含 20-bit PPN 及 flags
 - PPN：Physical Page number
@@ -73,10 +75,14 @@ copyright: true
 ## Code: 建立 address space
 - `main` 呼叫 `kvmalloc` 來建立 `KERNBASE` 之上的頁表
 
-<p id="kvmalloc"></p>
-
 ### kvmalloc
-```c :file: vm.c =146
+<p id="kvmalloc" ></p>
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 建立 kernel page | void |
+
+```c =146
 // Allocate one page table for the machine for the kernel address
 // space for scheduler processes.
 void
@@ -89,7 +95,12 @@ kvmalloc(void)
 - 建立頁表的工作由 `setupkvm` 完成
 
 ### setupkvm
-```c :file: vm.c =127
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 設定 kernel page | PDE |
+
+```c =127
 // Set up kernel part of a page table.
 pde_t*
 setupkvm(void)
@@ -116,7 +127,9 @@ setupkvm(void)
 - 接著呼叫 `mappages` 來建立 kernel 所需的映射。
 - 映射存放在 kmap 裡
 
-```c :file: vm.c::struct kmap =115
+---
+
+```c =115
 // This table defines the kernel's mappings, which are present in
 // every process's page table.
 static struct kmap {
@@ -136,6 +149,10 @@ static struct kmap {
 
 
 ### mappages
+| 功能 | 回傳值 |
+| --- | ------ |
+| 設定 PTE | 0 (ok) / -1 (err)  |
+
 ```c :file: vm.c =67
 // Create PTEs for virtual addresses starting at va that refer to
 // physical addresses starting at pa. va and size might not
@@ -172,6 +189,17 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
 ```
 - 最後初始化 PTE。
 - 問題：如何初始化
+
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `walkpgdir`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 從目錄尋找對應的 PTE | PTE |
+
+| `*pgdir` | `*va` | `alloc` |
+| -------- | ----- | ------- |
+| 目標目錄 | 目標虛擬地址 | 是否有 alloc |
 
 ```c :file: vm.c::walkpgdir =42
 // Return the address of the PTE in page table pgdir
@@ -220,13 +248,25 @@ kernel 在運行時須為以下物件分配物理記憶體：
 - Pipe buffers
 
 ## Code: 物理記憶體分配器
+- <i class="fa fa-file-text-o" aria-hidden="true"></i> File: kalloc.c
 - 分配器為一個可分配的記憶體頁所構成的 **free list**
 - `main` 呼叫 `kinit1(end, P2V(4*1024*1024))` 及 `kinit2(P2V(4*1024*1024), P2V(PHYSTOP))` 初始化分配器
 
 <p id="kinit" ></p>
 
 ### kinit1 / 2
-``` c :file: kalloc.c::kinit1 =31
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `kinit1`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 初始化物理記憶體分配器 | void |
+
+| `*vstart` | `*vend` |
+| --------- | ------- |
+| 起始位址 | 結束位址 |
+
+
+``` c =31
 void
 kinit1(void *vstart, void *vend)
 {
@@ -235,7 +275,19 @@ kinit1(void *vstart, void *vend)
   freerange(vstart, vend);
 }
 ```
-```c :file: kalloc.c::kinit2 =38
+
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `kinit1`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 初始化物理記憶體分配器 | void |
+
+| `*vstart` | `*vend` |
+| --------- | ------- |
+| 起始位址 | 結束位址 |
+
+```c =38
 void
 kinit2(void *vstart, void *vend)
 {
@@ -246,7 +298,16 @@ kinit2(void *vstart, void *vend)
 - `kinit1 / 2` 呼叫 `freerange` 將記憶體加入 free list
 
 ### freerange
-```c :file: kalloc.c =45
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| free 一段記憶體 | void |
+
+| `*vstart` | `*vend` |
+| --------- | ------- |
+| 起始位址 | 結束位址 |
+
+```c =45
 void
 freerange(void *vstart, void *vend)
 {
@@ -259,7 +320,16 @@ freerange(void *vstart, void *vend)
 - `freerange` 呼叫 `kfree` 來完成工作
 
 ### kfree
-```c :file: kalloc.c =54
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| free 記憶體 | void |
+
+| `*v` |
+| ---- |
+| 欲 free 的虛擬地址 |
+
+```c =54
 //PAGEBREAK: 21
 // Free the page of physical memory pointed at by v,
 // which normally should have been returned by a
@@ -296,9 +366,12 @@ kfree(char *v)
 ![](https://i.imgur.com/XcCaPsd.png "Memory layout of a user process with its initial stack")
 
 ## Code: sbrk
-- 用途：增長/收縮 process 的記憶體。
 
-```c :file: sysproc.c::sys_sbrk =44
+| 功能 | 回傳值 |
+| --- | ------ |
+| 增長/收縮 process 的記憶體 | 記憶體大小（結果） |
+
+```c =44 :(sysproc.c)
 int
 sys_sbrk(void)
 {
@@ -316,7 +389,18 @@ sys_sbrk(void)
 
 - `sbrk` 透過呼叫 `growproc` 來完成工作。
 
-```c :file: proc.c::growproc =105
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `growproc`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 增長/收縮 process 的記憶體 | | 0 (ok) / -1 (err) |
+
+| `n` |
+| --- |
+| 增長/收縮大小 |
+
+```c =105 :(proc.c)
 // Grow current process's memory by n bytes.
 // Return 0 on success, -1 on failure.
 int
@@ -342,7 +426,17 @@ growproc(int n)
 - 如果 n<0：`deallocuvm`
 
 ### allocuvm、deallocuvm
-```c :file: vm.c::allocuvm =218
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `allocuvm`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 增長記憶體 | 記憶體大小（結果）|
+
+| `*pgdir` | `oldsz` | `newsz` |
+| -------- | ------- | ------- |
+| 從該目錄尋找可用記憶體 | 舊的大小 | 新的大小 |
+
+```c =218
 // Allocate page tables and physical memory to grow process from oldsz to
 // newsz, which need not be page aligned.  Returns new size or 0 on error.
 int
@@ -379,7 +473,17 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 - 接著透過 `kalloc()` 來要記憶體，並將要到的記憶體清空
 - 最後回傳 process 目前總共的大小
 ---
-```c :file: vm.c::deallocuvm =245
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `allocuvm`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 縮減記憶體 | 記憶體大小（結果）|
+
+| `*pgdir` | `oldsz` | `newsz` |
+| -------- | ------- | ------- |
+| 從該目錄釋放記憶體 | 舊的大小 | 新的大小 |
+
+```c =245
 // Deallocate user pages to bring the process size from oldsz to
 // newsz.  oldsz and newsz need not be page-aligned, nor does newsz
 // need to be less than oldsz.  oldsz can be larger than the actual
@@ -423,7 +527,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 - 概觀：打開及讀取 ELF 文件來初始化 user part
 
 ### struct elfhdr
-```c :file: elf.h =6
+```c =6 :(elf.h)
 // File header
 struct elfhdr {
   uint magic;  // must equal ELF_MAGIC
@@ -446,7 +550,7 @@ struct elfhdr {
 - 一個 ELF 文件包含一個 elfhdr、program setion hdr(struct proghdr)
 
 ### struct proghdr
-```c :file: elf.h =24
+```c =24 :(elf.h)
 // Program section header
 struct proghdr {
   uint type;

@@ -47,6 +47,25 @@ blockquote .highlight{
 }
 
 .highlight {
+  /* width */
+  ::-webkit-scrollbar {
+      width: 5px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+      background: $trans; 
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+      background: #444; 
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+      background: #555; 
+  }
   overflow-x: auto;
   overflow-y: hidden;
   border-radius: 4px;
@@ -216,5 +235,5 @@ pre {
 .gutter div.line {
   padding-right: 10px !important;
   box-sizing: border-box;
-  border-right: 3px solid #6ce26c
+  border-right: 3px solid $green
 }

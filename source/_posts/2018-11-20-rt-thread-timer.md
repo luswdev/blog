@@ -4,6 +4,7 @@ date: 2018-11-20 15:47:05
 tag: [RT-Thread, kernel,timer]
 category: RT-Thread
 ---
+- <i class="fa fa-file-text-o" aria-hidden="true"></i> File: timer.c
 - timer 的作用：當時間到時，觸發一個事件；如文本的圖：
 ![](https://i.imgur.com/Uv79P6M.png)
 - timer 的實作是一條鏈，即當前 tick 到達指定的 timer 時，會觸發該 timer 的 `timeout_func`，同時將該 timer 從鏈結移除
@@ -41,12 +42,20 @@ typedef struct rt_timer *rt_timer_t;
 - `timeout_tick` = `init_tick` + 當前的 system tick
 
 ---
-## File: timer.c
-### 初始化、建立 timer
+## 初始化、建立 timer
 - 在建立一個 thread 時，`_rt_thread_init` 會呼叫 `rt_timer_init` 來初始化 timer
 
-若使用靜態記憶體管理：
-```c=155 :rt_timer_init
+### 靜態記憶體管理
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_timer_init`
+
+| 功能 | 回傳值 | 
+| --- | ------ | 
+| 初始化 timer | void |
+
+|`timer` | `*name` | `*timeout` | `*parameter` | `time` | `flag` |
+| ------ | ------- | ------------ | ------------ | ------ | ------ |
+| timer 結構 | 名字 | timeout function | func 的參數 | timeout 初始 tick | 狀態 |
+```c=155
 /**
  * This function will initialize a timer, normally this function is used to
  * initialize a static timer object.
@@ -110,8 +119,20 @@ static void _rt_timer_init(rt_timer_t timer,
 - 設定 flag 為 decativated，設定 timeout_func、tick、timerlist
 
 ---
-若使用動態記憶體管理：
-```c=214 :rt_timer_create
+
+### 動態記憶體管理
+
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_timer_create`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 建立 timer | timer |
+
+| `*name` | `*timeout` | `*parameter` | `time` | `flag` |
+| ------- | ---------- | ------------ | ------ | ------ |
+| 名字 | timeout function | func 的參數 | timeout 初始 tick | 狀態 |
+
+```c=214
 /**
  * This function will create a timer
  *
@@ -148,8 +169,114 @@ RTM_EXPORT(rt_timer_create);
 - 同樣也是透過 `_rt_timer_init` 完成動作
 
 ---
-### 啟動、停止 timer
-```c=277 :rt_timer_start
+## 刪除 timer
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_timer_delete`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 刪除 timer | `RT_EOK` |
+
+| `timer` |
+| ------- |
+| 欲刪除的 timer |
+
+### 動態記憶體管理
+```c=246 
+/**
+ * This function will delete a timer and release timer memory
+ *
+ * @param timer the timer to be deleted
+ *
+ * @return the operation status, RT_EOK on OK; RT_ERROR on error
+ */
+rt_err_t rt_timer_delete(rt_timer_t timer)
+{
+    register rt_base_t level;
+
+    /* timer check */
+    RT_ASSERT(timer != RT_NULL);
+    RT_ASSERT(rt_object_get_type(&timer->parent) == RT_Object_Class_Timer);
+    RT_ASSERT(rt_object_is_systemobject(&timer->parent) == RT_FALSE);
+
+    /* disable interrupt */
+    level = rt_hw_interrupt_disable();
+
+    _rt_timer_remove(timer);
+
+    /* enable interrupt */
+    rt_hw_interrupt_enable(level);
+
+    rt_object_delete((rt_object_t)timer);
+
+    return RT_EOK;
+}
+RTM_EXPORT(rt_timer_delete);
+```
+
+- 透過 `_rt_timer_remove` 移除鏈結
+- 透過 `rt_object_delete` 移除 timer
+
+---
+### 靜態記憶體管理
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_timer_detach`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 刪除 timer | tick 值 |
+
+| `timer` |
+| ------- |
+| 欲刪除的 timer |
+
+
+```c=183 
+/**
+ * This function will detach a timer from timer management.
+ *
+ * @param timer the static timer object
+ *
+ * @return the operation status, RT_EOK on OK; RT_ERROR on error
+ */
+rt_err_t rt_timer_detach(rt_timer_t timer)
+{
+    register rt_base_t level;
+
+    /* timer check */
+    RT_ASSERT(timer != RT_NULL);
+    RT_ASSERT(rt_object_get_type(&timer->parent) == RT_Object_Class_Timer);
+    RT_ASSERT(rt_object_is_systemobject(&timer->parent));
+
+    /* disable interrupt */
+    level = rt_hw_interrupt_disable();
+
+    _rt_timer_remove(timer);
+
+    /* enable interrupt */  rt_hw_interrupt_enable(level);
+
+    rt_object_detach((rt_object_t)timer);
+
+    return RT_EOK;
+}
+RTM_EXPORT(rt_timer_detach);
+```
+
+- 透過 `_rt_timer_remove` 移除鏈結
+- 透過 `rt_object_detach` 移除 timer
+
+---
+## 啟動、停止 timer
+### Code: rt_timer_start
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 啟動 timer| `RT_EOK` |
+
+| `timer` |
+| ------- |
+| 欲啟動的 timer |
+
+
+```c=277
 /**
  * This function will start the timer
  *
@@ -296,7 +423,18 @@ RTM_EXPORT(rt_timer_start);
 - 接著插入 timer 並啟動
 
 ---
-```c=403 :rt_timer_stop
+### Code: rt_timer_stop
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 停止 timer | `RT_EOK` |
+
+| `timer` |
+| ------- |
+| 欲刪除的 timer |
+
+
+```c=403
 /**
  * This function will stop the timer
  *
@@ -336,82 +474,19 @@ RTM_EXPORT(rt_timer_stop);
 - 首先將 timer 從鏈結移出，再將 flag 設為 `RT_TIMER_FLAG_DEACTIVATED `
 
 ---
-### 刪除 timer
-若使用動態記憶體管理：
-```c=246 :rt_timer_delete
-/**
- * This function will delete a timer and release timer memory
- *
- * @param timer the timer to be deleted
- *
- * @return the operation status, RT_EOK on OK; RT_ERROR on error
- */
-rt_err_t rt_timer_delete(rt_timer_t timer)
-{
-    register rt_base_t level;
+## 控制 timer
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_timer_control`
 
-    /* timer check */
-    RT_ASSERT(timer != RT_NULL);
-    RT_ASSERT(rt_object_get_type(&timer->parent) == RT_Object_Class_Timer);
-    RT_ASSERT(rt_object_is_systemobject(&timer->parent) == RT_FALSE);
+| 功能 | 回傳值 |
+| --- | ------ |
+| 控制 timer | tick 值 |
 
-    /* disable interrupt */
-    level = rt_hw_interrupt_disable();
+| `timer` | `cmd` | `*arg` |
+| ------- | ----- | ----- |
+| 欲控制的 timer | 動作 | 根據前面動作的參數 |
 
-    _rt_timer_remove(timer);
 
-    /* enable interrupt */
-    rt_hw_interrupt_enable(level);
-
-    rt_object_delete((rt_object_t)timer);
-
-    return RT_EOK;
-}
-RTM_EXPORT(rt_timer_delete);
-```
-
-- 透過 `_rt_timer_remove` 移除鏈結
-- 透過 `rt_object_delete` 移除 timer
-
----
-若使用靜態記憶體管理：
-```c=183 rt_timer_detach
-/**
- * This function will detach a timer from timer management.
- *
- * @param timer the static timer object
- *
- * @return the operation status, RT_EOK on OK; RT_ERROR on error
- */
-rt_err_t rt_timer_detach(rt_timer_t timer)
-{
-    register rt_base_t level;
-
-    /* timer check */
-    RT_ASSERT(timer != RT_NULL);
-    RT_ASSERT(rt_object_get_type(&timer->parent) == RT_Object_Class_Timer);
-    RT_ASSERT(rt_object_is_systemobject(&timer->parent));
-
-    /* disable interrupt */
-    level = rt_hw_interrupt_disable();
-
-    _rt_timer_remove(timer);
-
-    /* enable interrupt */  rt_hw_interrupt_enable(level);
-
-    rt_object_detach((rt_object_t)timer);
-
-    return RT_EOK;
-}
-RTM_EXPORT(rt_timer_detach);
-```
-
-- 透過 `_rt_timer_remove` 移除鏈結
-- 透過 `rt_object_detach` 移除 timer
-
----
-### 控制 timer
-```c=438 rt_timer_control
+```c=438
 /**
  * This function will get or set some options of the timer
  *
@@ -466,8 +541,15 @@ RTM_EXPORT(rt_timer_control);
 - 如果要設定 timer 為週期性的，添加 `RT_TIMER_FLAG_PERIODIC`
 
 ---
-### 檢查 timer
-```c=476 :rt_timer_check
+## 檢查 timer
+
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `rt_timer_check`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 檢查 timer list | void |
+
+```c=476
 /**
  * This function will check timer list, if a timeout event happens, the
  * corresponding timeout function will be invoked.

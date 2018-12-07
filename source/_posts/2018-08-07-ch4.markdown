@@ -40,13 +40,13 @@ insert(int data)
 
 - 一開始的 list
 
-![](https://i.imgur.com/nRSnZn6.png "list")
+![](https://i.imgur.com/GLtsSvP.png "list")
 - 假設 pocess A 及 B 同時將自己的資料插在 list 的第一顆
-![](https://i.imgur.com/vzKF44W.png "both a and b insert same time")
+![](https://i.imgur.com/litV5oD.png "both a and b insert same time")
 - 接著 process A 以些微的差距先將 list 設為 l（自己的鏈結），此時 list 的第一顆為 A 的資料
-![](https://i.imgur.com/lclqzPs.png "a change the list")
+![](https://i.imgur.com/wPisKVg.png "a change the list")
 - 最後 process B 也將 list 設為 l，此時 list 上的第一顆為 B 的資料，且 A 的資料遺失了。
-![](https://i.imgur.com/3fr2iqX.png "b change the list")
+![](https://i.imgur.com/W2XTKQJ.png "b change the list")
 
 ### 使用鎖
 ```c diff:true

@@ -1,7 +1,15 @@
 .category-all-page {
-  .category-all-title { text-align: center; }
+  margin: 0 6em;
+  border-top: 1px solid;
+  .category-all-title { 
+    text-align: center; 
+    display: none;
+  }
 
-  .category-all { margin-top: 20px; }
+  .category-all { 
+    margin-top: 20px;
+    padding: 0 2em;
+  }
 
   .category-list {
     margin: 0;
@@ -11,10 +19,21 @@
 
   .category-list-item { 
       margin: 5px 10px; 
+      font-weight: bold;
+      font-size: 1.2em;
+      border-bottom: 1px dashed #ccc;
+      padding: 7px 0;
+      a {
+        color: $text-color;
+        &:hover {
+          color: $green;
+        }
+      }
   }
 
   .category-list-count {
-    color: $grey;
+    color: $black-light;
+    float: right;
     &:before {
       display: inline;
       content: " ("

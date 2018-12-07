@@ -110,6 +110,10 @@
   // Need to refactor into flex.
   .post-nav {
     padding-bottom: 2px;
+    +mobile(){
+      width: 91% !important;
+      margin: 0 1em 0 1em;
+    }
     //padding: 2px 8px;
   }
   
@@ -164,7 +168,7 @@
     width: 95% !important;
   }
   .header {
-    width: auto !important;
+    width: 100% !important;
   }
 
   .sidebar a{
@@ -176,6 +180,9 @@
 
   .main-inner {
     padding: 0 !important;
+  }
+  #gitalk-container {
+    padding: 0 1em;
   }
 }
 

@@ -10,9 +10,14 @@ BIOS -> boot section -> main -> scheduler 的詳細流程在 [Ch1](/hexo/2018/07
 {%endnote%}
 
 ## Code: startothers
+- <i class="fa fa-file-text-o" aria-hidden="true"></i> File: main.c
 - 在 main 初始化一些設備後，會先呼叫 startothers，再呼叫 mpmain 來完成 cpu 的設定及呼叫 scheduler。
 
-```c :file: main.c::startothers =68
+| 功能 | 回傳值 |
+| --- | ------ |
+| 啟動其他 CPU | void |
+
+```c =68
 static void
 startothers(void)
 {

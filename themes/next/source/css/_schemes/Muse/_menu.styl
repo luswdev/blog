@@ -13,9 +13,14 @@
 }
 
 .menu {
+  margin: 8px 0 0 0;
   +mobile() { text-align: left; }
+  a::before {
+      display: none;
+  }
 }
 .menu .menu-item {
+  //padding: 0 10px;
   +mobile() {
     display: block;
     margin: 0 10px;
@@ -38,10 +43,11 @@
   }
 
   br {
-    +mobile() { display: none; }
+    display: none;
   }
 
   a {
+    padding: 0 10px;
     +mobile() {
       padding: 5px 10px;
       border-bottom-color: white !important;

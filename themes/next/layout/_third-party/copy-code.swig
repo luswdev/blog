@@ -6,13 +6,13 @@
       font-size: 13px;
       font-weight: 700;
       line-height: 20px;
-      color: #333;
+      color: $text-color;
       white-space: nowrap;
       vertical-align: middle;
       cursor: pointer;
-      background-color: #eee;
-      background-image: linear-gradient(#fcfcfc, #eee);
-      border: 1px solid #d5d5d5;
+      background-color: #303030;
+      //background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #303030;
       border-radius: 3px;
       user-select: none;
       outline: 0;

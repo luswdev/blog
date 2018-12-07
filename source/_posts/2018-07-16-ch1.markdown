@@ -56,7 +56,9 @@ OS 必須具備三項技能：多工、獨立及交流。
 
     ![address space](https://i.imgur.com/jhNNkts.jpg "Layout of a virtual address space")
 
-```x86asm :file: entry.s
+- <i class="fa fa-file-text-o" aria-hidden="true"></i> File: entry.s
+
+```x86asm
 _start = V2P_WO(entry)
 
 # Entering xv6 on boot processor, with paging off.
@@ -89,13 +91,18 @@ entry:
 
 ---
 ## Code: 建立第一個 process
+- <i class="fa fa-file-text-o" aria-hidden="true"></i> File: proc.c
 - 呼叫 `userinit()` 來建立第一個 process（只有在第一個process時會呼叫）。
 - 呼叫 `allocproc()`（每個 process 都會呼叫）。
 - `Allocproc` 在 process table 中分配一個 slot（`struct proc`），並初始化有關 kernel thread 的 process 片段。
 - `Allocproc` 掃描 proc tabel，找到 `p->state` 是 `UNUSED`，接著設定為 `EMBRYO` 來標示被使用，並給予一組唯一的 pid。
 
 ### allocproc
-```c =29 :file: proc.c
+| 功能 | 回傳值 |
+| --- | ------ |
+| 建立一個 process | process 結構 |
+
+```c =29
 // Look in the process table for an UNUSED proc.
 // If found, change state to EMBRYO and initialize
 // state required to run in the kernel.
@@ -160,10 +167,15 @@ found:
 - Process 需要實體記憶體來保存此程式。
 - Process 需要被拷貝到記憶體中，也需要 page table 來指向此位址。
 - `Userinit` 呼叫 `setupkvm` 來建立 page table 只映射到 kernel 會用到的記憶體。
-<p id="userinit"></p>
+- <i id="userinit" class="fa fa-code" aria-hidden="true"></i> Code: `userinitㄒ`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 建立系統的初始 process | void |
 
 ### userinit
 ```c =79 :file: proc.c
+void
 userinit(void)
 {
   struct proc *p;
@@ -208,8 +220,13 @@ userinit(void)
 ---
 ## Code: 執行第一個 process
 - 當 *main* 呼叫完 *userinit* 後，呼叫 *mpmain*，*mpmain* 接著呼叫 *scheduler* 開始運行 process。
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `mpmain`
 
-```c  =55 :file: main.c::mpmain()
+| 功能 | 回傳值 |
+| --- | ------ |
+| 完成多核心開機程序 | void |
+
+```c  =55 :(main.c)
 // Common CPU setup code.
 static void
 mpmain(void)
@@ -221,7 +238,14 @@ mpmain(void)
 }
 ```
 
-```c =249 :file: proc.c::scheduler() 
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `scheduler`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| 執行調度，指定執行的 process | void |
+
+```c =249
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
@@ -314,7 +338,14 @@ swtch:
 - `allocproc` 把 `initproc` 的 `p->context->eip` 設為 `forkret`，使得 `ret` 開始執行 `forkret`。
 - 第一次執行 `forkret` 時會呼叫一些初始化函數(`initlog`)，接著返回。
 
-```c :file: proc.c::forkret() =320
+---
+- <i class="fa fa-code" aria-hidden="true"></i> Code: `forkret`
+
+| 功能 | 回傳值 |
+| --- | ------ |
+| - | void |
+
+```c =320
 // A fork child's very first scheduling by scheduler()
 // will swtch here.  "Return" to user space.
 void
@@ -356,8 +387,9 @@ trapret:
   iret
 ```
 
-
+{%note info%}
 `iret`：interrupt return，程序返回中斷前的位址。
+{%endnote%}
 
 - 處理器從 `%eip` 的值繼續執行，對於 `initproc` 即為虛擬地址 0，也就是 *initcode.S* 的第一條指令。
 
