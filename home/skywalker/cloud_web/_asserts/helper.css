@@ -1,0 +1,112 @@
+
+@media only screen and (max-width: 500px){
+	.main-inner {
+		width: 100%;
+	}
+	body {
+		margin: 0;
+	}
+	.main .lists-pwd {
+		border-left: 0;
+		border-right: 0;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+	}
+	table.file-lists {
+		border-left: 0;
+		border-right: 0;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+	table td {
+		line-height: 40px;	
+	}
+	table th.th-time, table td.time {
+		display: none;
+	}
+	th.name {
+		text-align: left;
+	}
+
+	div.download-check-box {
+		width: 95%;
+	}
+
+	.profix-menu-toggle {
+		margin-right: 10px;
+		margin-top: -50px;
+	}
+
+	.profix-menu{
+		margin-top: -10px;
+		position: absolute;
+		right: 1%;
+	}
+
+	.file-upload-box {
+		width: 90%;
+	}
+
+	.file-location-box{
+		width: 60%;
+	}
+
+	label {
+		width: 20%;
+	}
+
+	input#search-file {
+		width: 50%;
+		margin-left: -1px;
+	}
+
+	input#search-file:focus {
+		width: 70%;
+	}
+
+	.search-go {
+		position: relative;
+		top: 3em;
+		position: relative;
+		top: 15px;
+		margin: auto;
+		display: block;
+		left: 0;
+		right: 0;
+		width: 6em;
+	}
+
+	.search-go i:before {
+		content: "GO!"
+	}
+}
+
+@media only screen and (max-width: 850px) and (min-width: 501px) {
+	.main-inner {
+		width: 90%;
+	}
+
+	.logout-text{
+		font-size: 2em
+	}
+} 
+
+@media only screen and (max-width: 1200px) and (min-width: 770px){
+    h1 {
+        font-size: 120px;
+    }
+}
+
+@media only screen and (max-width: 769px){
+    h1 {
+        padding-top: 1em;
+        font-size: 50px;
+        letter-spacing: 10px;
+    }
+}
+
+@media only screen and (max-width: 320px){
+    h1 {
+        font-size: 30px;
+    }
+}
