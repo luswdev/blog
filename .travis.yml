@@ -26,12 +26,13 @@ script:
   - hexo generate
 
 before_deploy:
-  - export NOW=${date}
+  - export NOW=$(date)
 
 deploy:
   provider: pages
   cleanup: false
   edge: true
+  strategy: git
   token: $GH_TOKEN
   keep_history: true
   commit_message: "Site updated from Travis CI: $NOW"
