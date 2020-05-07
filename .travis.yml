@@ -28,6 +28,7 @@ script:
 deploy:
   provider: pages
   skip-cleanup: true
+  edge: true
   github-token: $GH_TOKEN
   keep-history: true
   commit-message: "Site upload."
