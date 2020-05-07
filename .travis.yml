@@ -23,13 +23,11 @@ install:
   - npm install hexo-deployer-git --save
 
 script:
-  - hexo clean
   - hexo generate
 
 before_deploy:
-        - sudo timedatectl set-timezone Asia/Taipei
-        - export TZ="Asia/Taipei"
-        - export NOW=$(date +"%Y-%m-%d %H:%M:%S")
+  - export TZ="Asia/Taipei"
+  - export NOW=$(date +"%Y-%m-%d %H:%M:%S")
 
 deploy:
   provider: pages
