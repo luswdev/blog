@@ -27,12 +27,9 @@ script:
   - hexo generate
 
 before_deploy:
-        - sudo apt install ntpdate
-        - sudo ntpdate time.nist.gov
         - sudo timedatectl set-timezone Asia/Taipei
-        - sudo timedatectl set-ntp true
         - export TZ="Asia/Taipei"
-        - export NOW=$(date +"%Y-%m-%d %H:%m:%S")
+        - export NOW=$(date +"%Y-%m-%d %H:%M:%S")
 
 deploy:
   provider: pages
