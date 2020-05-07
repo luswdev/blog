@@ -27,7 +27,8 @@ script:
 
 before_deploy:
         - sudo timedatectl set-timezone Asia/Taipei
-        - export NOW=$(date +"%Y-%m-%d %H:%m:%s")
+        - date
+        - export NOW=$(date +"%Y-%m-%d %H:%m:%S")
 
 deploy:
   provider: pages
