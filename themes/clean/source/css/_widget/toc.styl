@@ -1,0 +1,102 @@
+/*
+ * toc.styl
+ */
+
+
+.ui-toc.dropup {
+    position: fixed;
+    bottom: 20px;
+    z-index: 998;
+
+    .toc-btn {
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        padding: 9px 15px;
+        position: fixed;
+        right: 3%;
+        bottom: 3%;
+        z-index: 10;
+        width: 40px;
+        height: 40px;
+        opacity: .7;
+        
+        &:hover {
+            color: #fff;
+            background-color: gray-dark;
+        }
+
+        i {
+            margin-left: -2px;
+        }
+    }
+
+    &.show {
+        button {
+            background: gray-dark;
+            color: white;
+        }
+    }
+
+    .dropdown-menu {
+        right: 0;
+        left: auto;
+        margin-bottom: calc(3%+50px)
+        max-width: 40vw;
+        width: 20vw;
+        box-shadow: 0 6px 12px rgba( 0, 0, 0, .175 );
+
+        #toc-content {
+            sans-serif();
+            max-height: 70vh;
+            overflow: auto;
+            font-size: .8em;
+            line-height: 1.6;
+
+            &.expand {
+                ol {
+                    max-height: unset;
+                }
+            }
+
+            ol {
+                transition: none;
+                padding-inline-start: 20px;
+            }
+
+            li.toc-list-item {
+                list-style: none;
+                color: color-meta;
+                
+                a {
+                    text-decoration: none;
+                }
+
+                &:not(.is-active-li) a:hover {
+                    color: #000;
+                    &::before {
+                        width: 1px;
+                        background-color: #000;
+                    }
+                }
+
+                &.is-active-li {
+                    color: #000;
+                }
+            }
+        }
+
+        .toc-menu {
+            font-size: .8em;
+
+            a {
+                color: color-meta;
+
+                &:hover {
+                    color: #000 !important;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,84 @@
+# Site config
+# ---------------------------------------------------------------
+
+# Title on top left of menu. Leave empty to use main blog title
+menu_title: LuSkywalker
+
+# URL of the Home page image
+index_cover: /img/home-bg.jpg
+
+# Set your own favicon
+favicon: /img/favicon.png
+
+# Site start year
+# Default with current year
+start_year: 2018
+
+# Post config
+# ---------------------------------------------------------------
+
+# Default post title
+default_post_title: Untitled
+
+# Enable post toc
+toc: true
+
+# Post meta
+post_info:
+  word_count: true
+  read_time: false
+
+# Enable post mathjax render
+mathjax:
+  enable: true
+  cdn: //cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+
+# Comments. Choose one by filling up the information
+comments:
+  # Disqus comments
+  disqus:
+    enable: false
+    shortname: 
+  # Gitalk
+  gitalk:
+    enable: true
+    owner: 'luswdev' 
+    repo: 'luswdev.github.io'
+    oauth:
+      accessToken: 'b554e5cfdb57826c448b9b147bc46ccc7a872cfb'    
+      clientId: '97c34b7bba491c6a5007'
+      clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8'
+    admin: 'luswdev'
+
+# Footer config
+# ---------------------------------------------------------------
+footer:
+  author: https://github.com/luswdev
+  menu:
+    Home: /
+    Archives: /archives
+    Tags: /tags
+    Categories: /categories
+    About: /about
+  social_link:
+    twitter_url:
+    twitter_handle:
+    facebook_url:
+    github_url: https://github.com/luswdev
+    gitlab_url:
+    linkedin_url: https://www.linkedin.com/in/callum-lu-0aa77066/
+    mailto: info@lusw.dev
+
+# Tracking config
+# ---------------------------------------------------------------
+
+# Google Analytics Tracking ID
+google_analytics: UA-158078787-1
+
+# Busuanzi Statistics
+busuanzi:
+  enable: true
+  cdn: //busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js
+  site_views: false
+  site_visitors: false
+  post_views: false

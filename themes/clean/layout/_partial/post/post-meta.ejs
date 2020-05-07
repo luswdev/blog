@@ -1,0 +1,35 @@
+<span class="meta d-inline-block">
+    <% if (page.categories && page.categories.length){ %>
+        <i class="far fa-bookmark fa-fw"></i>
+        <%- partial('_partial/post/post-categories', {page: page}) %>
+    <% } %>
+    <% if(page.author) { %>
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="fas fa-user-edit"></i>
+        <%- page.author %>
+    <% } %>
+    <!-- Date -->
+    <% if(page.date) { %>
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        <%= page.date.format(config.date_format) %>
+    <% } %>
+    <!-- word count and read count -->
+    <% if (theme.post_info.word_count) { %>
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        <%= wordcount(page.content) %>
+    <% } %>
+
+    <% if (theme.post_info.read_time) { %>
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-clock fa-fw"></i>
+        <%= min2read(page.content) %> <%= __('Minutes') %>
+    <% } %>
+
+    <% if (theme.busuanzi.post_views) { %>
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-eye fa-fw"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    <% } %>
+</span>
