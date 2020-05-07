@@ -29,9 +29,9 @@ deploy:
   provider: pages
   cleanup: false
   edge: true
-  github_token: $GH_TOKEN
+  token: $GH_TOKEN
   keep_history: true
-  commit_message: "Site updated from Travis CI: ${ now('YYYY-MM-DD HH:mm:ss')}"
+  commit_message: "Site updated from Travis CI: %{ now('YYYY-MM-DD HH:mm:ss')}"
   on:
     branch: master
   local_dir: public
