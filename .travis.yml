@@ -30,7 +30,7 @@ deploy:
   skip-cleanup: true
   github-token: $GH_TOKEN
   keep-history: true
-  commit_message: "Site upload."
+  commit-message: "Site upload."
   on:
     branch: master
   local-dir: public
