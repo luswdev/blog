@@ -1,6 +1,6 @@
 language: node_js
 
-sudo: false
+os: linux
 
 node_js: 
   - '10'
@@ -27,12 +27,12 @@ script:
 
 deploy:
   provider: pages
-  skip-cleanup: true
+  cleanup: false
   edge: true
-  github-token: $GH_TOKEN
-  keep-history: true
-  commit-message: "Site updated from Travis CI: {{ now('YYYY-MM-DD HH:mm:ss')}}"
+  github_token: $GH_TOKEN
+  keep_history: true
+  commit_message: "Site updated from Travis CI: ${ now('YYYY-MM-DD HH:mm:ss')}"
   on:
     branch: master
-  local-dir: public
+  local_dir: public
 
