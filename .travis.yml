@@ -26,7 +26,8 @@ script:
   - hexo generate
 
 before_deploy:
-  - export NOW=$(date)
+        - timedatectl set-timezone Asia/Taipei
+        - export NOW=$(date +"%Y-%m-%d %H:%m:%s")
 
 deploy:
   provider: pages
