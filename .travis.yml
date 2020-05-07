@@ -30,7 +30,7 @@ deploy:
   skip-cleanup: true
   github-token: $GH_TOKEN
   keep-history: true
-  commit_message: "Site updated: ${now('YYYY-MM-DD HH:mm:ss')}"
+  commit_message: "Site updated: {{now('YYYY-MM-DD HH:mm:ss')}}"
   on:
     branch: master
   local-dir: public
