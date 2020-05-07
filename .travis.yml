@@ -1,6 +1,7 @@
 language: node_js
 
 os: linux
+dist: xenial
 
 node_js: 
   - '10'
@@ -28,7 +29,6 @@ script:
 before_deploy:
         - sudo timedatectl set-timezone Asia/Taipei
         - export TZ="Asia/Taipei"
-        - timedatectl
         - export NOW=$(date +"%Y-%m-%d %H:%m:%S")
 
 deploy:
