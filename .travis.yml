@@ -31,7 +31,7 @@ deploy:
   edge: true
   github-token: $GH_TOKEN
   keep-history: true
-  commit-message: "Site upload."
+  commit-message: "Site updated from Travis CI: {{ now('YYYY-MM-DD HH:mm:ss')}}"
   on:
     branch: master
   local-dir: public
