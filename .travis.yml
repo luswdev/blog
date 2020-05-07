@@ -36,7 +36,7 @@ deploy:
   strategy: git
   token: $GH_TOKEN
   keep_history: true
-  commit_message: "Site updated from Travis CI: $NOW"
+  commit_message: "Site updated: $NOW"
   on:
     branch: master
   local_dir: public
