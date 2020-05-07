@@ -27,6 +27,8 @@ script:
   - hexo generate
 
 before_deploy:
+        - sudo apt install ntpdate
+        - sudo ntpdate time.nist.gov
         - sudo timedatectl set-timezone Asia/Taipei
         - sudo timedatectl set-ntp true
         - export TZ="Asia/Taipei"
