@@ -28,6 +28,7 @@ script:
 before_deploy:
         - sudo timedatectl set-timezone Asia/Taipei
         - date
+        - timedatectl
         - export NOW=$(date +"%Y-%m-%d %H:%m:%S")
 
 deploy:
