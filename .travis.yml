@@ -31,7 +31,7 @@ deploy:
   edge: true
   token: $GH_TOKEN
   keep_history: true
-  commit_message: Site updated from Travis CI: %{ now('YYYY-MM-DD')}
+  commit_message: "Site updated from Travis CI."
   on:
     branch: master
   local_dir: public
