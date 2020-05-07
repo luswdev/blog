@@ -43,7 +43,7 @@ comments:
   gitalk:
     enable: true
     owner: 'luswdev' 
-    repo: 'luswdev.github.io'
+    repo: 'HackTech'
     oauth:
       accessToken: 'b554e5cfdb57826c448b9b147bc46ccc7a872cfb'    
       clientId: '97c34b7bba491c6a5007'
