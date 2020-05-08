@@ -362,4 +362,4 @@ If not given classes, it will also show default classes. So this two are equal.
 
 ---
 
-That is, how does a card work on hexo by using tag plugins. You can find source code about this website in [github](https://github.com/luswdev/luswdev.github.io/tree/auto_bk_matery) if you want to learn more.
+That is, how does a card work on hexo by using tag plugins. You can find source code about this website in [github](https://github.com/luswdev/HackTeck/tree/master) if you want to learn more.

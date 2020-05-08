@@ -3,7 +3,6 @@ title: 自訂網域名稱：Google Domain
 tag: [hexo, CNAME]
 date: 2018-12-13 11:17:28
 category: Hexo
-cover: true
 summary: 一整套的教學-在 google domain 上購買網域名稱，並自訂 github page 的網址。
 ---
 ## 購買網域
@@ -27,10 +26,6 @@ summary: 一整套的教學-在 google domain 上購買網域名稱，並自訂 
 CNAME 的 data 請填 `你的 github ID`+`.github.io.`，注意最後有一個點
 
 這些都設定完，之後你的網址就會變成 `subdomain.domain.com`
-
-{% alert warning %}
-一個很重要的事情是，發布 hexo 的 github repo 須為 **github.io** 類型的，否則設定會有誤
-{% endalert%}
 
 ## 設定 github CNAME
 Github 官方有提供 301 轉址功能，只要在網頁的 branch 下建立一個 `CNAME` 檔案，就會把舊網址轉址到新網址。你的 CNAME 應該要填以下內容：

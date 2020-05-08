@@ -5,7 +5,7 @@ date: 2018-08-27 14:15:29 +0800
 tag: [XV6, kernel]
 category: XV6
 ---
->BIOS -> boot section -> main -> scheduler 的詳細流程在 [Ch1](/xv6/process.html)、[Ch5](/xv6/scheduler.html)及[Appendix B](/xv6/bootloader.html)，本文強調 CPU0 以外的 CPU 啟動流程及更詳細的 main 解析。
+>BIOS -> boot section -> main -> scheduler 的詳細流程在 [Ch1](/post/xv6/process.html)、[Ch5](/post/xv6/scheduler.html)及[Appendix B](/post/xv6/bootloader.html)，本文強調 CPU0 以外的 CPU 啟動流程及更詳細的 main 解析。
 
 ## Code: startothers
 {% alert success %}
@@ -181,8 +181,8 @@ main(void)
   mpmain();
 }
 ```
-- `kinit1()` [In ch2](/xv6/mem.html#kinit1-2)
-- `kvmalloc()` [In Ch2](/xv6/mem.html#kvmalloc)
+- `kinit1()` [In ch2](/post/xv6/mem.html#kinit1-2)
+- `kvmalloc()` [In Ch2](/post/xv6/mem.html#kvmalloc)
 - `mpinit()`
 - `lapicinit()`
 - `seginit()`
@@ -191,13 +191,13 @@ main(void)
 - `consoleinit()`
 - `uartinit()`
 - `pinit()`
-- `tvinit()` [In Ch3](/xv6/trap.html#Code-Assembly-trap-handler)
+- `tvinit()` [In Ch3](/post/xv6/trap.html#Code-Assembly-trap-handler)
 - `binit()`
 - `fileinit()`
 - `iinit()`
-- `ideinit()` [In Ch3](/xv6/trap.html#File-buf-h)
+- `ideinit()` [In Ch3](/post/xv6/trap.html#File-buf-h)
 - `timerinit()`
 - `startothers()` [Above](#Code-startothers)
-- `kinit2()` [In ch2](/xv6/mem.html#kinit1-2)
-- `userinit()` [In Ch1](/xv6/process.html#userinit)
+- `kinit2()` [In ch2](/post/xv6/mem.html#kinit1-2)
+- `userinit()` [In Ch1](/post/xv6/process.html#userinit)
 - `mpmain()`

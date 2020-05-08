@@ -14,7 +14,7 @@ So this is a badge given by [bootstrap](https://getbootstrap.com/docs/4.4/compon
 ```
 
 And yes, this is not like ++*Hexo*++ style, and hardly to modify.
-So as [last post](/add-bs-card-for-hexo.html), let build a tags to insert a badge.
+So as [last post](/post/hexo/add-bs-card.html), let build a tags to insert a badge.
 
 ---
 ## Badge Tags
@@ -176,4 +176,4 @@ And content should put after a `@`
 ```
 ---
 
-That is, how does a badge work on hexo by using tag plugins. You can find source code about this website in [github](https://github.com/luswdev/luswdev.github.io/tree/auto_bk_matery) if you want to learn more.
+That is, how does a badge work on hexo by using tag plugins. You can find source code about this website in [github](https://github.com/luswdev/HackTeck/tree/master) if you want to learn more.
