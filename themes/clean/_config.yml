@@ -77,7 +77,7 @@ google_analytics: UA-158078787-1
 
 # Busuanzi Statistics
 busuanzi:
-  enable: true
+  enable: false
   cdn: //busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js
   site_views: false
   site_visitors: false
