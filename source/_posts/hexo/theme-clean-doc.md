@@ -117,7 +117,7 @@ footer:
     mailto:
 ```
 
-### New Tags page.
+### New Tags page
 
 > Follow these steps to add a `tags` page that contains all the tags in your site.
 
@@ -143,7 +143,7 @@ footer:
     Tags: /tags
 ```
 
-### Categories page.
+### Categories page
 
 > Follow these steps to add a `categories` page that contains all the categories in your site.
 
@@ -169,7 +169,7 @@ footer:
     Categories: /categories
 ```
 
-### New About page.
+### New About page
 
 > Follow these steps to add a `about` page that can write some information about you.
 
