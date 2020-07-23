@@ -13,8 +13,8 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://lusw.dev/blog/
-root: /blog/
+url: https://blog.lusw.dev/
+root: /
 permalink: posts/:title.html
 permalink_defaults:
 
@@ -111,7 +111,7 @@ theme: clean
 deploy:
   type: git
   repo: https://github.com/luswdev/HackTech.git
-  branch: gh-pages
+  branch: gh-page
 
 search:
   path: search.xml
