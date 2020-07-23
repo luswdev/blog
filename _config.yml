@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://lusw.dev/
+url: https://lusw.dev/blog/
 root: /blog/
 permalink: posts/:title.html
 permalink_defaults:
