@@ -31,7 +31,7 @@ category: Note
 
 [^2]:[BMP - 維基百科，自由的百科全書](https://zh.wikipedia.org/wiki/BMP)
 
-## Bitmap Info Header
+## 2.Bitmap Info Header
 | Start  | Name      | Size (Byte) | Content    |
 | ------ | --------- | ----------- | ---------- |
 | 0x000E | Bitmap Header Size | 4  | BIH size   |
@@ -65,14 +65,14 @@ category: Note
 
 [^3]:[BMP檔案格式詳解（BMP file format）[圖文解說] - IT閱讀](https://www.itread01.com/content/1549504280.html)
 
-## Palette
+## 3.Palette
 | Start  | Name    | Size (Byte) | Content      |
 | ------ | ------- | ----------- | ------------ |
 | 0x0036 | Palette | N\*4        | Palette data |
 
 每個索引值表示一個顏色：`0x00RRGGBB`，最高位保留 0
 
-## Bitmap Array
+## 4.Bitmap Array
 | Start  | Name        | Size (Byte) | Content      |
 | ------ | ----------- | ----------- | ------------ |
 | -      | Bitmap Data | -           | BMP data     |
