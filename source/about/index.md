@@ -5,23 +5,23 @@ type: "about"
 layout: "about"
 ---
 ## LuSkywalker
-A master Student in Computer Science currently, and looking for a job about firmware engineer.
+資訊工程所碩士畢業，目前為一名韌體工程師。
 
 {% card %}
 <!-- header -->
-**Eduation**
+**學歷**
 <!-- endheader -->
-- M.S. in Computer Science, September 2018 - June 2020.
-- B.S. in Mathematics, September 2014 - June 2018.
+- 資訊工程所 碩士（2018/07 - 2020/08）
+- 應用數學系 學士（2014/09 - 2018/06）
 {% endcard %}
 
 {% card %}
 <!-- header -->
-**Research Interests**
+**研究領域**
 <!-- endheader -->
-- Firmware development
-- Embeddeing system
-- Real time Operating System
+- 韌體開發
+- 嵌入式系統
+- 即時作業系統
 {% endcard %}
 
 
@@ -38,24 +38,24 @@ A master Student in Computer Science currently, and looking for a job about firm
 
 {% card %}
 <!-- header -->
-**Projects**
+**專案**
 <!-- endheader -->
-- [**CoOS GUI Engine**](https://github.com/luswdev/CoOS-GUI-Engine) - My paper, porting a GUI engine for CoOS.
-- [**Mini Cloud system**](https://github.com/luswdev/mini-cloud-system) - A simple cloud system using PHP and MySQL.
+- [**CoOS GUI Engine**](https://github.com/luswdev/CoOS-GUI-Engine) - 一個在 CoOS 上的圖形使用者介面渲染引擎，我的碩士論文
+- [**Mini Cloud system**](https://github.com/luswdev/mini-cloud-system) - 一個用 PHP + MySQL 打造的簡易雲端
 {% endcard %}
 
 {% card %}
 <!-- header -->
-**Lifes**
+**經歷**
 <!-- endheader -->
-- **2014.09** - Started studying Mathematics for bachelor degree.
-- **2017.01** - Started writing on [Medium](https://medium.com/) for preparing entrance test for ms candidates.
-- **2018.07** - Started using [Octcpress](http://octopress.org/) to delopy website, and move older posts into it.
-- **2018.08** - Changed website engine to [Hexo](https://hexo.io/), and recording my study notes.
-- **2018.09** - Started studying Copmuter Science for master degree.
-- **2019.04** - Working on my paper so nothing wrote on this website.
-- **2019.12** - All goes well, so I came back and restarted writing stuff.
-- **2020.06** - *Graduated from master degree.*
+- **2014.09** - 就讀應用數學系大學部
+- **2017.01** - 為了碩士班考試，將我的學習筆記放在 [Medium](https://medium.com/) 上
+- **2018.07** - 開始使用 [Octcpress](http://octopress.org/) 來建置網站，並將舊文章搬至新家
+- **2018.08** - 更改渲染引擎 [Hexo](https://hexo.io/)，繼續記錄我的學習筆記
+- **2018.09** - 開始資訓工程所的研究生涯
+- **2019.04** - 專心於我的論文，所以這裡荒廢了
+- **2019.12** - 一切順利，所以繼續回來寫作啦
+- **2020.06** - 碩士畢業，並開始韌體工程師生涯
 {% endcard %}
 
 <div class="card bg-default  my-3">
