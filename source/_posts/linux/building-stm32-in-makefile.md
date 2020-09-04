@@ -112,7 +112,7 @@ category: Linux
 下一步，來寫 makefile！
 
 ## GCC
-在最上層資料夾裡的 makefile 寫上以下程式碼：
+在所有的 makefile（除了最上層）寫上以下程式碼：
 
 ```makefile =
 TCPREFIX = arm-none-eabi-
@@ -146,16 +146,15 @@ clean:
 	-rm -rf $(OBJDIR)/*.d
 ```
 
-- Line 1 and 2 told makefile to use `arm-none-eabi-gcc` to complete object work.
-- Line 4 told makefile which flag we use in `gcc`.
-- Line 6 to 8 told which directory we need to include. (If other directory needed, add line here too.)
-- Line 12 to 15 told which file to object, put all `.c` file location at `src` directory and rename to `.o`.
-- Line 17 give `all` target to build all object file.
-- Line 19 to 21 build all object file, this is a action after `all` called.
-- If `obj` directory is not existed, new it at line 23 to 25.
-- Line 27 to 29 helps us clean object files.
+- 使用 `arm-none-eabi-gcc` 來進行編譯
+- 為 `gcc` 加入一些設定，如浮點數處理器。
+- 接著設定所有需要連結的 object file
+- 將所有 `.c` 編譯成 `.o` 
+- Target `all` 將會完成編譯所有檔案
+- Target `clean` 可以清理所有 object file
 
-And next, we need to told main makefile to build all, which seperated at different directories. So we need to exec make all at correct directory.
+接著告訴主要的 makefile 要去底下的 makefile 執行編譯
+
 ```makefile =
 obj:
 	$(MAKE) all -C System
@@ -163,7 +162,8 @@ obj:
 	$(MAKE) all -C User
 ```
 
-This should write down at `./makefile`, `-C` flag tell makefile exec previous target at given directory. So line 2 is same as:
+`-C` 意味著要去下層資料夾執行目標，所以第二行等同於：
+
 ```
 cd ./System
 make all
