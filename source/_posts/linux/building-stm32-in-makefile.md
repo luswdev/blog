@@ -170,7 +170,8 @@ make all
 ```
 
 ### Startup.o
-Startup.o is needed, so we put in `User` directory, and don't put in `src`. Building code is similar:
+Startup.o 是必須的，把它放在 `User` 理，但不要放進 `src`；編譯他的道理是類似的
+
 ```makefile
 OBJS +=\
 startup.o
@@ -180,15 +181,11 @@ Startup/startup.o: ./startup.s | $(OBJDIR)
 	$(CC) $(CFLAGS) -MMD -MF$(@:%.o=%.d) -o $@ $<
 ```
 
-And add a line at clean up.
-```makefile
-	-rm -rf *.o
-```
-
-This is a quick version about how object file build, next step we link them up into a `.bin` file.
+以上建置完成後，能快速的編譯所有程式。接著我們將所有 object file 連結成一個二進位檔。
 
 ## G++ (Linker)
-We write linker field at `home` directory, so this code should put in `./makefile`
+連結的動作放在主要的 makefile 中。
+
 ```makefile =
 TCPREFIX = arm-none-eabi-
 LD       = $(TCPREFIX)g++
@@ -207,11 +204,12 @@ main.elf: $(OBJS) $(LDFILE)
 	$(LD) $(LFLAGS) -o $@ $(OBJS)
 ```
 
-- Line 6 to 10 combine all object files at different directories, we using `wildcard` to scan all files which match the regex.
-- Line 12 to 14 linked things up.
+- 使用 wildcard 掃描所有 object file
+- 連結成一個 `.elf`
 
 ### Objdump and Objcopy
-And we dump a `.bin` file from `.elf`, this is which we flash into board.
+再將 `.elf` 轉成 `.bin` 燒錄。
+
 ```makefile =
 TCPREFIX = arm-none-eabi-
 CP       = $(TCPREFIX)objcopy
@@ -224,64 +222,34 @@ main.bin: obj main.elf
 ```
 
 ## Openocd
-Last things, flash binary file into board. We use [openocd](http://openocd.org/).
+最後一件事，燒錄；這裡使用 [openocd](http://openocd.org/)。
 ```makefile =
-STM32FLASH 	= ./User/Startup/stm32.pl
-
-run: build
-	@echo "Flashing main.bin."
-	$(STM32FLASH) main.bin 
-	@echo "Finish flashing main.bin."
+run: main.bin
+	@echo $(YELLOW)"Flash $< into board..."$(RST)
+	openocd -f $(OCDCFG)  				\
+			-c "init"                   \
+            -c "reset init"             \
+            -c "stm32f2x unlock 0"      \
+            -c "flash probe 0"          \
+            -c "flash info 0"           \
+            -c "flash write_image erase $< 0x8000000" \
+            -c "reset run" -c shutdown
+	@echo $(GREEN)"Finish flash $< into board."$(RST)
+	@echo ""
 ```
 
-### stm32.pl
-Openocd is using talnet to flash board, manually we can open a terminal and write down some commands. Or we can use a perl file like this. 
-```pl =
-#!/usr/local/bin/perl
-# NOTE: needs libnet-telnet-perl package.
-use Net::Telnet;
-use Cwd 'abs_path';
- 
-my $numArgs = $#ARGV + 1;
-if($numArgs != 1) {
-    die( "Usage ./stm32.pl [main.bin] \n");
-}
+## 總結
+在主 makefile 寫下以下片段，將所有東西整合吧。
 
-my $file = abs_path($ARGV[0]);
-
-my $ip = '127.0.0.1';   # localhost
-my $port = 4444;
-
-my $telnet = new Net::Telnet (
-    Port   => $port,
-    Timeout=> 30,
-    Errmode=> 'die',
-    Prompt => '/>/');
-
-$telnet->open($ip);
-
-print $telnet->cmd('halt');
-print $telnet->cmd('poll');
-print $telnet->cmd('flash probe 0');
-print $telnet->cmd('stm32f4x mass_erase 0');
-print $telnet->cmd('flash write_image erase '.$file.' 0x08000000');
-print $telnet->cmd('reset');
-print $telnet->cmd('exit');
-
-print "\n";
-```
-
-## All
-Let combine together. This should write down at `./makefile`
 ```makefile
 all: run
 
 build: main.bin
 ```
 
-So we write command `make all`, and it will call run, and run will call build, build will make all binary files. All things will be done.
+如此以來，只要下指令 `make all` 就會將所有該編譯的程式碼編譯完成，連結成一個二進位檔，最後燒盡板子。
 
 ---
 
-This repo is a workspace build for my current project, you can learn more from this example.
+這是我的一個專案建置的範例，可以參考。
 - [GUI Workspace](https://github.com/luswdev/GUI-workspace)
