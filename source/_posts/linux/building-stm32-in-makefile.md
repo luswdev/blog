@@ -1,11 +1,12 @@
 ---
-title: Building STM32 in Makefile
+title: STM32 Makefile 專案建置
 tags: [STM32, Linux, makefile]
 date: 2020-05-02 14:46:29
 category: Linux
 ---
-## Directories Structure
-First, we create 3 directories named "System", "OS" and "User".
+## 資料夾結構
+第一步，建立三個資料夾 "System"、"OS" 及 "User"
+
 ```
 .
 |-- System
@@ -14,11 +15,13 @@ First, we create 3 directories named "System", "OS" and "User".
 |
 `-- User
 ```
-- System is for driver
-- OS of course for OS
-- and User is for your own application
 
-Second, we add 4 makefiles into each directory (obtained base directory).
+- System 放驅動程式
+- OS 就是作業系統（也可不用）
+- User 放的是我們的專案
+
+接著，在每個資料夾底下新增一個 makefile。
+
 ```
 .
 |-- System
@@ -33,7 +36,8 @@ Second, we add 4 makefiles into each directory (obtained base directory).
 `-- makefile
 ```
 
-And last step of preparing, put all source codes into correct place. This is example:
+準備步驟的最後，將所有程式碼正確的擺放。如範例：
+
 ```
 .
 |-- System
@@ -65,10 +69,12 @@ And last step of preparing, put all source codes into correct place. This is exa
 ```
 
 {% alert info %}
-In this example, we put three driver for STM32, so we separate source codes into 3 directory. Also you don't need to do exactly same as me, just put those code into `src` and `inc` is fine.
+在這個例子，我們在 System 底下放了三個驅動，所以需要將程式碼分成三個資料夾。
+當然你也可以直接全部放在一起是沒問題的。
 {% endalert %}
 
-Finally, don't forget add a makefile into each driver directory:
+最後的最後，別忘了在驅動的底下也加一個 makefile。
+
 ```
 .
 |-- System
@@ -103,10 +109,11 @@ Finally, don't forget add a makefile into each driver directory:
 ```
 
 ---
-Next, let write some makefiles!
+下一步，來寫 makefile！
 
 ## GCC
-In Every Source directory (which only contain `inc` and `src`), we write some makefile like this:
+在最上層資料夾裡的 makefile 寫上以下程式碼：
+
 ```makefile =
 TCPREFIX = arm-none-eabi-
 CC       = $(TCPREFIX)gcc
