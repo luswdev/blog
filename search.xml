@@ -159,11 +159,11 @@
             
             <tag> Hexo </tag>
             
+            <tag> badge </tag>
+            
             <tag> bootstrap </tag>
             
             <tag> tag plugin </tag>
-            
-            <tag> badge </tag>
             
         </tags>
       
@@ -190,11 +190,11 @@
             
             <tag> Hexo </tag>
             
-            <tag> card </tag>
-            
             <tag> bootstrap </tag>
             
             <tag> tag plugin </tag>
+            
+            <tag> card </tag>
             
         </tags>
       
@@ -1196,9 +1196,9 @@
             
             <tag> kernel </tag>
             
-            <tag> scheduler </tag>
-            
             <tag> XV6 </tag>
+            
+            <tag> scheduler </tag>
             
         </tags>
       
@@ -1285,9 +1285,9 @@
             
             <tag> kernel </tag>
             
-            <tag> 記憶體管理 </tag>
-            
             <tag> XV6 </tag>
+            
+            <tag> 記憶體管理 </tag>
             
         </tags>
       
