@@ -9,8 +9,7 @@ env:
   GIT_USER: luswdev
   GIT_EMAIL: 610721230@gms.ndhu.edu.tw
   DEPLOY_REPO: blog
-  DEPLOY_BRANCH: master
-  RENDER_BRANCH: gh-pages
+  DEPLOY_BRANCH: gh-pages
 
 jobs:
   build:
@@ -48,7 +47,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: ${{ env.GIT_USER }}/${{ env.DEPLOY_REPO }}
-          ref: ${{ env.RENDER_BRANCH }}
+          ref: ${{ env.DEPLOY_BRANCH }}
           path: .deploy_git
 
       - name: Install dependencies
@@ -58,4 +57,5 @@ jobs:
 
       - name: Deploy hexo
         run: |
-          hexo generate && hexo deploy
+          hexo generate
+          hexo deploy
