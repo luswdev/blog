@@ -1,27 +1,61 @@
-name: HEXO CI
+name: Hexo CI
 
 on:
   push:
     branches:
     - master
 
+env:
+  GIT_USER: luswdev
+  GIT_EMAIL: 610721230@gms.ndhu.edu.tw
+  DEPLOY_REPO: blog
+  DEPLOY_BRANCH: master
+  RENDER_BRANCH: gh-pages
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
     steps:
-      - name: Setup timezone
-        uses: zcong1993/setup-timezone@master
-        with:
-          timezone: Asia/Taipei
       - uses: actions/checkout@v1
-      - name: Cache node modules
-        uses: actions/cache@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          path: node_modules
-          key: ${{runner.OS}}-${{hashFiles('**/package-lock.json')}}
-      - uses: yrpang/github-actions-hexo@v1.3
+          node-version: ${{ matrix.node-version }}
+      
+      - name: Setup timezone
+        run: |
+          export TZ="Asia/Taipei"
+          export NOW=$(date +"%Y-%m-%d %H:%M:%S")
+          sudo timedatectl set-timezone "Asia/Taipei"
+
+      - name: Configuration environment
+        env:
+          HEXO_DEPLOY_PRI: ${{ secrets.HEXO_DEPLOY_PRI }}
+        run: |          
+          mkdir -p ~/.ssh/
+          echo "$HEXO_DEPLOY_PRI" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git config --global user.name $GIT_USER
+          git config --global user.email $GIT_EMAIL
+        
+      - name: Save commit history
+        uses: actions/checkout@v2
         with:
-          deploykey: ${{secrets.HEXO_DEPLOY_PRI}}
-          username: luswdev
-          email: 610721230@gms.ndhu.edu.tw
-          if_keep_commit_history: true
+          repository: ${{ env.GIT_USER }}/${{ env.DEPLOY_REPO }}
+          ref: ${{ env.RENDER_BRANCH }}
+          path: .deploy_git
+
+      - name: Install dependencies
+        run: |
+          npm i -g hexo-cli
+          npm i
+
+      - name: Deploy hexo
+        run: |
+          hexo generate && hexo deploy
