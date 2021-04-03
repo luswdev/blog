@@ -17,8 +17,7 @@ jobs:
           key: ${{runner.OS}}-${{hashFiles('**/package-lock.json')}}
       - uses: yrpang/github-actions-hexo@v1.3
         with:
-          deploykey: ${{secrets.DEPLOY_KEY}}
+          deploykey: ${{secrets.HEXO_DEPLOY_PRI}}
           username: luswdev
           email: 610721230@gms.ndhu.edu.tw
           if_keep_commit_history: true
-          github_page_repository_branch: gh-pages
