@@ -24,7 +24,6 @@ layout: "about"
 - 即時作業系統
 {% endcard %}
 
-
 <style>
     .progress-box span {
         font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -64,7 +63,7 @@ layout: "about"
     </div>
     <ul class="list-group list-group-flush">
         <li class="progress-box list-group-item">
-            <span>C</span>
+            <span>C/C++</span>
             <div class="progress">
                 <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
