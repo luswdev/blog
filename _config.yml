@@ -118,7 +118,7 @@ feed:
 deploy:
   type: git
   repo: git@github.com:luswdev/blog.git
-  branch: gh-page
+  branch: gh-pages
 
 search:
   path: search.xml
