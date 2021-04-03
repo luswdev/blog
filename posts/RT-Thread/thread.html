@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="RT-Thread - Thread">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>RT-Thread - Thread | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158078787-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158078787-1');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>RT-Thread - Thread</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/RT-Thread/">RT-Thread</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2018-11-19
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        2.6k
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><div class="alert alert-success"><p><strong>File:</strong> rtdef.h</p></div>
+<h2 id="結構">結構<a class="header-anchor" href="#結構">#</a></h2>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Thread structure</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="comment">/* rt object */</span></span><br><span class="line">    <span class="keyword">char</span>        name[RT_NAME_MAX];                      <span class="comment">/**&lt; the name of thread */</span></span><br><span class="line">    <span class="keyword">rt_uint8_t</span>  type;                                   <span class="comment">/**&lt; type of object */</span></span><br><span class="line">    <span class="keyword">rt_uint8_t</span>  flags;                                  <span class="comment">/**&lt; thread's flags */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RT_USING_MODULE</span></span><br><span class="line">    <span class="keyword">void</span>       *module_id;                              <span class="comment">/**&lt; id of application module */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>一些基本資料，如名字等</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">505</span><br><span class="line">506</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">rt_list_t</span>   <span class="built_in">list</span>;                                   <span class="comment">/**&lt; the object list */</span></span><br><span class="line"><span class="keyword">rt_list_t</span>   tlist;                                  <span class="comment">/**&lt; the thread list */</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>兩條鏈：thread list、object list</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* stack point and entry */</span></span><br><span class="line"><span class="keyword">void</span>       *sp;                                     <span class="comment">/**&lt; stack point */</span></span><br><span class="line"><span class="keyword">void</span>       *entry;                                  <span class="comment">/**&lt; entry */</span></span><br><span class="line"><span class="keyword">void</span>       *parameter;                              <span class="comment">/**&lt; parameter */</span></span><br><span class="line"><span class="keyword">void</span>       *stack_addr;                             <span class="comment">/**&lt; stack address */</span></span><br><span class="line"><span class="keyword">rt_uint32_t</span> stack_size;                             <span class="comment">/**&lt; stack size */</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>stack 相關的</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* error code */</span></span><br><span class="line"><span class="keyword">rt_err_t</span>    error;                                  <span class="comment">/**&lt; error code */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">rt_uint8_t</span>  stat;                                   <span class="comment">/**&lt; thread status */</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>狀態，下面會列出來所有可能</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/* priority */</span></span><br><span class="line">    <span class="keyword">rt_uint8_t</span>  current_priority;                       <span class="comment">/**&lt; current priority */</span></span><br><span class="line">    <span class="keyword">rt_uint8_t</span>  init_priority;                          <span class="comment">/**&lt; initialized priority */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> RT_THREAD_PRIORITY_MAX &gt; 32</span></span><br><span class="line">    <span class="keyword">rt_uint8_t</span>  number;</span><br><span class="line">    <span class="keyword">rt_uint8_t</span>  high_mask;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">rt_uint32_t</span> number_mask;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>與權限相關的</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(RT_USING_EVENT)</span></span><br><span class="line">    <span class="comment">/* thread event */</span></span><br><span class="line">    <span class="keyword">rt_uint32_t</span> event_set;</span><br><span class="line">    <span class="keyword">rt_uint8_t</span>  event_info;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(RT_USING_SIGNALS)</span></span><br><span class="line">    <span class="keyword">rt_sigset_t</span>     sig_pending;                        <span class="comment">/**&lt; the pending signals */</span></span><br><span class="line">    <span class="keyword">rt_sigset_t</span>     sig_mask;                           <span class="comment">/**&lt; the mask bits of signal */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span>            *sig_ret;                           <span class="comment">/**&lt; the return stack pointer from signal */</span></span><br><span class="line">    <span class="keyword">rt_sighandler_t</span> *sig_vectors;                       <span class="comment">/**&lt; vectors of signal handler */</span></span><br><span class="line">    <span class="keyword">void</span>            *si_list;                           <span class="comment">/**&lt; the signal infor list */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">rt_ubase_t</span>  init_tick;                              <span class="comment">/**&lt; thread's initialized tick */</span></span><br><span class="line">    <span class="keyword">rt_ubase_t</span>  remaining_tick;                         <span class="comment">/**&lt; remaining tick */</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_timer</span> <span class="title">thread_timer</span>;</span>                       <span class="comment">/**&lt; built-in thread timer */</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>event、sig、tick</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">void</span> (*cleanup)(struct rt_thread *tid);             <span class="comment">/**&lt; cleanup function when thread exit */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* light weight process if present */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RT_USING_LWP</span></span><br><span class="line">    <span class="keyword">void</span>        *lwp;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">rt_uint32_t</span> user_data;                             <span class="comment">/**&lt; private user data beyond this thread */</span></span><br><span class="line">};</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span> *<span class="title">rt_thread_t</span>;</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>cleanup</code> 函數及 <code>user_data</code></li>
+</ul>
+<hr>
+<h2 id="狀態">狀態<a class="header-anchor" href="#狀態">#</a></h2>
+<ul>
+<li>一共有 6 種狀態</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_THREAD_INIT                  0x00                <span class="comment">/**&lt; Initialized status */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_THREAD_READY                 0x01                <span class="comment">/**&lt; Ready status */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_THREAD_SUSPEND               0x02                <span class="comment">/**&lt; Suspend status */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_THREAD_RUNNING               0x03                <span class="comment">/**&lt; Running status */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_THREAD_BLOCK                 RT_THREAD_SUSPEND   <span class="comment">/**&lt; Blocked status */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_THREAD_CLOSE                 0x04                <span class="comment">/**&lt; Closed status */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_THREAD_STAT_MASK             0x0f</span></span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<div class="alert alert-success"><p><strong>File:</strong> thread.h</p></div>
+<ul>
+<li>下圖為官方文本的 thread 流向圖，接著一個一個的看下去<br>
+<div class="img-item" data-src="https://i.imgur.com/bysM6mg.png" data-sub-html=".caption"><img src="https://i.imgur.com/bysM6mg.png" alt><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom"></span></div></div></li>
+</ul>
+<hr>
+<h2 id="初始化、建立-thread">初始化、建立 thread<a class="header-anchor" href="#初始化、建立-thread">#</a></h2>
+<h3 id="靜態記憶體管理">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始化 thread</td>
+<td><code>RT-EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*thread</code></th>
+<th><code>*name</code></th>
+<th><code>*entry</code></th>
+<th><code>*parameter</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>thread 本體</td>
+<td>名字</td>
+<td>要執行的副程式</td>
+<td>副程式參數</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*stack_start</code></th>
+<th><code>stack_size</code></th>
+<th><code>priority</code></th>
+<th><code>tick</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>thread 堆疊起點</td>
+<td>thread 堆疊大小</td>
+<td>優先級</td>
+<td>可執行的 tick 數</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will initialize a thread, normally it's used to initialize a</span></span><br><span class="line"><span class="comment"> * static thread object.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param thread the static thread object</span></span><br><span class="line"><span class="comment"> * @param name the name of thread, which shall be unique</span></span><br><span class="line"><span class="comment"> * @param entry the entry function of thread</span></span><br><span class="line"><span class="comment"> * @param parameter the parameter of thread enter function</span></span><br><span class="line"><span class="comment"> * @param stack_start the start address of thread stack</span></span><br><span class="line"><span class="comment"> * @param stack_size the size of thread stack</span></span><br><span class="line"><span class="comment"> * @param priority the priority of thread</span></span><br><span class="line"><span class="comment"> * @param tick the time slice if there are same priority thread</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the operation status, RT_EOK on OK, -RT_ERROR on error</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_thread_init(struct rt_thread *thread,</span><br><span class="line">                        <span class="keyword">const</span> <span class="keyword">char</span>       *name,</span><br><span class="line">                        <span class="keyword">void</span> (*entry)(<span class="keyword">void</span> *parameter),</span><br><span class="line">                        <span class="keyword">void</span>             *parameter,</span><br><span class="line">                        <span class="keyword">void</span>             *stack_start,</span><br><span class="line">                        <span class="keyword">rt_uint32_t</span>       stack_size,</span><br><span class="line">                        <span class="keyword">rt_uint8_t</span>        priority,</span><br><span class="line">                        <span class="keyword">rt_uint32_t</span>       tick)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* thread check */</span></span><br><span class="line">    RT_ASSERT(thread != RT_NULL);</span><br><span class="line">    RT_ASSERT(stack_start != RT_NULL);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init thread object */</span></span><br><span class="line">    rt_object_init((<span class="keyword">rt_object_t</span>)thread, RT_Object_Class_Thread, name);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> _rt_thread_init(thread,</span><br><span class="line">                           name,</span><br><span class="line">                           entry,</span><br><span class="line">                           parameter,</span><br><span class="line">                           stack_start,</span><br><span class="line">                           stack_size,</span><br><span class="line">                           priority,</span><br><span class="line">                           tick);</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_thread_init);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>透過 <code>_rt_thread_init</code> 完成初始化</li>
+</ul>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始化 thread</td>
+<td>RT_EOK</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*thread</code></th>
+<th><code>*name</code></th>
+<th><code>*entry</code></th>
+<th><code>*parameter</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>thread 本體</td>
+<td>名字</td>
+<td>要執行的副程式</td>
+<td>副程式參數</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*stack_start</code></th>
+<th><code>stack_size</code></th>
+<th><code>priority</code></th>
+<th><code>tick</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>thread 堆疊起點</td>
+<td>thread 堆疊大小</td>
+<td>優先級</td>
+<td>可執行的 tick 數</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">rt_err_t</span> _rt_thread_init(struct rt_thread *thread,</span><br><span class="line">                                <span class="keyword">const</span> <span class="keyword">char</span>       *name,</span><br><span class="line">                                <span class="keyword">void</span> (*entry)(<span class="keyword">void</span> *parameter),</span><br><span class="line">                                <span class="keyword">void</span>             *parameter,</span><br><span class="line">                                <span class="keyword">void</span>             *stack_start,</span><br><span class="line">                                <span class="keyword">rt_uint32_t</span>       stack_size,</span><br><span class="line">                                <span class="keyword">rt_uint8_t</span>        priority,</span><br><span class="line">                                <span class="keyword">rt_uint32_t</span>       tick)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* init thread list */</span></span><br><span class="line">    rt_list_init(&amp;(thread-&gt;tlist));</span><br><span class="line"></span><br><span class="line">    thread-&gt;entry = (<span class="keyword">void</span> *)entry;</span><br><span class="line">    thread-&gt;parameter = parameter;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* stack init */</span></span><br><span class="line">    thread-&gt;stack_addr = stack_start;</span><br><span class="line">    thread-&gt;stack_size = stack_size;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先將傳入的資料填入結構</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* init thread stack */</span></span><br><span class="line">rt_memset(thread-&gt;stack_addr, <span class="string">'#'</span>, thread-&gt;stack_size);</span><br><span class="line">thread-&gt;sp = (<span class="keyword">void</span> *)rt_hw_stack_init(thread-&gt;entry, thread-&gt;parameter,</span><br><span class="line">                                      (<span class="keyword">void</span> *)((<span class="keyword">char</span> *)thread-&gt;stack_addr + thread-&gt;stack_size - <span class="number">4</span>),</span><br><span class="line">                                      (<span class="keyword">void</span> *)rt_thread_exit);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>接著設定堆疊，使用 <code>rt_hw_stack_init</code> 來完成（根據不同 cpu 有不同的方式，<code>rt_hw_stack_init</code> 在 /libcpu 中針對不同的 cpu 有不同的函式宣告）</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/* priority init */</span></span><br><span class="line">    RT_ASSERT(priority &lt; RT_THREAD_PRIORITY_MAX);</span><br><span class="line">    thread-&gt;init_priority    = priority;</span><br><span class="line">    thread-&gt;current_priority = priority;</span><br><span class="line"></span><br><span class="line">    thread-&gt;number_mask = <span class="number">0</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> RT_THREAD_PRIORITY_MAX &gt; 32</span></span><br><span class="line">    thread-&gt;number = <span class="number">0</span>;</span><br><span class="line">    thread-&gt;high_mask = <span class="number">0</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>設定 priority 及 mask</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/* tick init */</span></span><br><span class="line">    thread-&gt;init_tick      = tick;</span><br><span class="line">    thread-&gt;remaining_tick = tick;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* error and flags */</span></span><br><span class="line">    thread-&gt;error = RT_EOK;</span><br><span class="line">    thread-&gt;stat  = RT_THREAD_INIT;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* initialize cleanup function and user data */</span></span><br><span class="line">    thread-&gt;cleanup   = <span class="number">0</span>;</span><br><span class="line">    thread-&gt;user_data = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init thread timer */</span></span><br><span class="line">    rt_timer_init(&amp;(thread-&gt;thread_timer),</span><br><span class="line">                  thread-&gt;name,</span><br><span class="line">                  rt_thread_timeout,</span><br><span class="line">                  thread,</span><br><span class="line">                  <span class="number">0</span>,</span><br><span class="line">                  RT_TIMER_FLAG_ONE_SHOT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* initialize signal */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RT_USING_SIGNALS</span></span><br><span class="line">    thread-&gt;sig_mask    = <span class="number">0x00</span>;</span><br><span class="line">    thread-&gt;sig_pending = <span class="number">0x00</span>;</span><br><span class="line"></span><br><span class="line">    thread-&gt;sig_ret     = RT_NULL;</span><br><span class="line">    thread-&gt;sig_vectors = RT_NULL;</span><br><span class="line">    thread-&gt;si_list     = RT_NULL;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RT_USING_LWP</span></span><br><span class="line">    thread-&gt;lwp = RT_NULL;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    RT_OBJECT_HOOK_CALL(rt_thread_inited_hook, (thread));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>最後依序完成 tick、sig、hook 等的初始化</li>
+</ul>
+<hr>
+<h3 id="動態記憶體管理">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建立 thread</td>
+<td>thread</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*name</code></th>
+<th><code>*entry</code></th>
+<th><code>*parameter</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>名字</td>
+<td>要執行的副程式</td>
+<td>副程式參數</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*stack_start</code></th>
+<th><code>stack_size</code></th>
+<th><code>priority</code></th>
+<th><code>tick</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>thread 堆疊起點</td>
+<td>thread 堆疊大小</td>
+<td>優先級</td>
+<td>可執行的 tick 數</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will create a thread object and allocate thread object memory</span></span><br><span class="line"><span class="comment"> * and stack.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param name the name of thread, which shall be unique</span></span><br><span class="line"><span class="comment"> * @param entry the entry function of thread</span></span><br><span class="line"><span class="comment"> * @param parameter the parameter of thread enter function</span></span><br><span class="line"><span class="comment"> * @param stack_size the size of thread stack</span></span><br><span class="line"><span class="comment"> * @param priority the priority of thread</span></span><br><span class="line"><span class="comment"> * @param tick the time slice if there are same priority thread</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the created thread object</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_thread_t</span> rt_thread_create(<span class="keyword">const</span> <span class="keyword">char</span> *name,</span><br><span class="line">                             <span class="keyword">void</span> (*entry)(<span class="keyword">void</span> *parameter),</span><br><span class="line">                             <span class="keyword">void</span>       *parameter,</span><br><span class="line">                             <span class="keyword">rt_uint32_t</span> stack_size,</span><br><span class="line">                             <span class="keyword">rt_uint8_t</span>  priority,</span><br><span class="line">                             <span class="keyword">rt_uint32_t</span> tick)</span><br><span class="line">{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span> *<span class="title">thread</span>;</span></span><br><span class="line">    <span class="keyword">void</span> *stack_start;</span><br><span class="line"></span><br><span class="line">    thread = (struct rt_thread *)rt_object_allocate(RT_Object_Class_Thread,</span><br><span class="line">                                                    name);</span><br><span class="line">    <span class="keyword">if</span> (thread == RT_NULL)</span><br><span class="line">        <span class="keyword">return</span> RT_NULL;</span><br><span class="line"></span><br><span class="line">    stack_start = (<span class="keyword">void</span> *)RT_KERNEL_MALLOC(stack_size);</span><br><span class="line">    <span class="keyword">if</span> (stack_start == RT_NULL)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* allocate stack failure */</span></span><br><span class="line">        rt_object_delete((<span class="keyword">rt_object_t</span>)thread);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> RT_NULL;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    _rt_thread_init(thread,</span><br><span class="line">                    name,</span><br><span class="line">                    entry,</span><br><span class="line">                    parameter,</span><br><span class="line">                    stack_start,</span><br><span class="line">                    stack_size,</span><br><span class="line">                    priority,</span><br><span class="line">                    tick);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> thread;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_thread_create);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先 allocate 一塊給 thread，一塊給堆疊</li>
+<li>再呼叫 <code>_rt_thread_init</code> 完成初始化</li>
+</ul>
+<hr>
+<h2 id="啟動-thread">啟動 thread<a class="header-anchor" href="#啟動-thread">#</a></h2>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>thread</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>啟動 thread</td>
+<td><code>RT_EOK</code></td>
+<td>欲啟動的 thread</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will start a thread and put it to system ready queue</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param thread the thread to be started</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the operation status, RT_EOK on OK, -RT_ERROR on error</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_thread_startup(<span class="keyword">rt_thread_t</span> thread)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* thread check */</span></span><br><span class="line">    RT_ASSERT(thread != RT_NULL);</span><br><span class="line">    RT_ASSERT((thread-&gt;stat &amp; RT_THREAD_STAT_MASK) == RT_THREAD_INIT);</span><br><span class="line">    RT_ASSERT(rt_object_get_type((<span class="keyword">rt_object_t</span>)thread) == RT_Object_Class_Thread);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set current priority to init priority */</span></span><br><span class="line">    thread-&gt;current_priority = thread-&gt;init_priority;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>設定 priority</li>
+</ul>
+<figure class="highlight c"><figcaption><span>268</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line">    <span class="comment">/* calculate priority attribute */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> RT_THREAD_PRIORITY_MAX &gt; 32</span></span><br><span class="line">    thread-&gt;number      = thread-&gt;current_priority &gt;&gt; <span class="number">3</span>;            <span class="comment">/* 5bit */</span></span><br><span class="line">    thread-&gt;number_mask = <span class="number">1L</span> &lt;&lt; thread-&gt;number;</span><br><span class="line">    thread-&gt;high_mask   = <span class="number">1L</span> &lt;&lt; (thread-&gt;current_priority &amp; <span class="number">0x07</span>);  <span class="comment">/* 3bit */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    thread-&gt;number_mask = <span class="number">1L</span> &lt;&lt; thread-&gt;current_priority;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>這些參數是用來計算權限的，<code>scheudler</code> 會用到</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br></pre></td><td class="code"><pre><span class="line">    RT_DEBUG_LOG(RT_DEBUG_THREAD, (<span class="string">"startup a thread:%s with priority:%d\n"</span>,</span><br><span class="line">                                   thread-&gt;name, thread-&gt;init_priority));</span><br><span class="line">    <span class="comment">/* change thread stat */</span></span><br><span class="line">    thread-&gt;stat = RT_THREAD_SUSPEND;</span><br><span class="line">    <span class="comment">/* then resume it */</span></span><br><span class="line">    rt_thread_resume(thread);</span><br><span class="line">    <span class="keyword">if</span> (rt_thread_self() != RT_NULL)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* do a scheduling */</span></span><br><span class="line">        rt_schedule();</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_thread_startup);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>最後將 stat 設為 <code>RT_THREAD_SUSPEND</code>，再透過 <code>rt_thread_resume</code> 來完成啟動</li>
+<li>啟動完成後呼叫 <code>rt_scheduler()</code> 來執行一次調度</li>
+</ul>
+<hr>
+<h2 id="暫停、復原-thread">暫停、復原 thread<a class="header-anchor" href="#暫停、復原-thread">#</a></h2>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*thread</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>暫停 thread</td>
+<td><code>RT-EOK</code></td>
+<td>欲暫停的 thread</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br><span class="line">639</span><br><span class="line">640</span><br><span class="line">641</span><br><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br><span class="line">649</span><br><span class="line">650</span><br><span class="line">651</span><br><span class="line">652</span><br><span class="line">653</span><br><span class="line">654</span><br><span class="line">655</span><br><span class="line">656</span><br><span class="line">657</span><br><span class="line">658</span><br><span class="line">659</span><br><span class="line">660</span><br><span class="line">661</span><br><span class="line">662</span><br><span class="line">663</span><br><span class="line">664</span><br><span class="line">665</span><br><span class="line">666</span><br><span class="line">667</span><br><span class="line">668</span><br><span class="line">669</span><br><span class="line">670</span><br><span class="line">671</span><br><span class="line">672</span><br><span class="line">673</span><br><span class="line">674</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will suspend the specified thread.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param thread the thread to be suspended</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the operation status, RT_EOK on OK, -RT_ERROR on error</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @note if suspend self thread, after this function call, the</span></span><br><span class="line"><span class="comment"> * rt_schedule() must be invoked.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_thread_suspend(<span class="keyword">rt_thread_t</span> thread)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> temp;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* thread check */</span></span><br><span class="line">    RT_ASSERT(thread != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type((<span class="keyword">rt_object_t</span>)thread) == RT_Object_Class_Thread);</span><br><span class="line"></span><br><span class="line">    RT_DEBUG_LOG(RT_DEBUG_THREAD, (<span class="string">"thread suspend:  %s\n"</span>, thread-&gt;name));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ((thread-&gt;stat &amp; RT_THREAD_STAT_MASK) != RT_THREAD_READY)</span><br><span class="line">    {</span><br><span class="line">        RT_DEBUG_LOG(RT_DEBUG_THREAD, (<span class="string">"thread suspend: thread disorder, 0x%2x\n"</span>,</span><br><span class="line">                                       thread-&gt;stat));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> -RT_ERROR;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    temp = rt_hw_interrupt_disable();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* change thread stat */</span></span><br><span class="line">    thread-&gt;stat = RT_THREAD_SUSPEND | (thread-&gt;stat &amp; ~RT_THREAD_STAT_MASK);</span><br><span class="line">    rt_schedule_remove_thread(thread);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* stop thread timer anyway */</span></span><br><span class="line">    rt_timer_stop(&amp;(thread-&gt;thread_timer));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(temp);</span><br><span class="line"></span><br><span class="line">    RT_OBJECT_HOOK_CALL(rt_thread_suspend_hook, (thread));</span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_thread_suspend);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先將狀態修改為 <code>RT_THREAD_SUSPEND</code>，接著將 thread 從 tlist 移除，結束 timer</li>
+</ul>
+<hr>
+<p><i class="fa fa-code"></i> Code: <code>rt_thread_delay</code></p>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>tick</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>延遲 thread</td>
+<td><code>RT-EOK</code></td>
+<td>欲延遲的時間</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will let current thread delay for some ticks.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param tick the delay ticks</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return RT_EOK</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_thread_delay(<span class="keyword">rt_tick_t</span> tick)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">return</span> rt_thread_sleep(tick);</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_thread_delay);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>透過 <code>rt_thread_sleep</code> 實作</li>
+</ul>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>使 thread 休眠</td>
+<td><code>RT-EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>tick</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲睡眠的時間</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will let current thread sleep for some ticks.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param tick the sleep ticks</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return RT_EOK</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_thread_sleep(<span class="keyword">rt_tick_t</span> tick)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> temp;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span> *<span class="title">thread</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    temp = rt_hw_interrupt_disable();</span><br><span class="line">    <span class="comment">/* set to current thread */</span></span><br><span class="line">    thread = rt_current_thread;</span><br><span class="line">    RT_ASSERT(thread != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type((<span class="keyword">rt_object_t</span>)thread) == RT_Object_Class_Thread);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* suspend thread */</span></span><br><span class="line">    rt_thread_suspend(thread);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* reset the timeout of thread timer and start it */</span></span><br><span class="line">    rt_timer_control(&amp;(thread-&gt;thread_timer), RT_TIMER_CTRL_SET_TIME, &amp;tick);</span><br><span class="line">    rt_timer_start(&amp;(thread-&gt;thread_timer));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(temp);</span><br><span class="line"></span><br><span class="line">    rt_schedule();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* clear error number of this thread to RT_EOK */</span></span><br><span class="line">    <span class="keyword">if</span> (thread-&gt;error == -RT_ETIMEOUT)</span><br><span class="line">        thread-&gt;error = RT_EOK;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="復原-thread">復原 thread<a class="header-anchor" href="#復原-thread">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*thread</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>復原 thread</td>
+<td><code>RT-EOK</code></td>
+<td>欲復原的 thread</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">676</span><br><span class="line">677</span><br><span class="line">678</span><br><span class="line">679</span><br><span class="line">680</span><br><span class="line">681</span><br><span class="line">682</span><br><span class="line">683</span><br><span class="line">684</span><br><span class="line">685</span><br><span class="line">686</span><br><span class="line">687</span><br><span class="line">688</span><br><span class="line">689</span><br><span class="line">690</span><br><span class="line">691</span><br><span class="line">692</span><br><span class="line">693</span><br><span class="line">694</span><br><span class="line">695</span><br><span class="line">696</span><br><span class="line">697</span><br><span class="line">698</span><br><span class="line">699</span><br><span class="line">700</span><br><span class="line">701</span><br><span class="line">702</span><br><span class="line">703</span><br><span class="line">704</span><br><span class="line">705</span><br><span class="line">706</span><br><span class="line">707</span><br><span class="line">708</span><br><span class="line">709</span><br><span class="line">710</span><br><span class="line">711</span><br><span class="line">712</span><br><span class="line">713</span><br><span class="line">714</span><br><span class="line">715</span><br><span class="line">716</span><br><span class="line">717</span><br><span class="line">718</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will resume a thread and put it to system ready queue.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param thread the thread to be resumed</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the operation status, RT_EOK on OK, -RT_ERROR on error</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_thread_resume(<span class="keyword">rt_thread_t</span> thread)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> temp;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* thread check */</span></span><br><span class="line">    RT_ASSERT(thread != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type((<span class="keyword">rt_object_t</span>)thread) == RT_Object_Class_Thread);</span><br><span class="line"></span><br><span class="line">    RT_DEBUG_LOG(RT_DEBUG_THREAD, (<span class="string">"thread resume:  %s\n"</span>, thread-&gt;name));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ((thread-&gt;stat &amp; RT_THREAD_STAT_MASK) != RT_THREAD_SUSPEND)</span><br><span class="line">    {</span><br><span class="line">        RT_DEBUG_LOG(RT_DEBUG_THREAD, (<span class="string">"thread resume: thread disorder, %d\n"</span>,</span><br><span class="line">                                       thread-&gt;stat));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> -RT_ERROR;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    temp = rt_hw_interrupt_disable();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* remove from suspend list */</span></span><br><span class="line">    rt_list_remove(&amp;(thread-&gt;tlist));</span><br><span class="line"></span><br><span class="line">    rt_timer_stop(&amp;thread-&gt;thread_timer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(temp);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* insert to schedule ready list */</span></span><br><span class="line">    rt_schedule_insert_thread(thread);</span><br><span class="line"></span><br><span class="line">    RT_OBJECT_HOOK_CALL(rt_thread_resume_hook, (thread));</span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_thread_resume);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先從 suspend list 移除，停止 timer，掛回去 ready list</li>
+<li><code>rt_schedule_insert_thread</code> 會將狀態修改成 <code>RT_THREAD_READY</code></li>
+</ul>
+<hr>
+<h2 id="離開、刪除-thread">離開、刪除 thread<a class="header-anchor" href="#離開、刪除-thread">#</a></h2>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>暫停 thread</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rt_thread_exit</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span> *<span class="title">thread</span>;</span></span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> level;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* get current thread */</span></span><br><span class="line">    thread = rt_current_thread;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    level = rt_hw_interrupt_disable();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* remove from schedule */</span></span><br><span class="line">    rt_schedule_remove_thread(thread);</span><br><span class="line">    <span class="comment">/* change stat */</span></span><br><span class="line">    thread-&gt;stat = RT_THREAD_CLOSE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* remove it from timer list */</span></span><br><span class="line">    rt_timer_detach(&amp;thread-&gt;thread_timer);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先從 ready list 中移除，修改狀態為 <code>RT_THREAD_CLOSE</code>，從 timer list 中移除</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> ((rt_object_is_systemobject((<span class="keyword">rt_object_t</span>)thread) == RT_TRUE) &amp;&amp;</span><br><span class="line">        thread-&gt;cleanup == RT_NULL)</span><br><span class="line">    {</span><br><span class="line">        rt_object_detach((<span class="keyword">rt_object_t</span>)thread);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* insert to defunct thread list */</span></span><br><span class="line">        rt_list_insert_after(&amp;rt_thread_defunct, &amp;(thread-&gt;tlist));</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(level);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* switch to next task */</span></span><br><span class="line">    rt_schedule();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果為系統的 thread，且 <code>cleanup</code> 函式沒有被定義時，呼叫 <code>rt_object_detach</code> 來完成移除的動作</li>
+<li>否則，將 thread 插入至 <code>rt_thread_defunct</code>，此鏈上面的 thread 會由 idle 清除。</li>
+</ul>
+<hr>
+<h3 id="刪除-thread">刪除 thread<a class="header-anchor" href="#刪除-thread">#</a></h3>
+<h4 id="動態記憶體管理-v2">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v2">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*thread</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刪除 thread</td>
+<td><code>RT-EOK</code></td>
+<td>欲刪除的 thread</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will delete a thread. The thread object will be removed from</span></span><br><span class="line"><span class="comment"> * thread queue and deleted from system object management in the idle thread.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param thread the thread to be deleted</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the operation status, RT_EOK on OK, -RT_ERROR on error</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_thread_delete(<span class="keyword">rt_thread_t</span> thread)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">rt_base_t</span> lock;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* thread check */</span></span><br><span class="line">    RT_ASSERT(thread != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type((<span class="keyword">rt_object_t</span>)thread) == RT_Object_Class_Thread);</span><br><span class="line">    RT_ASSERT(rt_object_is_systemobject((<span class="keyword">rt_object_t</span>)thread) == RT_FALSE);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ((thread-&gt;stat &amp; RT_THREAD_STAT_MASK) != RT_THREAD_INIT)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* remove from schedule */</span></span><br><span class="line">        rt_schedule_remove_thread(thread);</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果此 thread 已經啟動過了，將此 thread 從 ready list 移除</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/* release thread timer */</span></span><br><span class="line">    rt_timer_detach(&amp;(thread-&gt;thread_timer));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* change stat */</span></span><br><span class="line">    thread-&gt;stat = RT_THREAD_CLOSE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    lock = rt_hw_interrupt_disable();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* insert to defunct thread list */</span></span><br><span class="line">    rt_list_insert_after(&amp;rt_thread_defunct, &amp;(thread-&gt;tlist));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(lock);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_thread_delete);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>接著將 timer 還回去，修改狀態為 <code>RT_THREAD_CLOSE</code>，插入至 <code>rt_thread_defunct</code></li>
+</ul>
+<hr>
+<h4 id="靜態記憶體管理-v2">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v2">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刪除 thread</td>
+<td><code>RT-EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*thread</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲刪除的 thread</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will detach a thread. The thread object will be removed from</span></span><br><span class="line"><span class="comment"> * thread queue and detached/deleted from system object management.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param thread the thread to be deleted</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the operation status, RT_EOK on OK, -RT_ERROR on error</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_thread_detach(<span class="keyword">rt_thread_t</span> thread)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">rt_base_t</span> lock;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* thread check */</span></span><br><span class="line">    RT_ASSERT(thread != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type((<span class="keyword">rt_object_t</span>)thread) == RT_Object_Class_Thread);</span><br><span class="line">    RT_ASSERT(rt_object_is_systemobject((<span class="keyword">rt_object_t</span>)thread));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ((thread-&gt;stat &amp; RT_THREAD_STAT_MASK) != RT_THREAD_INIT)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* remove from schedule */</span></span><br><span class="line">        rt_schedule_remove_thread(thread);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* release thread timer */</span></span><br><span class="line">    rt_timer_detach(&amp;(thread-&gt;thread_timer));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* change stat */</span></span><br><span class="line">    thread-&gt;stat = RT_THREAD_CLOSE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* detach object */</span></span><br><span class="line">    rt_object_detach((<span class="keyword">rt_object_t</span>)thread);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (thread-&gt;cleanup != RT_NULL)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* disable interrupt */</span></span><br><span class="line">        lock = rt_hw_interrupt_disable();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* insert to defunct thread list */</span></span><br><span class="line">        rt_list_insert_after(&amp;rt_thread_defunct, &amp;(thread-&gt;tlist));</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* enable interrupt */</span></span><br><span class="line">        rt_hw_interrupt_enable(lock);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_thread_detach);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>與 delete 不同的差在第32行</li>
+</ul>
+<h2 id="控制-thread">控制 thread<a class="header-anchor" href="#控制-thread">#</a></h2>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>控制 thread</td>
+<td><code>RT-EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*thread</code></th>
+<th><code>cmd</code></th>
+<th><code>*argv</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲控制的 thread</td>
+<td>需執行的動作</td>
+<td>伴隨動作的參數</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br><span class="line">624</span><br><span class="line">625</span><br><span class="line">626</span><br><span class="line">627</span><br><span class="line">628</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will control thread behaviors according to control command.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param thread the specified thread to be controlled</span></span><br><span class="line"><span class="comment"> * @param cmd the control command, which includes</span></span><br><span class="line"><span class="comment"> *  RT_THREAD_CTRL_CHANGE_PRIORITY for changing priority level of thread;</span></span><br><span class="line"><span class="comment"> *  RT_THREAD_CTRL_STARTUP for starting a thread;</span></span><br><span class="line"><span class="comment"> *  RT_THREAD_CTRL_CLOSE for delete a thread.</span></span><br><span class="line"><span class="comment"> * @param arg the argument of control command</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return RT_EOK</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_thread_control(<span class="keyword">rt_thread_t</span> thread, <span class="keyword">int</span> cmd, <span class="keyword">void</span> *arg)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> temp;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* thread check */</span></span><br><span class="line">    RT_ASSERT(thread != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type((<span class="keyword">rt_object_t</span>)thread) == RT_Object_Class_Thread);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (cmd)</span><br><span class="line">    {</span><br><span class="line">    <span class="keyword">case</span> RT_THREAD_CTRL_CHANGE_PRIORITY:</span><br><span class="line">        <span class="comment">/* disable interrupt */</span></span><br><span class="line">        temp = rt_hw_interrupt_disable();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* for ready thread, change queue */</span></span><br><span class="line">        <span class="keyword">if</span> ((thread-&gt;stat &amp; RT_THREAD_STAT_MASK) == RT_THREAD_READY)</span><br><span class="line">        {</span><br><span class="line">            <span class="comment">/* remove thread from schedule queue first */</span></span><br><span class="line">            rt_schedule_remove_thread(thread);</span><br><span class="line"></span><br><span class="line">            <span class="comment">/* change thread priority */</span></span><br><span class="line">            thread-&gt;current_priority = *(<span class="keyword">rt_uint8_t</span> *)arg;</span><br><span class="line"></span><br><span class="line">            <span class="comment">/* recalculate priority attribute */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> RT_THREAD_PRIORITY_MAX &gt; 32</span></span><br><span class="line">            thread-&gt;number      = thread-&gt;current_priority &gt;&gt; <span class="number">3</span>;            <span class="comment">/* 5bit */</span></span><br><span class="line">            thread-&gt;number_mask = <span class="number">1</span> &lt;&lt; thread-&gt;number;</span><br><span class="line">            thread-&gt;high_mask   = <span class="number">1</span> &lt;&lt; (thread-&gt;current_priority &amp; <span class="number">0x07</span>);   <span class="comment">/* 3bit */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">            thread-&gt;number_mask = <span class="number">1</span> &lt;&lt; thread-&gt;current_priority;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">            <span class="comment">/* insert thread to schedule queue again */</span></span><br><span class="line">            rt_schedule_insert_thread(thread);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        {</span><br><span class="line">            thread-&gt;current_priority = *(<span class="keyword">rt_uint8_t</span> *)arg;</span><br><span class="line"></span><br><span class="line">            <span class="comment">/* recalculate priority attribute */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> RT_THREAD_PRIORITY_MAX &gt; 32</span></span><br><span class="line">            thread-&gt;number      = thread-&gt;current_priority &gt;&gt; <span class="number">3</span>;            <span class="comment">/* 5bit */</span></span><br><span class="line">            thread-&gt;number_mask = <span class="number">1</span> &lt;&lt; thread-&gt;number;</span><br><span class="line">            thread-&gt;high_mask   = <span class="number">1</span> &lt;&lt; (thread-&gt;current_priority &amp; <span class="number">0x07</span>);   <span class="comment">/* 3bit */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">            thread-&gt;number_mask = <span class="number">1</span> &lt;&lt; thread-&gt;current_priority;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* enable interrupt */</span></span><br><span class="line">        rt_hw_interrupt_enable(temp);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RT_THREAD_CTRL_STARTUP:</span><br><span class="line">        <span class="keyword">return</span> rt_thread_startup(thread);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RT_USING_HEAP</span></span><br><span class="line">    <span class="keyword">case</span> RT_THREAD_CTRL_CLOSE:</span><br><span class="line">        <span class="keyword">return</span> rt_thread_delete(thread);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_thread_control);</span><br></pre></td></tr></tbody></table></figure><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/RT-Thread/">#RT-Thread</a> <a href="/tags/kernel/">#kernel</a> <a href="/tags/thread/">#thread</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/RT-Thread/timer.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/RT-Thread/rtmexpo.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2018-11-19 13:08:24',
+            title: 'RT-Thread - Thread',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2021 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="XV6 - PC Hardware">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>XV6 - PC Hardware | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158078787-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158078787-1');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>XV6 - PC Hardware</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/XV6/">XV6</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2018-08-27
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        484
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="通用暫存器">通用暫存器<a class="header-anchor" href="#通用暫存器">#</a></h2>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>Name</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%eax</code></td>
+<td>Accumulator 累加器</td>
+</tr>
+<tr>
+<td><code>%ebx</code></td>
+<td>Based 基址暫存器</td>
+</tr>
+<tr>
+<td><code>%ecx</code></td>
+<td>Counter 計數器</td>
+</tr>
+<tr>
+<td><code>%edx</code></td>
+<td>Data 數據暫存器</td>
+</tr>
+<tr>
+<td><code>%edi</code></td>
+<td>Destination Index 目的地址指針暫存器</td>
+</tr>
+<tr>
+<td><code>%esi</code></td>
+<td>Source Index 源地址指針暫存器</td>
+</tr>
+<tr>
+<td><code>%ebp</code></td>
+<td>Based 基址指針暫存器</td>
+</tr>
+<tr>
+<td><code>%esp</code></td>
+<td>Stack 堆疊指針暫存器</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>程式計數器</strong> <code>%eip</code>：Instruction Pointer 指令指針暫存器</li>
+</ul>
+<p><code>e</code> 指的是 extended，為 16 位元暫存器的 32 位元擴展。<br>
+同時 <code>%ax</code> 為 <code>%eax</code> 的低位，以此類推；修改任意一個都會影響另一個。<br>
+另外，前四個暫存器有另一套低位別名：<code>%al</code>、<code>%ah</code>…etc，低八位為 <code>%al</code>，高八位為 <code>%ah</code>。</p>
+<p><div class="img-item" data-src="https://i.imgur.com/biz7b4q.png" data-sub-html=".caption"><img src="https://i.imgur.com/biz7b4q.png" alt="eax" title="Layout of eax."><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom">eax</span></div></div></p>
+<hr>
+<h2 id="控制暫存器">控制暫存器<a class="header-anchor" href="#控制暫存器">#</a></h2>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>Name</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%cr0</code></td>
+<td>包含了兩個標誌：</td>
+</tr>
+<tr>
+<td></td>
+<td>0 位（PE）用於啟動 <strong>protected mode</strong>，若 PE = 1，則啟動 protected mode，為 0 則在 <strong>real mode</strong> 下運行。</td>
+</tr>
+<tr>
+<td></td>
+<td>31 位（PG）為分頁允許位，用來表示分頁硬體是否允許作業</td>
+</tr>
+<tr>
+<td><code>%cr1</code></td>
+<td>保留</td>
+</tr>
+<tr>
+<td><code>%cr2</code></td>
+<td>保存最後一次出現夜故障時的32位線性地址</td>
+</tr>
+<tr>
+<td><code>%cr3</code></td>
+<td>保存頁目錄表的物理地址</td>
+</tr>
+</tbody>
+</table></div>
+<p><div class="img-item" data-src="https://i.imgur.com/LjEa8lY.png" data-sub-html=".caption"><img src="https://i.imgur.com/LjEa8lY.png" alt="cr" title="Layout of CR."><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom">cr</span></div></div></p>
+<hr>
+<h2 id="段暫存器">段暫存器<a class="header-anchor" href="#段暫存器">#</a></h2>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>Name</th>
+<th>Function</th>
+<th>Name</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%cs</code></td>
+<td>Code Segment</td>
+<td><code>%es</code></td>
+<td>extra Segment</td>
+</tr>
+<tr>
+<td><code>%ds</code></td>
+<td>Data Segment</td>
+<td><code>%fs</code></td>
+<td>extra Segment</td>
+</tr>
+<tr>
+<td><code>%fs</code></td>
+<td>Stack Segment</td>
+<td><code>%gs</code></td>
+<td>extra Segment</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="其他">其他<a class="header-anchor" href="#其他">#</a></h2>
+<ul>
+<li>
+<p><code>%gdtr</code> 全域段描述符表、<code>%ldtr</code> 區域段描述符表<br>
+（參考<a href="/xv6-b-bootloader/#gdt">Appendix B</a>)</p>
+</li>
+<li>
+<p><code>%eflags</code> <strong>標誌暫存器</strong><sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[X86 彙編/X86 架構](https://zh.wikibooks.org/zh-tw/X86_汇编/X86_架构#16-位通用暂存器_(通存器_GPR)
+">[1]</span></a></sup></p>
+<p><div class="img-item" data-src="https://i.imgur.com/tfPZm5w.png" data-sub-html=".caption"><img src="https://i.imgur.com/tfPZm5w.png" alt="eflags" title="Layout of eflags."><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom">eflags</span></div></div></p>
+<ul>
+<li>灰色為保留位，值不變<sup id="fnref:2"><a href="#fn:2" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[x86—EFLAGS寄存器详解](https://blog.csdn.net/jn1158359135/article/details/7761011)">[2]</span></a></sup></li>
+</ul>
+</li>
+</ul>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>Name</th>
+<th>Function</th>
+<th>Name</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CF</td>
+<td>Carry Flag</td>
+<td>IOPL</td>
+<td>I/O Privilege Level field</td>
+</tr>
+<tr>
+<td>PF</td>
+<td>Parity Flag</td>
+<td>NT</td>
+<td>Nested Task flag</td>
+</tr>
+<tr>
+<td>AF</td>
+<td>Auxiliary Carry Flag</td>
+<td>RF</td>
+<td>Resume Flag</td>
+</tr>
+<tr>
+<td>ZF</td>
+<td>Zero Flag</td>
+<td>VM</td>
+<td>Virtual-8086 Mode Flag</td>
+</tr>
+<tr>
+<td>SF</td>
+<td>Sign Flag</td>
+<td>AC</td>
+<td>Alignment Check Flag</td>
+</tr>
+<tr>
+<td>TF</td>
+<td>Trap Flag</td>
+<td>VIF</td>
+<td>Virtual Interrupt Flag</td>
+</tr>
+<tr>
+<td>IF</td>
+<td>Interrupt Enable Flag</td>
+<td>VIP</td>
+<td>Virtual Interrupt Pending flag</td>
+</tr>
+<tr>
+<td>DF</td>
+<td>Direction Flag</td>
+<td>ID</td>
+<td>Identification Flag</td>
+</tr>
+<tr>
+<td>OF</td>
+<td>Overflow Flag</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<div id="footnotes"><hr class="block-hr"><div id="footnotelist" class="card card-default"><div class="card-header">Reference</div><ol class="list-group list-group-flush" style="list-style: none; padding-left: 0; margin-left: 0px"><li id="fn:1" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">[X86 彙編/X86 架構](https://zh.wikibooks.org/zh-tw/X86_汇编/X86_架构#16-位通用暂存器_(通存器_GPR)<a href="#fnref:1" rev="footnote"> ↩</a></span></li><li id="fn:2" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">2.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://blog.csdn.net/jn1158359135/article/details/7761011" target="_blank" rel="noopener">x86—EFLAGS寄存器详解</a><a href="#fnref:2" rev="footnote"> ↩</a></span></li></ol></div></div><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/XV6/">#XV6</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/xv6/bootloader.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/xv6/fs.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2018-08-27 06:14:57',
+            title: 'XV6 - PC Hardware',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2021 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="Add Bootstrap Card Tags into Hexo">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>Add Bootstrap Card Tags into Hexo | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158078787-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158078787-1');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>Add Bootstrap Card Tags into Hexo</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/Hexo/">Hexo</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2020-04-23
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        1.2k
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="Bootstrap-Card">Bootstrap Card<a class="header-anchor" href="#Bootstrap-Card">#</a></h2>
+<div class="card bg-default  my-3"><div class="card-header"><p>card header content</p></div><div class="card-body"><p>card content</p></div><div class="card-footer"><p>card footer</p></div></div>
+<p>So this is a card given by <a href="https://getbootstrap.com/docs/4.4/components/card/" target="_blank" rel="noopener">bootstrap</a>, we can add this into hexo just simply write some <span class="badge badge-warning">HTML</span> like this.</p>
+<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"card card-default"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"card-header"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>card header content<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"card-body"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>card content<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"card-footer"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>card footer<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p>But this kind of things is not like <ins><em>Hexo</em></ins> style, and hardly to modify.<br>
+Luckly, Hexo is giving us some api call <a href="https://hexo.io/api/tag" target="_blank" rel="noopener"><strong>tag plugin</strong></a>, so let made a tag to insert a card!</p>
+<hr>
+<h2 id="Tag-Plugin">Tag Plugin<a class="header-anchor" href="#Tag-Plugin">#</a></h2>
+<p>So what is actually tag plugin is? This is the answer of Hexo doc.</p>
+<div class="alert alert-secondary"><p>A tag allows users to quickly and easily insert snippets into their posts.</p></div>
+<p>As you see, we can simply build a tag and it will render a block our want. A example is above. This <strong>Bs Alert</strong> block is write down in <code>.md</code> like this:</p>
+<figure class="highlight django"><table><tbody><tr><td class="code"><pre><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">alert</span> %}</span><span class="xml"></span></span><br><span class="line"><span class="xml">blah blah</span></span><br><span class="line"><span class="xml">blah more</span></span><br><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">endalert</span>%}</span><span class="xml"></span></span><br></pre></td></tr></tbody></table></figure>
+<p>And this tag is named by <em>note</em>. OK, let we get started to build card tag.</p>
+<hr>
+<h2 id="card-Tag">card Tag<a class="header-anchor" href="#card-Tag">#</a></h2>
+<h3 id="card-js">card.js<a class="header-anchor" href="#card-js">#</a></h3>
+<p>First things to do, new a file call <em>card.js</em> and put into <code>scripts</code> directory in current theme’s directory:</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> touch /path/to/your/current/theme/dir/script/card.js</span></span><br></pre></td></tr></tbody></table></figure>
+<div class="alert alert-warning"><p>if <code>scripts</code> directory is not existed, first new a directory.</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir /path/to/your/current/theme/dir/script</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p>Then, write down this into lastest javascript file (card.js).</p>
+<figure class="highlight js line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * card.js | global hexo script.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Usage:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * {% card class %}</span></span><br><span class="line"><span class="comment"> * &lt;!-- header --&gt;</span></span><br><span class="line"><span class="comment"> * Any content (support inline tags too).</span></span><br><span class="line"><span class="comment"> *  &lt;!-- endheader --&gt;</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * Any content (support inline tags too).</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * &lt;!-- footer --&gt;</span></span><br><span class="line"><span class="comment"> * Any content (support inline tags too).</span></span><br><span class="line"><span class="comment"> *  &lt;!-- endfooter --&gt;</span></span><br><span class="line"><span class="comment"> * {% endcard %}</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">cardContent</span> (<span class="params">args, content</span>) </span>{</span><br><span class="line">    <span class="keyword">var</span> classes = args[<span class="number">0</span>] || <span class="string">'default'</span>;</span><br><span class="line">    <span class="keyword">var</span> textClass = (classes != <span class="string">'default'</span> &amp;&amp; classes != <span class="string">'light'</span> ) ? <span class="string">' text-white'</span> : <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">var</span> rHeading = <span class="regexp">/&lt;!--\s*header\s*--&gt;\n([\w\W\s\S]*?)&lt;!--\s*endheader\s*--&gt;/g</span>;</span><br><span class="line">    <span class="keyword">var</span> rFooter = <span class="regexp">/&lt;!--\s*footer\s*--&gt;\n([\w\W\s\S]*?)&lt;!--\s*endfooter\s*--&gt;/g</span>;</span><br><span class="line">    <span class="keyword">var</span> heading = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">var</span> footer = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> returnVal = <span class="string">'&lt;div class="card bg-'</span> + classes + <span class="string">' '</span> + textClass + <span class="string">' mt-3 mb-3"&gt;'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (heading = rHeading.exec(content)) {</span><br><span class="line">        content = content.replace(rHeading, <span class="string">''</span>);</span><br><span class="line">        returnVal += <span class="string">'&lt;div class="card-header"&gt;'</span> </span><br><span class="line">        returnVal += hexo.render.renderSync({<span class="attr">text</span>: heading[<span class="number">1</span>], <span class="attr">engine</span>: <span class="string">'markdown'</span>}).trim() + <span class="string">'&lt;/div&gt;'</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (footer = rFooter.exec(content)) {</span><br><span class="line">        content = content.replace(rFooter, <span class="string">''</span>);</span><br><span class="line">        returnVal += <span class="string">'&lt;div class="card-body"&gt;'</span> + hexo.render.renderSync({<span class="attr">text</span>: content, <span class="attr">engine</span>: <span class="string">'markdown'</span>}).trim() + <span class="string">'&lt;/div&gt;'</span>;</span><br><span class="line">        returnVal += <span class="string">'&lt;div class="card-footer"&gt;'</span> + hexo.render.renderSync({<span class="attr">text</span>: footer[<span class="number">1</span>], <span class="attr">engine</span>: <span class="string">'markdown'</span>}).trim() + <span class="string">'&lt;/div&gt;&lt;/div&gt;'</span>;</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        returnVal += <span class="string">'&lt;div class="card-body"&gt;'</span> + hexo.render.renderSync({<span class="attr">text</span>: content, <span class="attr">engine</span>: <span class="string">'markdown'</span>}).trim() + <span class="string">'&lt;/div&gt;&lt;/div&gt;'</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> returnVal;</span><br><span class="line">}</span><br><span class="line">  </span><br><span class="line">hexo.extend.tag.register(<span class="string">'card'</span>, cardContent, { <span class="attr">ends</span>: <span class="literal">true</span> });</span><br></pre></td></tr></tbody></table></figure>
+<p>In line 47, we registed a tag name card, and next time we write something like below , it will show like bs card.</p>
+<figure class="highlight django"><table><tbody><tr><td class="code"><pre><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">card</span> %}</span><span class="xml"></span></span><br><span class="line"><span class="xml">card stuff</span></span><br><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">endcard</span> %}</span><span class="xml"></span></span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="Classes">Classes<a class="header-anchor" href="#Classes">#</a></h3>
+<p>card has some <a href="https://getbootstrap.com/docs/4.4/components/card/#background-and-color" target="_blank" rel="noopener">different styles</a>, we can use args to implement it.</p>
+<div class="card bg-default  my-3"><div class="card-body"><p>Args is given by hexo tag api, we can pass argument to tag.<br>
+so we combine style name into bs classes, this is the code.</p></div><div class="card-footer"><figure class="highlight js line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">cardContent</span> (<span class="params">args, content</span>) </span>{</span><br><span class="line">    <span class="keyword">var</span> classes = args[<span class="number">0</span>] || <span class="string">'default'</span>;</span><br><span class="line">    <span class="keyword">var</span> textClass = (classes != <span class="string">'default'</span> &amp;&amp; classes != <span class="string">'light'</span> ) ? <span class="string">' text-white'</span> : <span class="string">''</span>;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> returnVal = <span class="string">'&lt;div class="card bg-'</span> + classes + <span class="string">' '</span> + textClass + <span class="string">' mt-3 mb-3"&gt;'</span>;</span><br><span class="line">    ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div></div>
+<div class="card bg-default  my-3"><div class="card-body"><div class="card bg-default  my-3"><div class="card-header"><p>Default card</p></div><div class="card-body"><p>card content</p></div></div>
+<div class="card bg-primary  text-white my-3"><div class="card-header"><p>Primary card</p></div><div class="card-body"><p>card content</p></div></div>
+<div class="card bg-secondary  text-white my-3"><div class="card-header"><p>Secondary card</p></div><div class="card-body"><p>card content</p></div></div>
+<div class="card bg-success  text-white my-3"><div class="card-header"><p>Success card</p></div><div class="card-body"><p>card content</p></div></div>
+<div class="card bg-danger  text-white my-3"><div class="card-header"><p>Danger card</p></div><div class="card-body"><p>card content</p></div></div>
+<div class="card bg-warning  text-white my-3"><div class="card-header"><p>Warning card</p></div><div class="card-body"><p>card content</p></div></div>
+<div class="card bg-info  text-white my-3"><div class="card-header"><p>Info card</p></div><div class="card-body"><p>card content</p></div></div>
+<div class="card bg-light  my-3"><div class="card-header"><p>Light card</p></div><div class="card-body"><p>card content</p></div></div>
+<div class="card bg-dark  text-white my-3"><div class="card-header"><p>Dark card</p></div><div class="card-body"><p>card content</p></div></div></div><div class="card-footer"><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">{% card default %}...{% endcard %}</span><br><span class="line">{% card primary %}...{% endcard %}</span><br><span class="line">{% card secondary %}...{% endcard %}</span><br><span class="line">{% card success %}...{% endcard %}</span><br><span class="line">{% card danger %}...{% endcard %}</span><br><span class="line">{% card warning %}...{% endcard %}</span><br><span class="line">{% card info %}...{% endcard %}</span><br><span class="line">{% card light %}...{% endcard %}</span><br><span class="line">{% card dark %}...{% endcard %}</span><br></pre></td></tr></tbody></table></figure></div></div>
+<hr>
+<h3 id="Content">Content<a class="header-anchor" href="#Content">#</a></h3>
+<p>This is how content show.</p>
+<div class="card bg-default  my-3"><div class="card-body"><p>Content is given by hexo tag api, this is a string inside tag (of course markdown). We can use hexo render engine to show it.</p></div><div class="card-footer"><figure class="highlight js line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">cardContent</span> (<span class="params">args, content</span>) </span>{</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> returnVal = <span class="string">'&lt;div class="card bg-'</span> + classes + <span class="string">' '</span> + textClass + <span class="string">' mt-3 mb-3"&gt;'</span>;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    returnVal += <span class="string">'&lt;div class="card-body"&gt;'</span> + hexo.render.renderSync({<span class="attr">text</span>: content, <span class="attr">engine</span>: <span class="string">'markdown'</span>}).trim() + <span class="string">'&lt;/div&gt;&lt;/div&gt;'</span>;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> returnVal;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div></div>
+<hr>
+<h3 id="header-and-Footer">header and Footer<a class="header-anchor" href="#header-and-Footer">#</a></h3>
+<p>card header and footer is also given in bs, so we can implement it.</p>
+<div class="card bg-default  my-3"><div class="card-header"><p><strong>Card Header</strong></p></div><div class="card-body"><p>This is how header work.</p>
+<ol>
+<li>First, you must put your header content between <code>&lt;!-- header --&gt;</code> and <code>&lt;!-- endheader --&gt;</code>.</li>
+<li>In <em>card.js</em>, we use RegExp to find correct header content.</li>
+<li>RegExp for header is line 1.</li>
+<li>After finding, we render this stuff by using hexo render engine.</li>
+</ol></div><div class="card-footer"><figure class="highlight js line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> rheader = <span class="regexp">/&lt;!--\s*header\s*--&gt;\n([\w\W\s\S]*?)&lt;!--\s*endheader\s*--&gt;/g</span>;</span><br><span class="line"><span class="keyword">if</span> (heading = rHeading.exec(content)) {</span><br><span class="line">    content = content.replace(rHeading, <span class="string">''</span>);</span><br><span class="line">    returnVal += <span class="string">'&lt;div class="card-header"&gt;'</span> </span><br><span class="line">    returnVal += hexo.render.renderSync({<span class="attr">text</span>: heading[<span class="number">1</span>], <span class="attr">engine</span>: <span class="string">'markdown'</span>}).trim() + <span class="string">'&lt;/div&gt;'</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div></div>
+<div class="card bg-default  my-3"><div class="card-header"><p><strong>Card Footer</strong></p></div><div class="card-body"><p>This is how footer work.</p>
+<ol>
+<li>First, you must put your header content between <code>&lt;!-- footer --&gt;</code> and <code>&lt;!-- endfooter --&gt;</code>.</li>
+<li>In <em>card.js</em>, we use RegExp to find currect footer content.</li>
+<li>RegExp for footer is line 1.</li>
+<li>After finding, we render this stuff by using hexo render engine.</li>
+</ol></div><div class="card-footer"><figure class="highlight js line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> rFooter = <span class="regexp">/&lt;!--\s*footer\s*--&gt;\n([\w\W\s\S]*?)&lt;!--\s*endfooter\s*--&gt;/g</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (footer = rFooter.exec(content)) {</span><br><span class="line">    content = content.replace(rFooter, <span class="string">''</span>);</span><br><span class="line">    returnVal += <span class="string">'&lt;div class="card-body"&gt;'</span> + hexo.render.renderSync({<span class="attr">text</span>: content, <span class="attr">engine</span>: <span class="string">'markdown'</span>}).trim() + <span class="string">'&lt;/div&gt;'</span>;</span><br><span class="line">    returnVal += <span class="string">'&lt;div class="card-footer"&gt;'</span> + hexo.render.renderSync({<span class="attr">text</span>: footer[<span class="number">1</span>], <span class="attr">engine</span>: <span class="string">'markdown'</span>}).trim() + <span class="string">'&lt;/div&gt;&lt;/div&gt;'</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div></div>
+<hr>
+<h3 id="Remind">Remind<a class="header-anchor" href="#Remind">#</a></h3>
+<p>This card styling is using <a href="https://getbootstrap.com/docs/4.4/" target="_blank" rel="noopener">Bootstrap</a> v4.4, so you need to include bs stylesheet in <code>&lt;head&gt;</code>.</p>
+<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Latest compiled and minified CSS --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"https://maxcdn.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css"</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="Example">Example<a class="header-anchor" href="#Example">#</a></h2>
+<figure class="highlight md"><table><tbody><tr><td class="code"><pre><span class="line">{% card %}</span><br><span class="line"><span class="xml"><span class="comment">&lt;!-- header  --&gt;</span></span></span><br><span class="line">card header content</span><br><span class="line"><span class="xml"><span class="comment">&lt;!-- endheader --&gt;</span></span></span><br><span class="line">card content</span><br><span class="line"><span class="xml"><span class="comment">&lt;!-- footer --&gt;</span></span></span><br><span class="line">card footer</span><br><span class="line"><span class="xml"><span class="comment">&lt;!-- endfooter --&gt;</span></span></span><br><span class="line">{% endcard %}</span><br></pre></td></tr></tbody></table></figure>
+<p>So this is the correct code I wrote in the top. card box in the tag of:</p>
+<figure class="highlight django"><table><tbody><tr><td class="code"><pre><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">card</span> %}</span><span class="xml"></span></span><br><span class="line"><span class="xml">...</span></span><br><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">endcard</span> %}</span><span class="xml"></span></span><br></pre></td></tr></tbody></table></figure>
+<p>And header should put in:</p>
+<figure class="highlight xml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- header --&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">&lt;!-- endheader --&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p>Also footer should put in:</p>
+<figure class="highlight xml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- footer --&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">&lt;!-- endfooter --&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p>And this is support classes:</p>
+<figure class="highlight django"><table><tbody><tr><td class="code"><pre><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">card</span> default %}</span><span class="xml">...</span><span class="template-tag">{% <span class="name">endcard</span> %}</span><span class="xml"></span></span><br><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">card</span> primary %}</span><span class="xml">...</span><span class="template-tag">{% <span class="name">endcard</span> %}</span><span class="xml"></span></span><br><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">card</span> secondary %}</span><span class="xml">...</span><span class="template-tag">{% <span class="name">endcard</span> %}</span><span class="xml"></span></span><br><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">card</span> success %}</span><span class="xml">...</span><span class="template-tag">{% <span class="name">endcard</span> %}</span><span class="xml"></span></span><br><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">card</span> danger %}</span><span class="xml">...</span><span class="template-tag">{% <span class="name">endcard</span> %}</span><span class="xml"></span></span><br><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">card</span> warning %}</span><span class="xml">...</span><span class="template-tag">{% <span class="name">endcard</span> %}</span><span class="xml"></span></span><br><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">card</span> info %}</span><span class="xml">...</span><span class="template-tag">{% <span class="name">endcard</span> %}</span><span class="xml"></span></span><br><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">card</span> light %}</span><span class="xml">...</span><span class="template-tag">{% <span class="name">endcard</span> %}</span><span class="xml"></span></span><br><span class="line"><span class="xml"></span><span class="template-tag">{% <span class="name">card</span> dark %}</span><span class="xml">...</span><span class="template-tag">{% <span class="name">endcard</span> %}</span><span class="xml"></span></span><br></pre></td></tr></tbody></table></figure>
+<p>If not given classes, it will also show default classes. So this two are equal.</p>
+<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line">{% card<span class="built_in"> default </span>%}<span class="built_in">..</span>.{% endcard %}</span><br><span class="line">{% card %}<span class="built_in">..</span>.{% endcard %}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<p>That is, how does a card work on hexo by using tag plugins. You can find source code about this website in <a href="https://github.com/luswdev/HackTeck/tree/master" target="_blank" rel="noopener">github</a> if you want to learn more.</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/Hexo/">#Hexo</a> <a href="/tags/bootstrap/">#bootstrap</a> <a href="/tags/tag-plugin/">#tag plugin</a> <a href="/tags/card/">#card</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/hexo/add-bs-label.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/CLang/c-bit-operation.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2020-04-23 21:11:09',
+            title: 'Add Bootstrap Card Tags into Hexo',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2021 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>

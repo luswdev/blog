@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="XV6 - Starting Process">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>XV6 - Starting Process | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158078787-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158078787-1');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>XV6 - Starting Process</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/XV6/">XV6</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2018-08-27
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        775
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote>
+<p>BIOS -&gt; boot section -&gt; main -&gt; scheduler 的詳細流程在 <a href="/post/xv6/process.html">Ch1</a>、<a href="/post/xv6/scheduler.html">Ch5</a>及<a href="/post/xv6/bootloader.html">Appendix B</a>，本文強調 CPU0 以外的 CPU 啟動流程及更詳細的 main 解析。</p>
+</blockquote>
+<h2 id="Code-startothers">Code: startothers<a class="header-anchor" href="#Code-startothers">#</a></h2>
+<div class="alert alert-success"><p><strong>File:</strong> main.c</p></div>
+<ul>
+<li>在 main 初始化一些設備後，會先呼叫 startothers，再呼叫 mpmain 來完成 cpu 的設定及呼叫 scheduler。</li>
+</ul>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>啟動其他 CPU</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">startothers(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">extern</span> uchar _binary_entryother_start[], _binary_entryother_size[];</span><br><span class="line">  uchar *code;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">cpu</span> *<span class="title">c</span>;</span></span><br><span class="line">  <span class="keyword">char</span> *<span class="built_in">stack</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Write entry code to unused memory at 0x7000.</span></span><br><span class="line">  <span class="comment">// The linker has placed the image of entryother.S in</span></span><br><span class="line">  <span class="comment">// _binary_entryother_start.</span></span><br><span class="line">  code = p2v(<span class="number">0x7000</span>);</span><br><span class="line">  memmove(code, _binary_entryother_start, (uint)_binary_entryother_size);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>entryother.S 的入口被 linked 到 <code>0x7000</code>，這裡將 code 指向 <code>0x7000</code> 作為 entryother.S 的進入點。</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(c = cpus; c &lt; cpus+ncpu; c++){</span><br><span class="line">  <span class="keyword">if</span>(c == cpus+cpunum())  <span class="comment">// We've started already.</span></span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Tell entryother.S what stack to use, where to enter, and what </span></span><br><span class="line">  <span class="comment">// pgdir to use. We cannot use kpgdir yet, because the AP processor</span></span><br><span class="line">  <span class="comment">// is running in low  memory, so we use entrypgdir for the APs too.</span></span><br><span class="line">  <span class="built_in">stack</span> = kalloc();</span><br><span class="line">  *(<span class="keyword">void</span>**)(code<span class="number">-4</span>) = <span class="built_in">stack</span> + KSTACKSIZE;</span><br><span class="line">  *(<span class="keyword">void</span>**)(code<span class="number">-8</span>) = mpenter;</span><br><span class="line">  *(<span class="keyword">int</span>**)(code<span class="number">-12</span>) = (<span class="keyword">void</span> *) v2p(entrypgdir);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>為待會的 entryother 建立一個堆疊 …</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">lapicstartap(c-&gt;id, v2p(code));</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>正式的啟動 CPU <code>c</code>，即進入 entryother.S</li>
+<li>entryother.S 做完設定後會呼叫 <code>mpenter()</code>，<code>mpmenter</code> 最後會呼叫 <code>mpmain()</code>。</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">// wait for cpu to finish mpmain()</span></span><br><span class="line">    <span class="keyword">while</span>(c-&gt;started == <span class="number">0</span>)</span><br><span class="line">      ;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>在 <code>mpmain()</code> 會將 <code>cpu-&gt;started</code> 設為 <code>1</code>，CPU0 在 <code>while</code> 迴圈等待 CPU <code>c</code> 啟動完畢，才繼續啟動下一個 CPU。</li>
+</ul>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>完成多核心啟動流程</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">mpenter(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  switchkvm(); </span><br><span class="line">  seginit();</span><br><span class="line">  lapicinit();</span><br><span class="line">  mpmain();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>執行多核心任務</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">mpmain(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  cprintf(<span class="string">"cpu%d: starting\n"</span>, cpu-&gt;id);</span><br><span class="line">  idtinit();       <span class="comment">// load idt register</span></span><br><span class="line">  xchg(&amp;cpu-&gt;started, <span class="number">1</span>); <span class="comment">// tell startothers() we're up</span></span><br><span class="line">  scheduler();     <span class="comment">// start running processes</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="lapicstartup">lapicstartup<a class="header-anchor" href="#lapicstartup">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>啟動 lapic</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>apicid</code></th>
+<th><code>addr</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲啟動的 lapic</td>
+<td>填入的值</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">lapicstartap(uchar apicid, uint addr)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">int</span> i;</span><br><span class="line">  ushort *wrv;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// "The BSP must initialize CMOS shutdown code to 0AH</span></span><br><span class="line">  <span class="comment">// and the warm reset vector (DWORD based at 40:67) to point at</span></span><br><span class="line">  <span class="comment">// the AP startup code prior to the [universal startup algorithm]."</span></span><br><span class="line">  outb(IO_RTC, <span class="number">0xF</span>);  <span class="comment">// offset 0xF is shutdown code</span></span><br><span class="line">  outb(IO_RTC+<span class="number">1</span>, <span class="number">0x0A</span>);</span><br><span class="line">  wrv = (ushort*)P2V((<span class="number">0x40</span>&lt;&lt;<span class="number">4</span> | <span class="number">0x67</span>));  <span class="comment">// Warm reset vector</span></span><br><span class="line">  wrv[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">  wrv[<span class="number">1</span>] = addr &gt;&gt; <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// "Universal startup algorithm."</span></span><br><span class="line">  <span class="comment">// Send INIT (level-triggered) interrupt to reset other CPU.</span></span><br><span class="line">  lapicw(ICRHI, apicid&lt;&lt;<span class="number">24</span>);</span><br><span class="line">  lapicw(ICRLO, INIT | LEVEL | ASSERT);</span><br><span class="line">  microdelay(<span class="number">200</span>);</span><br><span class="line">  lapicw(ICRLO, INIT | LEVEL);</span><br><span class="line">  microdelay(<span class="number">100</span>);    <span class="comment">// should be 10ms, but too slow in Bochs!</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Send startup IPI (twice!) to enter code.</span></span><br><span class="line">  <span class="comment">// Regular hardware is supposed to only accept a STARTUP</span></span><br><span class="line">  <span class="comment">// when it is in the halted state due to an INIT.  So the second</span></span><br><span class="line">  <span class="comment">// should be ignored, but it is part of the official Intel algorithm.</span></span><br><span class="line">  <span class="comment">// Bochs complains about the second one.  Too bad for Bochs.</span></span><br><span class="line">  <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++){</span><br><span class="line">    lapicw(ICRHI, apicid&lt;&lt;<span class="number">24</span>);</span><br><span class="line">    lapicw(ICRLO, STARTUP | (addr&gt;&gt;<span class="number">12</span>));</span><br><span class="line">    microdelay(<span class="number">200</span>);</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="Main-解析">Main 解析<a class="header-anchor" href="#Main-解析">#</a></h2>
+<h3 id="main">main<a class="header-anchor" href="#main">#</a></h3>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span></span><br><span class="line">main(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  kinit1(end, P2V(<span class="number">4</span>*<span class="number">1024</span>*<span class="number">1024</span>)); <span class="comment">// phys page allocator</span></span><br><span class="line">  kvmalloc();      <span class="comment">// kernel page table</span></span><br><span class="line">  mpinit();        <span class="comment">// collect info about this machine</span></span><br><span class="line">  lapicinit();</span><br><span class="line">  seginit();       <span class="comment">// set up segments</span></span><br><span class="line">  cprintf(<span class="string">"\ncpu%d: starting XV6\n\n"</span>, cpu-&gt;id);</span><br><span class="line">  picinit();       <span class="comment">// interrupt controller</span></span><br><span class="line">  ioapicinit();    <span class="comment">// another interrupt controller</span></span><br><span class="line">  consoleinit();   <span class="comment">// I/O devices &amp; their interrupts</span></span><br><span class="line">  uartinit();      <span class="comment">// serial port</span></span><br><span class="line">  pinit();         <span class="comment">// process table</span></span><br><span class="line">  tvinit();        <span class="comment">// trap vectors</span></span><br><span class="line">  binit();         <span class="comment">// buffer cache</span></span><br><span class="line">  fileinit();      <span class="comment">// file table</span></span><br><span class="line">  iinit();         <span class="comment">// inode cache</span></span><br><span class="line">  ideinit();       <span class="comment">// disk</span></span><br><span class="line">  <span class="keyword">if</span>(!ismp)</span><br><span class="line">    timerinit();   <span class="comment">// uniprocessor timer</span></span><br><span class="line">  startothers();   <span class="comment">// start other processors</span></span><br><span class="line">  kinit2(P2V(<span class="number">4</span>*<span class="number">1024</span>*<span class="number">1024</span>), P2V(PHYSTOP)); <span class="comment">// must come after startothers()</span></span><br><span class="line">  userinit();      <span class="comment">// first user process</span></span><br><span class="line">  <span class="comment">// Finish setting up this processor in mpmain.</span></span><br><span class="line">  mpmain();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>kinit1()</code> <a href="/post/xv6/mem.html#kinit1-2">In ch2</a></li>
+<li><code>kvmalloc()</code> <a href="/post/xv6/mem.html#kvmalloc">In Ch2</a></li>
+<li><code>mpinit()</code></li>
+<li><code>lapicinit()</code></li>
+<li><code>seginit()</code></li>
+<li><code>picinit()</code></li>
+<li><code>ioapicinit()</code></li>
+<li><code>consoleinit()</code></li>
+<li><code>uartinit()</code></li>
+<li><code>pinit()</code></li>
+<li><code>tvinit()</code> <a href="/post/xv6/trap.html#Code-Assembly-trap-handler">In Ch3</a></li>
+<li><code>binit()</code></li>
+<li><code>fileinit()</code></li>
+<li><code>iinit()</code></li>
+<li><code>ideinit()</code> <a href="/post/xv6/trap.html#File-buf-h">In Ch3</a></li>
+<li><code>timerinit()</code></li>
+<li><code>startothers()</code> <a href="#Code-startothers">Above</a></li>
+<li><code>kinit2()</code> <a href="/post/xv6/mem.html#kinit1-2">In ch2</a></li>
+<li><code>userinit()</code> <a href="/post/xv6/process.html#userinit">In Ch1</a></li>
+<li><code>mpmain()</code></li>
+</ul>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/kernel/">#kernel</a> <a href="/tags/XV6/">#XV6</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/linux/vim-instruction.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/xv6/running.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2018-08-27 06:15:29',
+            title: 'XV6 - Starting Process',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2021 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>

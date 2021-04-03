@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="C 語言 - attribute">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>C 語言 - attribute | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158078787-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158078787-1');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>C 語言 - attribute</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/Clang/">C語言</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2018-10-12
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        699
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>有分三種： <span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/0031-20e3.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/0031-20e3.png?v8">1⃣</span> 對副函式的 <span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/0032-20e3.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/0032-20e3.png?v8">2⃣</span> 對資料的　<span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/0033-20e3.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/0033-20e3.png?v8">3⃣</span> 對結構的</p>
+<div class="alert alert-warning"><p><span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/1f514.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/1f514.png?v8">🔔</span> 註：<strong>attribute</strong> 是給 compiler 看的。</p></div>
+<h2 id="對結構的">對結構的<a class="header-anchor" href="#對結構的">#</a></h2>
+<h3 id="packed">packed<a class="header-anchor" href="#packed">#</a></h3>
+<p>C語言在宣告結構的時候，會對裡面的元素作對齊，給個例子：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sample</span> {</span></span><br><span class="line">    <span class="keyword">int</span>  memberA;</span><br><span class="line">    <span class="keyword">char</span> memberB[<span class="number">3</span>];</span><br><span class="line">    <span class="keyword">int</span>  memberC;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>如果我們手算此結構的大小的話，會是：</p>
+<ul>
+<li>A: 4 bytes;</li>
+<li>B: 3 bytes;</li>
+<li>C: 4 bytes;</li>
+<li>sample : 4 + 3 + 4 = 11 bytes</li>
+</ul>
+<p>但實際上 compiler 出來 <code>sizeof(struct sample) = 12</code><br><br>
+這是因為 compiler 所有元素對齊，也就是把每一格切成 4 bytes，B 就會自動對齊成 4 bytes。<br><br>
+也可以說是寫成：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sample</span> {</span></span><br><span class="line">    <span class="keyword">int</span>  memberA;</span><br><span class="line">    <span class="keyword">char</span> memberB[<span class="number">3</span>];</span><br><span class="line">    <span class="keyword">char</span> padding;</span><br><span class="line">    <span class="keyword">int</span>  memberC;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<p>在嵌入式系統中，不可浪費太多記憶體，所以需要使用 packed 屬性來告訴 compiler 不要幫我們對齊，<code>sizeof</code> 出來的結果就會如我們預期。</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sample</span> {</span></span><br><span class="line">    <span class="keyword">int</span>  memberA;</span><br><span class="line">    <span class="keyword">char</span> memberB[<span class="number">3</span>];</span><br><span class="line">    <span class="keyword">int</span>  memberC;</span><br><span class="line">}__attribute__((packed));</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="aligned">aligned<a class="header-anchor" href="#aligned">#</a></h3>
+<p>相反的，<code>aligned</code> 屬性就是告訴 compiler 幫我們對齊資料，可以指定對其的大小，如：</p>
+<ul>
+<li><code>__attribute__((aligned(8)))</code></li>
+<li><code>__attribute__((aligned(16)))</code></li>
+</ul>
+<p>如果我們在上一個例子加上此屬性的話，<code>sizeof</code> 的結果將會不一樣。</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sample</span> {</span></span><br><span class="line">    <span class="keyword">int</span>  memberA;</span><br><span class="line">    <span class="keyword">char</span> memberB[<span class="number">3</span>];</span><br><span class="line">    <span class="keyword">int</span>  memberC;</span><br><span class="line">}__attribute__((aligned(<span class="number">8</span>)));</span><br></pre></td></tr></tbody></table></figure>
+<p>此時 <code>sizeof(struct sample) = 16</code><br>
+也就是 A+B=7 bytes，沒有超過我們給定的 8，但加上 C 就會超過了，所以在 B 跟 C 中間塞個 1 byte 來對齊；然後在 C 的後面塞 4 bytes；也就是：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sample</span> {</span></span><br><span class="line">    <span class="keyword">int</span>  memberA;</span><br><span class="line">    <span class="keyword">char</span> memberB[<span class="number">3</span>];</span><br><span class="line">    <span class="keyword">char</span> padding1;</span><br><span class="line">    <span class="keyword">int</span>  memberC;</span><br><span class="line">    <span class="keyword">int</span>  padding2;</span><br><span class="line">}__attribute__((aligned(<span class="number">8</span>)));</span><br></pre></td></tr></tbody></table></figure>
+<p>如果沒有加數字，compiler 會進行最佳化的對齊。<br>
+以此例子將以 4 對齊。</p>
+<h2 id="對資料的">對資料的<a class="header-anchor" href="#對資料的">#</a></h2>
+<ul>
+<li><code>__attribute__((aligned))</code></li>
+<li><code>__attribute__((packed))</code></li>
+</ul>
+<p>與結構道理相同，也是決定要不要對齊。</p>
+<h2 id="aligned-v-s-packed">aligned v.s. packed<a class="header-anchor" href="#aligned-v-s-packed">#</a></h2>
+<ul>
+<li>aligned: 速度快</li>
+<li>packed: 省記憶體</li>
+</ul>
+<h2 id="對副程式的">對副程式的<a class="header-anchor" href="#對副程式的">#</a></h2>
+<h3 id="noreturn">noreturn<a class="header-anchor" href="#noreturn">#</a></h3>
+<p>對於 void 的副程式，如果放在某個需要回傳值的副程式，理論上會需要回傳值，也就是 <code>return void</code></p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">exit</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sample</span><span class="params">(<span class="keyword">int</span> a)</span></span>{</span><br><span class="line">    <span class="keyword">return</span> a==<span class="number">0</span> ? a : <span class="built_in">exit</span>();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>但這是無效的操作，所以需要加上 <code>__attribute__((noreturn))</code></p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">exit</span><span class="params">()</span>__<span class="title">attribute__</span><span class="params">((noreturn))</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sample</span><span class="params">(<span class="keyword">int</span> a)</span></span>{</span><br><span class="line">    <span class="keyword">return</span> a==<span class="number">0</span>? a : <span class="built_in">exit</span>();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="通用">通用<a class="header-anchor" href="#通用">#</a></h2>
+<h3 id="section">section<a class="header-anchor" href="#section">#</a></h3>
+<p>如果需要將特定的變數、結構或是副程式放到指定的記憶體位置，即可使用此屬性，用法如下：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sample</span>{</span></span><br><span class="line">    <span class="keyword">int</span>  some;</span><br><span class="line">    <span class="keyword">char</span> members;</span><br><span class="line">    <span class="keyword">int</span>  here;</span><br><span class="line">}__attribute__((section(<span class="string">"name"</span>)));</span><br></pre></td></tr></tbody></table></figure>
+<p>上述例子我們指定將 sample 結構放置於指定的記憶體區塊，名為 <code>"name"</code>。<br><br>
+而 <code>"name"</code> 這個記憶體區塊則在 <em>linker script</em> 中命名。</p>
+<figure class="highlight mipsasm"><table><tbody><tr><td class="code"><pre><span class="line">SECTION</span><br><span class="line">{</span><br><span class="line">    . = <span class="number">0x1000</span><span class="comment">;</span></span><br><span class="line">    .name : {</span><br><span class="line">        <span class="built_in">AT</span>(<span class="number">0x100000</span>)<span class="comment">;</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>對變數、副程式我們可以一樣指定連結的位址：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> link_sample __attribute__((section(<span class="string">"data"</span>)));</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sample_fun</span><span class="params">( )</span>__<span class="title">attribute__</span><span class="params">((section(<span class="string">"text"</span>)))</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sample_fun</span><span class="params">()</span></span>{</span><br><span class="line">    <span class="keyword">int</span> do_nothing = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> do_nothing;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/Clang/">#C語言</a> <a href="/tags/attribute/">#attribute</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/linux/change-home-partition.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/linux/vim-instruction.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2018-10-12 13:11:49',
+            title: 'C 語言 - attribute',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2021 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>

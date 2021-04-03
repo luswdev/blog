@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /posts/
+Allow: /archives/
+Allow: /categories/
+Allow: /tags/ 
+Allow: /about/ 
+Disallow: /img/
+Disallow: /css/
+Disallow: /js/
+Disallow: /pages/
+
+Sitemap: https://lusw.dev/sitemap.xml

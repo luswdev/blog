@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="XV6 - Running">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>XV6 - Running | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158078787-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158078787-1');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>XV6 - Running</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/XV6/">XV6</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2018-08-27
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        1.7k
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="Makefile-解析">Makefile 解析<a class="header-anchor" href="#Makefile-解析">#</a></h2>
+<figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">OBJS = \</span><br><span class="line">	bio.o\</span><br><span class="line">	console.o\</span><br><span class="line">	exec.o\</span><br><span class="line">	file.o\</span><br><span class="line">	fs.o\</span><br><span class="line">	ide.o\</span><br><span class="line">	ioapic.o\</span><br><span class="line">	kalloc.o\</span><br><span class="line">	kbd.o\</span><br><span class="line">	lapic.o\</span><br><span class="line">	main.o\</span><br><span class="line">	mp.o\</span><br><span class="line">	picirq.o\</span><br><span class="line">	pipe.o\</span><br><span class="line">	proc.o\</span><br><span class="line">	spinlock.o\</span><br><span class="line">	string.o\</span><br><span class="line">	swtch.o\</span><br><span class="line">	syscall.o\</span><br><span class="line">	sysfile.o\</span><br><span class="line">	sysproc.o\</span><br><span class="line">	timer.o\</span><br><span class="line">	trapasm.o\</span><br><span class="line">	trap.o\</span><br><span class="line">	uart.o\</span><br><span class="line">	vectors.o\</span><br><span class="line"></span><br><span class="line"><span class="comment"># Cross-compiling (e.g., on Mac OS X)</span></span><br><span class="line">TOOLPREFIX = /usr/bin/i386-jos-elf-</span><br><span class="line"><span class="comment"># Using native tools (e.g., on X86 Linux)</span></span><br><span class="line"><span class="comment"># TOOLPREFIX = </span></span><br><span class="line">CC = <span class="variable">$(TOOLPREFIX)</span>gcc</span><br><span class="line">AS = <span class="variable">$(TOOLPREFIX)</span>gas</span><br><span class="line">LD = <span class="variable">$(TOOLPREFIX)</span>ld</span><br><span class="line">OBJCOPY = <span class="variable">$(TOOLPREFIX)</span>objcopy</span><br><span class="line">OBJDUMP = <span class="variable">$(TOOLPREFIX)</span>objdump</span><br><span class="line">CFLAGS = -fno-builtin -O2 -Wall -MD -ggdb -m32</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>-fno-builtin</code>：不使用 C 中的內建函數。</li>
+<li><code>-O2</code>：<code>-O</code> 表示最佳化的程度，數字越大越好，但會增加編譯時間。</li>
+<li><code>-Wall</code>：Warm all 的意思，打開所有的警告。</li>
+<li><code>-MD</code>：生成 .d（directory），等同於 <code>-M -MF file</code>。</li>
+</ul>
+<div class="alert alert-info"><p><code>gcc -M file.c</code><sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[Linux Makefile 生成 .d 依赖文件及 gcc -M -MF -MP 等相关选项说明](https://blog.csdn.net/QQ1452008/article/details/50855810)">[1]</span></a></sup> 會將 file.c 有 include 的 .h （包含標準函式庫）關聯起來，即輸出為：<br>
+<code>file.o: file.c header.h stdio.h</code><br>
+<code>gcc -M -MF file.c</code> 將 <code>-M</code> 的輸出存入 file.d 裡。<br>
+<strong>註</strong>：<code>-M</code> 會自動帶 <code>-E</code>，如果使用 <code>-MD</code> 替代 <code>-M -MF</code> 時則不會帶 <code>-E</code>。</p></div>
+<ul>
+<li><code>-ggdb</code>：為 GDB 生成更多的 debug 資訊。</li>
+<li><code>-m32</code>：生成 32 位元的程式碼。</li>
+</ul>
+<figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">CFLAGS += <span class="variable">$(<span class="built_in">shell</span> <span class="variable">$(CC)</span> -fno-stack-protector -E -x c /dev/null &gt;/dev/null 2&gt;&amp;1 &amp;&amp; echo -fno-stack-protector)</span></span><br><span class="line">ASFLAGS = -m32</span><br><span class="line"><span class="comment"># FreeBSD ld wants ``elf_i386_fbsd''</span></span><br><span class="line">LDFLAGS += -m <span class="variable">$(<span class="built_in">shell</span> <span class="variable">$(LD)</span> -V | grep elf_i386 2&gt;/dev/null)</span></span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">XV6.img: bootblock kernel fs.img</span></span><br><span class="line">	dd if=/dev/zero of=XV6.img count=10000</span><br><span class="line">	dd if=bootblock of=XV6.img conv=notrunc</span><br><span class="line">	dd if=kernel of=XV6.img seek=1 conv=notrunc</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>產生 XV6.img</li>
+<li><code>dd</code> 指令將 <code>if</code>(input file) 複製到 <code>of</code>(output file)</li>
+<li><code>count</code> 限制輸入的大小，單位為 blocks，一個 block 的大小由 <code>ibs=BYTES</code> 宣告（預設為 512）。</li>
+<li><code>notrunc</code> 在輸出檔案時會比對輸入的檔案，只會輸出與輸入檔案不一樣的地方。</li>
+<li><code>seek</code> 會略過數個 blocks 之後再輸出，block 大小由 <code>obs=BTYES</code> 宣告（預設為 512）。</li>
+</ul>
+<div class="alert alert-warning"><p>/dev/zero 為一個特殊檔案，讀取時會提供無限的空字元，44 行為生成一個大小為 10000（個 block）的空白檔案 XV6.img（或是把 XV6.img 的前 10000 個 block 清除。）</p></div>
+<figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">bootblock: bootasm.S bootmain.c</span></span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> -O -nostdinc -I. -c bootmain.c</span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> -nostdinc -I. -c bootasm.S</span><br><span class="line">	<span class="variable">$(LD)</span> <span class="variable">$(LDFLAGS)</span> -N -e start -Ttext 0x7C00 -o bootblock.o bootasm.o bootmain.o</span><br><span class="line">	<span class="variable">$(OBJDUMP)</span> -S bootblock.o &gt; bootblock.asm</span><br><span class="line">	<span class="variable">$(OBJCOPY)</span> -S -O binary bootblock.o bootblock</span><br><span class="line">	./sign.pl bootblock</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>建立 bootblock</li>
+</ul>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>GCC</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-nostdinc</code></td>
+<td>不要從根目錄開始搜尋檔案，要從 <code>-I</code> 指定的目錄開始</td>
+</tr>
+<tr>
+<td><code>-I.</code></td>
+<td>指定現在的資料夾</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td>對後面的檔案編譯（或組譯），但不做連接</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>LD</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-N</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>-e</code></td>
+<td>使用後面的名稱（start）作為入口</td>
+</tr>
+<tr>
+<td><code>-Ttext</code></td>
+<td>將後面的位置作為輸出文件的起始位置（須為 16 進位）</td>
+</tr>
+<tr>
+<td><code>-o</code></td>
+<td>用來指定 ld 生成的名稱</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>OBJDUMP</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-S</code></td>
+<td>反組譯目標文件</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>OBJCOPY</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-S</code></td>
+<td>去除所有符號資訊</td>
+</tr>
+<tr>
+<td><code>-O binary</code></td>
+<td>輸出為二進位的文件</td>
+</tr>
+</tbody>
+</table></div>
+<div class="alert alert-info"><p>反組譯的用意是為了 debug</p></div>
+<figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">bootother: bootother.S</span></span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> -nostdinc -I. -c bootother.S</span><br><span class="line">	<span class="variable">$(LD)</span> <span class="variable">$(LDFLAGS)</span> -N -e start -Ttext 0x7000 -o bootother.out bootother.o</span><br><span class="line">	<span class="variable">$(OBJCOPY)</span> -S -O binary bootother.out bootother</span><br><span class="line">	<span class="variable">$(OBJDUMP)</span> -S bootother.o &gt; bootother.asm</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>啟動其他的 CPU</li>
+</ul>
+<figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">initcode: initcode.S</span></span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> -nostdinc -I. -c initcode.S</span><br><span class="line">	<span class="variable">$(LD)</span> <span class="variable">$(LDFLAGS)</span> -N -e start -Ttext 0 -o initcode.out initcode.o</span><br><span class="line">	<span class="variable">$(OBJCOPY)</span> -S -O binary initcode.out initcode</span><br><span class="line">	<span class="variable">$(OBJDUMP)</span> -S initcode.o &gt; initcode.asm</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>建立 initcode</li>
+</ul>
+<figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">kernel: <span class="variable">$(OBJS)</span> bootother initcode</span></span><br><span class="line">	<span class="variable">$(LD)</span> <span class="variable">$(LDFLAGS)</span> -Ttext 0x100000 -e main -o kernel <span class="variable">$(OBJS)</span> -b binary initcode bootother</span><br><span class="line">	<span class="variable">$(OBJDUMP)</span> -S kernel &gt; kernel.asm</span><br><span class="line">	<span class="variable">$(OBJDUMP)</span> -t kernel | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' &gt; kernel.sym</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>建立 kernel</li>
+</ul>
+<figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">tags: <span class="variable">$(OBJS)</span> bootother.S _init</span></span><br><span class="line">	etags *.S *.c</span><br><span class="line"></span><br><span class="line"><span class="section">vectors.S: vectors.pl</span></span><br><span class="line">	perl vectors.pl &gt; vectors.S</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>使用 <a href="http://vectors.pl" target="_blank" rel="noopener">vectors.pl</a> 生成 vectors.S</li>
+</ul>
+<figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">ULIB = ulib.o usys.o printf.o umalloc.o</span><br><span class="line"></span><br><span class="line"><span class="section">_%: %.o <span class="variable">$(ULIB)</span></span></span><br><span class="line">	<span class="variable">$(LD)</span> <span class="variable">$(LDFLAGS)</span> -N -e main -Ttext 0 -o <span class="variable">$@</span> <span class="variable">$^</span></span><br><span class="line">	<span class="variable">$(OBJDUMP)</span> -S <span class="variable">$@</span> &gt; <span class="variable">$*</span>.asm</span><br><span class="line">	<span class="variable">$(OBJDUMP)</span> -t <span class="variable">$@</span> | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' &gt; <span class="variable">$*</span>.sym</span><br></pre></td></tr></tbody></table></figure>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>特殊符號</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%</td>
+<td>萬用字元，如 <code>_a</code> 需對應 <code>a.o</code></td>
+</tr>
+<tr>
+<td>$@</td>
+<td>代表工作目標，即 <code>_%</code></td>
+</tr>
+<tr>
+<td>$^</td>
+<td>代表所有必要條件，即 <code>%.o $(ULIB)</code></td>
+</tr>
+<tr>
+<td>$*</td>
+<td>代表第一個必要條件，但不包含副檔名</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">_forktest: forktest.o <span class="variable">$(ULIB)</span></span></span><br><span class="line">	<span class="comment"># forktest has less library code linked in - needs to be small</span></span><br><span class="line">	<span class="comment"># in order to be able to max out the proc table.</span></span><br><span class="line">	<span class="variable">$(LD)</span> <span class="variable">$(LDFLAGS)</span> -N -e main -Ttext 0 -o _forktest forktest.o ulib.o usys.o</span><br><span class="line">	<span class="variable">$(OBJDUMP)</span> -S _forktest &gt; forktest.asm</span><br><span class="line"></span><br><span class="line"><span class="section">mkfs: mkfs.c fs.h</span></span><br><span class="line">	gcc <span class="variable">$(CFLAGS)</span> -Wall -o mkfs mkfs.c</span><br><span class="line"></span><br><span class="line">UPROGS=\</span><br><span class="line">	_cat\</span><br><span class="line">	_echo\</span><br><span class="line">	_forktest\</span><br><span class="line">	_grep\</span><br><span class="line">	_init\</span><br><span class="line">	_kill\</span><br><span class="line">	_ln\</span><br><span class="line">	_ls\</span><br><span class="line">	_mkdir\</span><br><span class="line">	_rm\</span><br><span class="line">	_sh\</span><br><span class="line">	_usertests\</span><br><span class="line">	_wc\</span><br><span class="line">	_zombie\</span><br><span class="line"></span><br><span class="line"><span class="section">fs.img: mkfs README <span class="variable">$(UPROGS)</span></span></span><br><span class="line">	./mkfs fs.img README <span class="variable">$(UPROGS)</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>fs 指的是 file system</li>
+</ul>
+<figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">-include</span> *.d</span><br><span class="line"></span><br><span class="line"><span class="section">clean: </span></span><br><span class="line">	rm -f *.tex *.dvi *.idx *.aux *.log *.ind *.ilg \</span><br><span class="line">	*.o *.d *.asm *.sym vectors.S parport.out \</span><br><span class="line">	bootblock kernel XV6.img fs.img mkfs \</span><br><span class="line">	<span class="variable">$(UPROGS)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># make a printout</span></span><br><span class="line">FILES = <span class="variable">$(<span class="built_in">shell</span> grep -v '^\#' runoff.list)</span></span><br><span class="line">PRINT = runoff.list <span class="variable">$(FILES)</span></span><br><span class="line"></span><br><span class="line"><span class="section">XV6.pdf: <span class="variable">$(PRINT)</span></span></span><br><span class="line">	./runoff</span><br><span class="line"></span><br><span class="line"><span class="section">print: XV6.pdf</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># run in emulators</span></span><br><span class="line"></span><br><span class="line">bochs : fs.img XV6.img</span><br><span class="line">	if [ ! -e .bochsrc ]; then ln -s dot-bochsrc .bochsrc; fi</span><br><span class="line">	bochs -q</span><br><span class="line"></span><br><span class="line"><span class="section">qemu: fs.img XV6.img</span></span><br><span class="line">	qemu -parallel stdio -hdb fs.img XV6.img</span><br><span class="line"></span><br><span class="line"><span class="section">qemutty: fs.img XV6.img</span></span><br><span class="line">	qemu -nographic -smp 2 -hdb fs.img XV6.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># CUT HERE</span></span><br><span class="line"><span class="comment"># prepare dist for students</span></span><br><span class="line"><span class="comment"># after running make dist, probably want to</span></span><br><span class="line"><span class="comment"># rename it to rev0 or rev1 or so on and then</span></span><br><span class="line"><span class="comment"># check in that version.</span></span><br><span class="line"></span><br><span class="line">EXTRA=\</span><br><span class="line">	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c\</span><br><span class="line">	kill.c ln.c ls.c mkdir.c rm.c usertests.c wc.c zombie.c\</span><br><span class="line">	printf.c umalloc.c \</span><br><span class="line">	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\</span><br><span class="line"></span><br><span class="line"><span class="section">dist:</span></span><br><span class="line">	rm -rf dist</span><br><span class="line">	mkdir dist</span><br><span class="line">	for i in <span class="variable">$(FILES)</span>; \</span><br><span class="line">	do \</span><br><span class="line">		grep -v PAGEBREAK $$i &gt;dist/$$i; \</span><br><span class="line">	done</span><br><span class="line">	sed '/CUT HERE/,$$d' Makefile &gt;dist/Makefile</span><br><span class="line">	echo &gt;dist/runoff.spec</span><br><span class="line">	cp <span class="variable">$(EXTRA)</span> dist</span><br><span class="line"></span><br><span class="line"><span class="section">dist-test:</span></span><br><span class="line">	rm -rf dist</span><br><span class="line">	make dist</span><br><span class="line">	rm -rf dist-test</span><br><span class="line">	mkdir dist-test</span><br><span class="line">	cp dist/* dist-test</span><br><span class="line">	cd dist-test; ../m print</span><br><span class="line">	cd dist-test; ../m bochs || true</span><br><span class="line">	cd dist-test; ../m qemu</span><br><span class="line"></span><br><span class="line"><span class="comment"># update this rule (change rev1) when it is time to</span></span><br><span class="line"><span class="comment"># make a new revision.</span></span><br><span class="line"><span class="section">tar:</span></span><br><span class="line">	rm -rf /tmp/XV6</span><br><span class="line">	mkdir -p /tmp/XV6</span><br><span class="line">	cp dist/* /tmp/XV6</span><br><span class="line">	(cd /tmp; tar cf - XV6) | gzip &gt;XV6-rev2.tar.gz</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="Make">Make<a class="header-anchor" href="#Make">#</a></h2>
+<blockquote>
+<p>我本來是打算在 MacOX 的環境下 make XV6 的，但是如果要 make 的話需要有 <code>i386-jos-elf</code> 的相關工具，需另外安裝（<a href="https://pdos.csail.mit.edu/6.828/2016/tools.html" target="_blank" rel="noopener">安裝方法</a>）。由於我一直沒辦法安裝，最後只好裝 ubuntu 來 make。</p>
+</blockquote>
+<ul>
+<li>在主目錄下輸入 <code>make</code> 指令</li>
+<li>接著會多出兩個檔案：XV6.img、fs.img，我們使用 qemu 來運行 XV6。</li>
+</ul>
+<hr>
+<h2 id="QEMU">QEMU<a class="header-anchor" href="#QEMU">#</a></h2>
+<ul>
+<li>輸入以下代碼<sup id="fnref:2"><a href="#fn:2" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[【學習 XV6 】在 Mac OSX 下運行 XV6](http://leenjewel.github.io/blog/2014/07/24/%5B%28xue-xi-xv6-%29%5D-zai-mac-osx-xia-yun-xing-xv6/)">[2]</span></a></sup></li>
+</ul>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">qemu-system-i386 -serial mon:stdio -hdb fs.img XV6.img -smp 1 -m 512</span><br></pre></td></tr></tbody></table></figure>
+<p><div class="img-item" data-src="https://i.imgur.com/Fz4WKO1.png" data-sub-html=".caption"><img src="https://i.imgur.com/Fz4WKO1.png" alt="QEMU" title="Running XV6 in QEMU"><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom">QEMU</span></div></div></p>
+<div class="alert alert-warning"><p>註：make 好了以後，在 MacOS 的環境下使用 QEMU 模擬器即可運行。</p></div>
+<hr>
+<h2 id="File-Kernel-ld">File: Kernel.ld<a class="header-anchor" href="#File-Kernel-ld">#</a></h2>
+<figure class="highlight armasm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Simple linker script for the JOS kernel.</span></span><br><span class="line"><span class="comment">   See the GNU ld 'info' manual ("info ld") to learn the syntax. */</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">OUTPUT_FORMAT</span>(<span class="string">"elf32-i386"</span>, <span class="string">"elf32-i386"</span>, <span class="string">"elf32-i386"</span>)</span><br><span class="line"><span class="symbol">OUTPUT_ARCH</span>(i386)</span><br><span class="line"><span class="symbol">ENTRY</span>(_start)</span><br><span class="line"></span><br><span class="line"><span class="symbol">SECTIONS</span></span><br><span class="line">{</span><br><span class="line">	<span class="comment">/* Link the kernel at this address: "." means the current address */</span></span><br><span class="line">        <span class="comment">/* Must be equal to KERNLINK */</span></span><br><span class="line">	. = <span class="number">0x80100000</span><span class="comment">;</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>設定記憶體位置到 <code>0x8010000</code>（虛擬地址，分頁硬體會映射至實體位置 <code>0x0010000</code>）</li>
+<li><em>bootmain.c</em> 將 ELF 指標指向 <code>0x100000</code> 接著將 kernel 讀入。</li>
+</ul>
+<figure class="highlight armasm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">	<span class="meta">.text</span> : AT(<span class="number">0x100000</span>) {</span><br><span class="line">		*(<span class="meta">.text</span> .stub <span class="meta">.text</span>.* .gnu.linkonce.t.*)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	PROVIDE(etext = .)<span class="comment">;	/* Define the 'etext' symbol to this value */</span></span><br><span class="line"></span><br><span class="line">	.rodata : {</span><br><span class="line">		*(.rodata .rodata.* .gnu.linkonce.r.*)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Include debugging information in kernel memory */</span></span><br><span class="line">	.stab : {</span><br><span class="line">		PROVIDE(__STAB_BEGIN__ = .)<span class="comment">;</span></span><br><span class="line">		*(.stab)<span class="comment">;</span></span><br><span class="line">		PROVIDE(__STAB_END__ = .)<span class="comment">;</span></span><br><span class="line">		<span class="keyword">BYTE(0)	</span>	<span class="comment">/* Force the linker to allocate space</span></span><br><span class="line"><span class="comment">				   for this section */</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	.stabstr : {</span><br><span class="line">		PROVIDE(__STABSTR_BEGIN__ = .)<span class="comment">;</span></span><br><span class="line">		*(.stabstr)<span class="comment">;</span></span><br><span class="line">		PROVIDE(__STABSTR_END__ = .)<span class="comment">;</span></span><br><span class="line">		<span class="keyword">BYTE(0)	</span>	<span class="comment">/* Force the linker to allocate space</span></span><br><span class="line"><span class="comment">				   for this section */</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Adjust the address for the data segment to the next page */</span></span><br><span class="line">	. = <span class="meta">ALIGN</span>(<span class="number">0x1000</span>)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Conventionally, Unix linkers provide pseudo-symbols</span></span><br><span class="line"><span class="comment">	 * etext, edata, and end, at the end of the text, data, and bss.</span></span><br><span class="line"><span class="comment">	 * For the kernel mapping, we need the address at the beginning</span></span><br><span class="line"><span class="comment">	 * of the data section, but that's not one of the conventional</span></span><br><span class="line"><span class="comment">	 * symbols, because the convention started before there was a</span></span><br><span class="line"><span class="comment">	 * read-only rodata section between text and data. */</span></span><br><span class="line">	PROVIDE(<span class="meta">data</span> = .)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* The data segment */</span></span><br><span class="line">	<span class="meta">.data</span> : {</span><br><span class="line">		*(<span class="meta">.data</span>)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	PROVIDE(edata = .)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">	.<span class="keyword">bss </span>: {</span><br><span class="line">		*(.<span class="keyword">bss)</span></span><br><span class="line"><span class="keyword">	</span>}</span><br><span class="line"></span><br><span class="line">	PROVIDE(<span class="meta">end</span> = .)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">	/DISCARD/ : {</span><br><span class="line">		*(.eh_frame .note.GNU-stack)</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure><div id="footnotes"><hr class="block-hr"><div id="footnotelist" class="card card-default"><div class="card-header">Reference</div><ol class="list-group list-group-flush" style="list-style: none; padding-left: 0; margin-left: 0px"><li id="fn:1" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://blog.csdn.net/QQ1452008/article/details/50855810" target="_blank" rel="noopener">Linux Makefile 生成 .d 依赖文件及 gcc -M -MF -MP 等相关选项说明</a><a href="#fnref:1" rev="footnote"> ↩</a></span></li><li id="fn:2" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">2.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="http://leenjewel.github.io/blog/2014/07/24/%5B%28xue-xi-xv6-%29%5D-zai-mac-osx-xia-yun-xing-xv6/" target="_blank" rel="noopener">【學習 XV6 】在 Mac OSX 下運行 XV6</a><a href="#fnref:2" rev="footnote"> ↩</a></span></li></ol></div></div><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/kernel/">#kernel</a> <a href="/tags/makefile/">#makefile</a> <a href="/tags/XV6/">#XV6</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/xv6/starting.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/xv6/bootloader.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2018-08-27 06:15:18',
+            title: 'XV6 - Running',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2021 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>

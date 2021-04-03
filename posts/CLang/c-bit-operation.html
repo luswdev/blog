@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="C 語言 - 位元欄位">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>C 語言 - 位元欄位 | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158078787-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158078787-1');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>C 語言 - 位元欄位</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/Clang/">C語言</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2020-04-10
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        899
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>在 C 語言中，如果我們要對特定的 bit(s) 做操作的話，最直覺的方式是用 bit and（<code>&amp;</code>）跟 bit or（<code>|</code>）：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> bit_sample = <span class="number">0x0123</span>; <span class="comment">/* 0000 0001 0010 0011 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 將第 2 個 bit 改成 1 */</span></span><br><span class="line">bit_samplee |= (<span class="number">0x1</span> &lt;&lt; <span class="number">2</span>); <span class="comment">/* 0000 0001 0010 0011 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 將第 5 個 bit 改成 1 */</span></span><br><span class="line">bit_samplee |= ~(<span class="number">0x1</span> &lt;&lt; <span class="number">5</span>); <span class="comment">/* 0000 0001 0010 0011 */</span></span><br></pre></td></tr></tbody></table></figure>
+<p>從上面的例子可以看到如何使用 bit and/or 來操作特定的 bit，這種方式對於單一個 bit 並不會太麻煩，但有以下缺點：</p>
+<ul>
+<li>無法覆用：這種方式不能快速地建立一個方法，也比較不好理解</li>
+<li>對於區間上就不好使了</li>
+</ul>
+<p>如果要解決上述缺點，有一個方式是使用 <code>union</code>，一個在嵌入式、驅動程式裡常常用到的方法。</p>
+<hr>
+<h2 id="Union">Union<a class="header-anchor" href="#Union">#</a></h2>
+<p><code>union</code> 是 C 語言裡面可以對一個結構裡面的元素，可以有不同的資料型態去理解，如以下例子：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">union</span> sample {</span><br><span class="line">    <span class="keyword">int</span> sample_int;</span><br><span class="line">    <span class="keyword">char</span> sample_str[<span class="number">4</span>];</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>需要注意的是：同一時間內只能存取一個屬性，準確來說他們是共用一個記憶體區塊，所以改第一個值第二個值會同時更改。<sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[[C 語言] 程式設計教學：如何使用聯合 (Union)](https://michaelchen.tech/c-programming/union/)">[1]</span></a></sup></p>
+</blockquote>
+<h3 id="struct">struct<a class="header-anchor" href="#struct">#</a></h3>
+<p>奇怪，不是在講 <code>union</code> 嗎，怎麼會提到 <code>struct</code> 呢？那是因為 C 裡面有一個有趣的東西叫做位元欄位<sup id="fnref:2"><a href="#fn:2" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[位元欄](https://zh.wikipedia.org/wiki/%E4%BD%8D%E6%AE%B5)">[2]</span></a></sup>，這個東西必須搭配結構使用；先看例子：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">bit_row</span> {</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> row1 : <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> row2 : <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> row3 : <span class="number">1</span>;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<p>乍看之下好像跟一般的結構差不多，可是我們注意到在每個元素宣告的結尾多了一個 <code>: 數字</code>，這是什麼意思？</p>
+<ol>
+<li>首先，<code>unsigned short</code> 在 64 位元裡大小是 4位，<code>unsigned int</code> 則是 8位</li>
+<li>加上 <code>: 數字</code>，這個東西就叫位元欄位，我們可以限制當前元素的大小</li>
+<li>因此，元素 1 的大小就被我們縮至 1 位，依此類推</li>
+</ol>
+<hr>
+<p>有了上述的<strong>工具</strong>就可以建立一個好用而且好理解的位元操作方法！</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">union</span> method_ex {</span><br><span class="line">    <span class="keyword">int</span> real_val;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">bits</span> {</span></span><br><span class="line">        <span class="keyword">short</span> bit0to2 : <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">short</span> bit3and4 : <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">short</span> bit5to7 : <span class="number">3</span>;</span><br><span class="line">    };</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>建立好上面這個 union 後，如果要將某一個整數的第 3 到 4 位 的值改掉，可以這樣寫</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">union</span> method_ex int_ex;</span><br><span class="line">int_ex.real_val = <span class="number">0x0123</span>; <span class="comment">/* 0000 0001 0010 0011 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* change 3 and 4 bits to 01 */</span></span><br><span class="line">int_ex.bits.bit3and4 = B01; <span class="comment">/* 0000 0001 0010 1011 */</span></span><br></pre></td></tr></tbody></table></figure>
+<p>這樣的寫法，更簡單，更易懂。</p>
+<hr>
+<h3 id="剩下的空間">剩下的空間<a class="header-anchor" href="#剩下的空間">#</a></h3>
+<p>值得注意的一件事，我們沿用上面的例子；<code>method_ex</code> 有一個元素叫<em>真正的值</em>，他是一個整數（8 位），剛好另外一個元素我們使用位元欄位的技巧也控制在 8 位；但，如果我們沒有這麼做呢？</p>
+<div class="alert alert-warning"><p>答案是：你可以這麼寫，不會有什麼問題，但不建議。</p></div>
+<h4 id="更大">更大<a class="header-anchor" href="#更大">#</a></h4>
+<p>如果 <code>bits</code> 結構今天大於 8 位，那我們就沒辦法透過更改<em>真正的值</em>來改變到高於 8 位的值，因此這麼做是<strong>沒意義</strong>的。</p>
+<h4 id="更小">更小<a class="header-anchor" href="#更小">#</a></h4>
+<p>如果 <code>bits</code> 結構今天小於 8 位，這麼做完全不會有任何問題，但習慣上，我們會把它補齊，像是我們在 <a href="/c-attribute">attribute</a> 篇裡提到的 padding。</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">union</span> method_ex {</span><br><span class="line">    <span class="keyword">int</span> real_val;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">bits</span> {</span></span><br><span class="line">        <span class="keyword">short</span> bit0to2 : <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">short</span> bit3and4 : <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">short</span> bit5and6 : <span class="number">2</span>;</span><br><span class="line">    };</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<div class="alert alert-info"><p>沒有定義第 7 位</p></div>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">union</span> method_ex {</span><br><span class="line">    <span class="keyword">int</span> real_val;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">bits</span> {</span></span><br><span class="line">        <span class="keyword">short</span> bit0to2 : <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">short</span> bit3and4 : <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">short</span> bit5and6 : <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">short</span> notused : <span class="number">1</span>;</span><br><span class="line">    };</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<div class="alert alert-info"><p>隨便取名，只要有定義就好</p></div>
+<div id="footnotes"><hr class="block-hr"><div id="footnotelist" class="card card-default"><div class="card-header">Reference</div><ol class="list-group list-group-flush" style="list-style: none; padding-left: 0; margin-left: 0px"><li id="fn:1" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://michaelchen.tech/c-programming/union/" target="_blank" rel="noopener">[C 語言] 程式設計教學：如何使用聯合 (Union)</a><a href="#fnref:1" rev="footnote"> ↩</a></span></li><li id="fn:2" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">2.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://zh.wikipedia.org/wiki/%E4%BD%8D%E6%AE%B5" target="_blank" rel="noopener">位元欄</a><a href="#fnref:2" rev="footnote"> ↩</a></span></li></ol></div></div><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/Clang/">#C語言</a> <a href="/tags/Bit-field/">#Bit field</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/hexo/add-bs-card.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/linux/lookup-port.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2020-04-10 17:28:52',
+            title: 'C 語言 - 位元欄位',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2021 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>

@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="RT-Thread - IPC Sync">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>RT-Thread - IPC Sync | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158078787-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158078787-1');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>RT-Thread - IPC Sync</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/RT-Thread/">RT-Thread</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2018-11-26
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        5k
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><ul>
+<li>兩個 thread 要溝通的方式，是透過共享的記憶體來完成；而如果此記憶體沒有排他性，這個記憶體有可能會不同步。</li>
+<li>因此進入一塊共享的記憶體一次只允許一個 thread 來使用，這樣即可保證其資料的一致性</li>
+<li>進入此共享記憶體則叫做 <strong>critical region</strong></li>
+<li>RT-Thread 利用 7 種方式來完成同步：關閉中斷、scheduler lock、semaphore、互斥鎖、事件、mail box 及 message</li>
+</ul>
+<hr>
+<h2 id="關閉中斷">關閉中斷<a class="header-anchor" href="#關閉中斷">#</a></h2>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">level = rt_hw_interrupt_disable();</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  critical region </span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">rt_hw_interrupt_enable(level);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>此方式是最強大的一種，但此 critical region 不可以佔用太多時間</li>
+</ul>
+<hr>
+<h2 id="Scheduler-lock">Scheduler lock<a class="header-anchor" href="#Scheduler-lock">#</a></h2>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">rt_enter_critical()</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    *  critical region </span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">rt_exit_critical()</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>使用此方式可確保當前 thread 不會被 scheduler 踢出，但還是有可能會被中斷影響。</li>
+</ul>
+<hr>
+<h3 id="進入-scheuler-鎖">進入 scheuler 鎖<a class="header-anchor" href="#進入-scheuler-鎖">#</a></h3>
+<div class="alert alert-success"><p><strong>File:</strong> scheduler.c</p></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>進入 scheuler 鎖</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will lock the thread scheduler.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rt_enter_critical</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> level;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    level = rt_hw_interrupt_disable();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * the maximal number of nest is RT_UINT16_MAX, which is big</span></span><br><span class="line"><span class="comment">     * enough and does not check here</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    rt_scheduler_lock_nest ++;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(level);</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_enter_critical);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>即，將 <code>rt_scheduler_lock_nest</code> 加一</li>
+</ul>
+<hr>
+<h3 id="離開-scheduler-鎖">離開 scheduler 鎖<a class="header-anchor" href="#離開-scheduler-鎖">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>離開 scheuler 鎖</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will unlock the thread scheduler.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rt_exit_critical</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> level;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    level = rt_hw_interrupt_disable();</span><br><span class="line"></span><br><span class="line">    rt_scheduler_lock_nest --;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>即，將 <code>rt_scheduler_lock_nest</code> 減一</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (rt_scheduler_lock_nest &lt;= <span class="number">0</span>)</span><br><span class="line">    {</span><br><span class="line">        rt_scheduler_lock_nest = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">/* enable interrupt */</span></span><br><span class="line">        rt_hw_interrupt_enable(level);</span><br><span class="line"></span><br><span class="line">        rt_schedule();</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* enable interrupt */</span></span><br><span class="line">        rt_hw_interrupt_enable(level);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果 <code>rt_scheduler_lock_nest</code> 被減至 0 或以下，進行一次調度</li>
+</ul>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>回傳 scheuler 鎖的值</td>
+<td>scheuler 鎖的值</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Get the scheduler lock level</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the level of the scheduler lock. 0 means unlocked.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_uint16_t</span> rt_critical_level(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">return</span> rt_scheduler_lock_nest;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_critical_level);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>即，回傳 <code>rt_scheduler_lock_nest</code> 值</li>
+</ul>
+<hr>
+<h2 id="Semaphore">Semaphore<a class="header-anchor" href="#Semaphore">#</a></h2>
+<ul>
+<li>為一個值，代表同時可用的個數</li>
+<li>不等於 0 時可用，取用時將值減 1</li>
+<li>當不可用時，將 thread 掛在等待的鏈上</li>
+</ul>
+<div class="alert alert-success"><p><strong>File:</strong> rtdef.h</p></div>
+<h3 id="結構">結構<a class="header-anchor" href="#結構">#</a></h3>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RT_USING_SEMAPHORE</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Semaphore structure</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_semaphore</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_ipc_object</span> <span class="title">parent</span>;</span>                        <span class="comment">/**&lt; inherit from ipc_object */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">rt_uint16_t</span>          value;                         <span class="comment">/**&lt; value of semaphore. */</span></span><br><span class="line">};</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rt_semaphore</span> *<span class="title">rt_sem_t</span>;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="flags">flags<a class="header-anchor" href="#flags">#</a></h3>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * IPC flags and control command definitions</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_IPC_FLAG_FIFO                0x00            <span class="comment">/**&lt; FIFOed IPC. @ref IPC. */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_IPC_FLAG_PRIO                0x01            <span class="comment">/**&lt; PRIOed IPC. @ref IPC. */</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_IPC_CMD_UNKNOWN              0x00            <span class="comment">/**&lt; unknown IPC command */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_IPC_CMD_RESET                0x01            <span class="comment">/**&lt; reset IPC object */</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_WAITING_FOREVER              -1              <span class="comment">/**&lt; Block forever until get resource. */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_WAITING_NO                   0               <span class="comment">/**&lt; Non-block. */</span></span></span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<div class="alert alert-success"><p><strong>File:</strong> ipc.c</p></div>
+<h3 id="建立-semaphore">建立 semaphore<a class="header-anchor" href="#建立-semaphore">#</a></h3>
+<h4 id="動態記憶體管理">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建立 semaphore</td>
+<td>semaphore</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*name</code></th>
+<th><code>value</code></th>
+<th><code>flag</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>名字</td>
+<td>semaphore 值，即最大可同時使用人數</td>
+<td>FIFO / PRIO</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will create a semaphore from system resource</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param name the name of semaphore</span></span><br><span class="line"><span class="comment"> * @param value the init value of semaphore</span></span><br><span class="line"><span class="comment"> * @param flag the flag of semaphore</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the created semaphore, RT_NULL on error happen</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @see rt_sem_init</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_sem_t</span> rt_sem_create(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">rt_uint32_t</span> value, <span class="keyword">rt_uint8_t</span> flag)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">rt_sem_t</span> sem;</span><br><span class="line"></span><br><span class="line">    RT_DEBUG_NOT_IN_INTERRUPT;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* allocate object */</span></span><br><span class="line">    sem = (<span class="keyword">rt_sem_t</span>)rt_object_allocate(RT_Object_Class_Semaphore, name);</span><br><span class="line">    <span class="keyword">if</span> (sem == RT_NULL)</span><br><span class="line">        <span class="keyword">return</span> sem;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init ipc object */</span></span><br><span class="line">    rt_ipc_object_init(&amp;(sem-&gt;parent));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set init value */</span></span><br><span class="line">    sem-&gt;value = value;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set parent */</span></span><br><span class="line">    sem-&gt;parent.parent.flag = flag;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sem;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_sem_create);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先需要一塊 semaphore 的大小，初始化 ipc 物件，再依序寫入初始值及 flag</li>
+</ul>
+<hr>
+<h4 id="靜態記憶體管理">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始化 semaphore</td>
+<td><code>RT_EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>sem</code></th>
+<th><code>*name</code></th>
+<th><code>value</code></th>
+<th><code>flag</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>semaphore 本體</td>
+<td>名字</td>
+<td>semaphore 值，即最大可同時使用人數</td>
+<td>FIFO / PRIO</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will initialize a semaphore and put it under control of</span></span><br><span class="line"><span class="comment"> * resource management.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param sem the semaphore object</span></span><br><span class="line"><span class="comment"> * @param name the name of semaphore</span></span><br><span class="line"><span class="comment"> * @param value the init value of semaphore</span></span><br><span class="line"><span class="comment"> * @param flag the flag of semaphore</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the operation status, RT_EOK on successful</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_sem_init(<span class="keyword">rt_sem_t</span>    sem,</span><br><span class="line">                     <span class="keyword">const</span> <span class="keyword">char</span> *name,</span><br><span class="line">                     <span class="keyword">rt_uint32_t</span> value,</span><br><span class="line">                     <span class="keyword">rt_uint8_t</span>  flag)</span><br><span class="line">{</span><br><span class="line">    RT_ASSERT(sem != RT_NULL);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init object */</span></span><br><span class="line">    rt_object_init(&amp;(sem-&gt;parent.parent), RT_Object_Class_Semaphore, name);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init ipc object */</span></span><br><span class="line">    rt_ipc_object_init(&amp;(sem-&gt;parent));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set init value */</span></span><br><span class="line">    sem-&gt;value = value;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set parent */</span></span><br><span class="line">    sem-&gt;parent.parent.flag = flag;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_sem_init);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>由於使用靜態記憶體，這裡就不需要再 allocate。</li>
+</ul>
+<hr>
+<h3 id="刪除-semaphore">刪除 semaphore<a class="header-anchor" href="#刪除-semaphore">#</a></h3>
+<h4 id="動態記憶體管理-v2">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v2">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>sem</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刪除 semaphore</td>
+<td><code>RT_EOK</code></td>
+<td>欲刪除的 semaphore</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will delete a semaphore object and release the memory</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param sem the semaphore object</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the error code</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @see rt_sem_detach</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_sem_delete(<span class="keyword">rt_sem_t</span> sem)</span><br><span class="line">{</span><br><span class="line">    RT_DEBUG_NOT_IN_INTERRUPT;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(sem != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type(&amp;sem-&gt;parent.parent) == RT_Object_Class_Semaphore);</span><br><span class="line">    RT_ASSERT(rt_object_is_systemobject(&amp;sem-&gt;parent.parent) == RT_FALSE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* wakeup all suspend threads */</span></span><br><span class="line">    rt_ipc_list_resume_all(&amp;(sem-&gt;parent.suspend_thread));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* delete semaphore object */</span></span><br><span class="line">    rt_object_delete(&amp;(sem-&gt;parent.parent));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_sem_delete);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先需把所有正在等待此 semaphore 的 thread 叫醒</li>
+<li>接著呼叫 <code>rt_object_delete</code> 清除此物件（semaphore）</li>
+</ul>
+<hr>
+<h4 id="靜態記憶體管理-v2">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v2">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>sem</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刪除 semaphore</td>
+<td><code>RT_EOK</code></td>
+<td>欲刪除的 semaphore</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will detach a semaphore from resource management</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param sem the semaphore object</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the operation status, RT_EOK on successful</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @see rt_sem_delete</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_sem_detach(<span class="keyword">rt_sem_t</span> sem)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(sem != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type(&amp;sem-&gt;parent.parent) == RT_Object_Class_Semaphore);</span><br><span class="line">    RT_ASSERT(rt_object_is_systemobject(&amp;sem-&gt;parent.parent));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* wakeup all suspend threads */</span></span><br><span class="line">    rt_ipc_list_resume_all(&amp;(sem-&gt;parent.suspend_thread));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* detach semaphore object */</span></span><br><span class="line">    rt_object_detach(&amp;(sem-&gt;parent.parent));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_sem_detach);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>這裡則透過 <code>rt_object_detach</code> 清除</li>
+</ul>
+<hr>
+<h3 id="使用-semaphore">使用 semaphore<a class="header-anchor" href="#使用-semaphore">#</a></h3>
+<ul>
+<li>呼叫 <code>rt_sem_take</code> 來取得 semaphore，傳入的 time 是等待時間</li>
+</ul>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>要求 semaphore</td>
+<td><code>RT_EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>sem</code></th>
+<th><code>time</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲要求的 semaphore</td>
+<td>等待時間（如果需要）</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will take a semaphore, if the semaphore is unavailable, the</span></span><br><span class="line"><span class="comment"> * thread shall wait for a specified time.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param sem the semaphore object</span></span><br><span class="line"><span class="comment"> * @param time the waiting time</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the error code</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_sem_take(<span class="keyword">rt_sem_t</span> sem, <span class="keyword">rt_int32_t</span> time)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> temp;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span> *<span class="title">thread</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(sem != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type(&amp;sem-&gt;parent.parent) == RT_Object_Class_Semaphore);</span><br><span class="line"></span><br><span class="line">    RT_OBJECT_HOOK_CALL(rt_object_trytake_hook, (&amp;(sem-&gt;parent.parent)));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    temp = rt_hw_interrupt_disable();</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>由於待會會修改 semaphore 的值，這裡先將中斷關閉</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br></pre></td><td class="code"><pre><span class="line">RT_DEBUG_LOG(RT_DEBUG_IPC, (<span class="string">"thread %s take sem:%s, which value is: %d\n"</span>,</span><br><span class="line">                            rt_thread_self()-&gt;name,</span><br><span class="line">                            ((struct rt_object *)sem)-&gt;name,</span><br><span class="line">                            sem-&gt;value));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (sem-&gt;value &gt; <span class="number">0</span>)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* semaphore is available */</span></span><br><span class="line">    sem-&gt;value --;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(temp);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如過 <code>sem-&gt;value</code> 值大於 0 代表可用，接著減一，並開啟中斷</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span></span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* no waiting, return with timeout */</span></span><br><span class="line">    <span class="keyword">if</span> (time == <span class="number">0</span>)</span><br><span class="line">    {</span><br><span class="line">        rt_hw_interrupt_enable(temp);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> -RT_ETIMEOUT;</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果 semaphore 不可用時：</li>
+<li>且 time 為 0，表示不等待，直接開啟中斷並 return</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span></span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* current context checking */</span></span><br><span class="line">    RT_DEBUG_IN_THREAD_CONTEXT;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* semaphore is unavailable, push to suspend list */</span></span><br><span class="line">    <span class="comment">/* get current thread */</span></span><br><span class="line">    thread = rt_thread_self();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* reset thread error number */</span></span><br><span class="line">    thread-&gt;error = RT_EOK;</span><br><span class="line"></span><br><span class="line">    RT_DEBUG_LOG(RT_DEBUG_IPC, (<span class="string">"sem take: suspend thread - %s\n"</span>,</span><br><span class="line">                                thread-&gt;name));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* suspend thread */</span></span><br><span class="line">    rt_ipc_list_suspend(&amp;(sem-&gt;parent.suspend_thread),</span><br><span class="line">                        thread,</span><br><span class="line">                        sem-&gt;parent.parent.flag);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果要等待，則將 thread 插入 suspend list</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* has waiting time, start thread timer */</span></span><br><span class="line"><span class="keyword">if</span> (time &gt; <span class="number">0</span>)</span><br><span class="line">{</span><br><span class="line">    RT_DEBUG_LOG(RT_DEBUG_IPC, (<span class="string">"set thread:%s to timer list\n"</span>,</span><br><span class="line">                                thread-&gt;name));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* reset the timeout of thread timer and start it */</span></span><br><span class="line">    rt_timer_control(&amp;(thread-&gt;thread_timer),</span><br><span class="line">                     RT_TIMER_CTRL_SET_TIME,</span><br><span class="line">                     &amp;time);</span><br><span class="line">    rt_timer_start(&amp;(thread-&gt;thread_timer));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>且如果等待時間大於 0，則啟動一個 timeout 為 time 的 timer</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br></pre></td><td class="code"><pre><span class="line">            <span class="comment">/* enable interrupt */</span></span><br><span class="line">            rt_hw_interrupt_enable(temp);</span><br><span class="line"></span><br><span class="line">            <span class="comment">/* do schedule */</span></span><br><span class="line">            rt_schedule();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (thread-&gt;error != RT_EOK)</span><br><span class="line">            {</span><br><span class="line">                <span class="keyword">return</span> thread-&gt;error;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    RT_OBJECT_HOOK_CALL(rt_object_take_hook, (&amp;(sem-&gt;parent.parent)));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_sem_take);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>最後開啟中斷，做一次調度</li>
+</ul>
+<hr>
+<ul>
+<li>若是不想等待，可以呼叫 <code>rt_sem_trytake</code></li>
+<li>即呼叫 <code>rt_sem_take</code> 及傳入 <code>time</code> 為 0</li>
+</ul>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>sem</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>要求 semaphore（不等待）</td>
+<td><code>RT_EOK</code></td>
+<td>欲要求的 semaphore</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will try to take a semaphore and immediately return</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param sem the semaphore object</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the error code</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_sem_trytake(<span class="keyword">rt_sem_t</span> sem)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">return</span> rt_sem_take(sem, <span class="number">0</span>);</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_sem_trytake);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<ul>
+<li>還 semaphore 則使用 <code>rt_sem_release</code></li>
+</ul>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>sem</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>釋放 semaphore</td>
+<td><code>RT_EOK</code></td>
+<td>欲要求的 semaphore</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will release a semaphore, if there are threads suspended on</span></span><br><span class="line"><span class="comment"> * semaphore, it will be waked up.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param sem the semaphore object</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the error code</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_sem_release(<span class="keyword">rt_sem_t</span> sem)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> temp;</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_bool_t</span> need_schedule;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(sem != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type(&amp;sem-&gt;parent.parent) == RT_Object_Class_Semaphore);</span><br><span class="line"></span><br><span class="line">    RT_OBJECT_HOOK_CALL(rt_object_put_hook, (&amp;(sem-&gt;parent.parent)));</span><br><span class="line"></span><br><span class="line">    need_schedule = RT_FALSE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    temp = rt_hw_interrupt_disable();</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先將待會會遇到的 flag（<code>need_schedule</code>）設為 false</li>
+<li>因為待會也會修改 semaphore 的值，這裡需要關閉中斷</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br></pre></td><td class="code"><pre><span class="line">RT_DEBUG_LOG(RT_DEBUG_IPC, (<span class="string">"thread %s releases sem:%s, which value is: %d\n"</span>,</span><br><span class="line">                            rt_thread_self()-&gt;name,</span><br><span class="line">                            ((struct rt_object *)sem)-&gt;name,</span><br><span class="line">                            sem-&gt;value));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!rt_list_isempty(&amp;sem-&gt;parent.suspend_thread))</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* resume the suspended thread */</span></span><br><span class="line">    rt_ipc_list_resume(&amp;(sem-&gt;parent.suspend_thread));</span><br><span class="line">    need_schedule = RT_TRUE;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果有人在等此 semaphore，先恢復他，並修改 <code>need_schedule</code> 為 true</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">455</span><br><span class="line">456</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span></span><br><span class="line">    sem-&gt;value ++; <span class="comment">/* increase value */</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果沒有人在等待，則加一</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(temp);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* resume a thread, re-schedule */</span></span><br><span class="line">    <span class="keyword">if</span> (need_schedule == RT_TRUE)</span><br><span class="line">        rt_schedule();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_sem_release);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>最後開啟中斷，並根據 <code>need_schedule</code> 來決定需不需要執行一次調度</li>
+</ul>
+<hr>
+<h2 id="互斥鎖（mutex）">互斥鎖（mutex）<a class="header-anchor" href="#互斥鎖（mutex）">#</a></h2>
+<ul>
+<li>即一種值為 1 的特殊 semaphore，特別的是具有防止優先級翻轉的特性</li>
+</ul>
+<div class="alert alert-success"><p><strong>File:</strong> rtdef.h</p></div>
+<h3 id="結構-v2">結構<a class="header-anchor" href="#結構-v2">#</a></h3>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RT_USING_MUTEX</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Mutual exclusion (mutex) structure</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_mutex</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_ipc_object</span> <span class="title">parent</span>;</span>                        <span class="comment">/**&lt; inherit from ipc_object */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">rt_uint16_t</span>          value;                         <span class="comment">/**&lt; value of mutex */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">rt_uint8_t</span>           original_priority;             <span class="comment">/**&lt; priority of last thread hold the mutex */</span></span><br><span class="line">    <span class="keyword">rt_uint8_t</span>           hold;                          <span class="comment">/**&lt; numbers of thread hold the mutex */</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span>    *<span class="title">owner</span>;</span>                         <span class="comment">/**&lt; current owner of mutex */</span></span><br><span class="line">};</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rt_mutex</span> *<span class="title">rt_mutex_t</span>;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>為了防止優先權翻轉，在持有鎖的過程中可能會被提升優先權，在結構中就需要紀錄原本的優先級。</li>
+</ul>
+<hr>
+<div class="alert alert-success"><p><strong>File:</strong> ipc.c</p></div>
+<h3 id="建立-mutex">建立 mutex<a class="header-anchor" href="#建立-mutex">#</a></h3>
+<h4 id="動態記憶體管理-v3">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v3">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建立 mutex</td>
+<td>mutex</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*name</code></th>
+<th><code>flag</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>名字</td>
+<td>FIFO / PRIO</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will create a mutex from system resource</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param name the name of mutex</span></span><br><span class="line"><span class="comment"> * @param flag the flag of mutex</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the created mutex, RT_NULL on error happen</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @see rt_mutex_init</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_mutex_t</span> rt_mutex_create(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">rt_uint8_t</span> flag)</span><br><span class="line">{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_mutex</span> *<span class="title">mutex</span>;</span></span><br><span class="line"></span><br><span class="line">    RT_DEBUG_NOT_IN_INTERRUPT;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* allocate object */</span></span><br><span class="line">    mutex = (<span class="keyword">rt_mutex_t</span>)rt_object_allocate(RT_Object_Class_Mutex, name);</span><br><span class="line">    <span class="keyword">if</span> (mutex == RT_NULL)</span><br><span class="line">        <span class="keyword">return</span> mutex;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先 allocate 一個物件，初始化</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* init ipc object */</span></span><br><span class="line">rt_ipc_object_init(&amp;(mutex-&gt;parent));</span><br><span class="line"></span><br><span class="line">mutex-&gt;value              = <span class="number">1</span>;</span><br><span class="line">mutex-&gt;owner              = RT_NULL;</span><br><span class="line">mutex-&gt;original_priority  = <span class="number">0xFF</span>;</span><br><span class="line">mutex-&gt;hold               = <span class="number">0</span>;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>value 設為 1，擁有者為 NULL，原始權限最低（255），持有次數為 0</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/* set flag */</span></span><br><span class="line">    mutex-&gt;parent.parent.flag = flag;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> mutex;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_mutex_create);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>同時填入 flag</li>
+</ul>
+<hr>
+<h4 id="靜態記憶體管理-v3">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v3">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始化 mutex</td>
+<td><code>RT_EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>mutex</code></th>
+<th><code>*name</code></th>
+<th><code>flag</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mutex 本體</td>
+<td>名字</td>
+<td>FIFO / PRIO</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will initialize a mutex and put it under control of resource</span></span><br><span class="line"><span class="comment"> * management.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param mutex the mutex object</span></span><br><span class="line"><span class="comment"> * @param name the name of mutex</span></span><br><span class="line"><span class="comment"> * @param flag the flag of mutex</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the operation status, RT_EOK on successful</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_mutex_init(<span class="keyword">rt_mutex_t</span> mutex, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">rt_uint8_t</span> flag)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(mutex != RT_NULL);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init object */</span></span><br><span class="line">    rt_object_init(&amp;(mutex-&gt;parent.parent), RT_Object_Class_Mutex, name);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init ipc object */</span></span><br><span class="line">    rt_ipc_object_init(&amp;(mutex-&gt;parent));</span><br><span class="line"></span><br><span class="line">    mutex-&gt;value = <span class="number">1</span>;</span><br><span class="line">    mutex-&gt;owner = RT_NULL;</span><br><span class="line">    mutex-&gt;original_priority = <span class="number">0xFF</span>;</span><br><span class="line">    mutex-&gt;hold  = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set flag */</span></span><br><span class="line">    mutex-&gt;parent.parent.flag = flag;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_mutex_init);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>這裡不需要 allocate，只需要初始化物件</li>
+</ul>
+<hr>
+<h3 id="刪除-mutex">刪除 mutex<a class="header-anchor" href="#刪除-mutex">#</a></h3>
+<h4 id="動態記憶體管理-v4">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v4">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刪除 mutex</td>
+<td><code>RT_EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>mutex</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲刪除的 mutex</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br><span class="line">624</span><br><span class="line">625</span><br><span class="line">626</span><br><span class="line">627</span><br><span class="line">628</span><br><span class="line">629</span><br><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will delete a mutex object and release the memory</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param mutex the mutex object</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the error code</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @see rt_mutex_detach</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_mutex_delete(<span class="keyword">rt_mutex_t</span> mutex)</span><br><span class="line">{</span><br><span class="line">    RT_DEBUG_NOT_IN_INTERRUPT;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(mutex != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type(&amp;mutex-&gt;parent.parent) == RT_Object_Class_Mutex);</span><br><span class="line">    RT_ASSERT(rt_object_is_systemobject(&amp;mutex-&gt;parent.parent) == RT_FALSE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* wakeup all suspend threads */</span></span><br><span class="line">    rt_ipc_list_resume_all(&amp;(mutex-&gt;parent.suspend_thread));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* delete semaphore object */</span></span><br><span class="line">    rt_object_delete(&amp;(mutex-&gt;parent.parent));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_mutex_delete);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>與 semaphore 類似，先將正在等待此鎖的所有 thread 叫醒，接著透過 <code>rt_object_delete</code> 刪除 mutex</li>
+</ul>
+<hr>
+<h4 id="靜態記憶體管理-v4">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v4">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刪除 mutex</td>
+<td><code>RT_EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>mutex</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲刪除的 mutex</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will detach a mutex from resource management</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param mutex the mutex object</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the operation status, RT_EOK on successful</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @see rt_mutex_delete</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_mutex_detach(<span class="keyword">rt_mutex_t</span> mutex)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(mutex != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type(&amp;mutex-&gt;parent.parent) == RT_Object_Class_Mutex);</span><br><span class="line">    RT_ASSERT(rt_object_is_systemobject(&amp;mutex-&gt;parent.parent));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* wakeup all suspend threads */</span></span><br><span class="line">    rt_ipc_list_resume_all(&amp;(mutex-&gt;parent.suspend_thread));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* detach semaphore object */</span></span><br><span class="line">    rt_object_detach(&amp;(mutex-&gt;parent.parent));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_mutex_detach);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>這裡則運用 <code>rt_object_detach</code> 刪除</li>
+</ul>
+<hr>
+<h3 id="使用-mutex">使用 mutex<a class="header-anchor" href="#使用-mutex">#</a></h3>
+<ul>
+<li>呼叫 <code>rt_mutex_take</code> 來取得鎖</li>
+</ul>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>要求 mutex</td>
+<td><code>RT_EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>mutex</code></th>
+<th><code>time</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲要求的 mutex</td>
+<td>等待時間（如果需要）</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">641</span><br><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br><span class="line">649</span><br><span class="line">650</span><br><span class="line">651</span><br><span class="line">652</span><br><span class="line">653</span><br><span class="line">654</span><br><span class="line">655</span><br><span class="line">656</span><br><span class="line">657</span><br><span class="line">658</span><br><span class="line">659</span><br><span class="line">660</span><br><span class="line">661</span><br><span class="line">662</span><br><span class="line">663</span><br><span class="line">664</span><br><span class="line">665</span><br><span class="line">666</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will take a mutex, if the mutex is unavailable, the</span></span><br><span class="line"><span class="comment"> * thread shall wait for a specified time.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param mutex the mutex object</span></span><br><span class="line"><span class="comment"> * @param time the waiting time</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the error code</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_mutex_take(<span class="keyword">rt_mutex_t</span> mutex, <span class="keyword">rt_int32_t</span> time)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> temp;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span> *<span class="title">thread</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* this function must not be used in interrupt even if time = 0 */</span></span><br><span class="line">    RT_DEBUG_IN_THREAD_CONTEXT;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(mutex != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type(&amp;mutex-&gt;parent.parent) == RT_Object_Class_Mutex);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* get current thread */</span></span><br><span class="line">    thread = rt_thread_self();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    temp = rt_hw_interrupt_disable();</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>下面將會修改 mutex 的一些資料，這裡先將中斷關閉</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">667</span><br><span class="line">668</span><br><span class="line">669</span><br><span class="line">670</span><br><span class="line">671</span><br><span class="line">672</span><br><span class="line">673</span><br><span class="line">674</span><br><span class="line">675</span><br><span class="line">676</span><br><span class="line">677</span><br><span class="line">678</span><br><span class="line">679</span><br><span class="line">680</span><br></pre></td><td class="code"><pre><span class="line">RT_OBJECT_HOOK_CALL(rt_object_trytake_hook, (&amp;(mutex-&gt;parent.parent)));</span><br><span class="line"></span><br><span class="line">RT_DEBUG_LOG(RT_DEBUG_IPC,</span><br><span class="line">             (<span class="string">"mutex_take: current thread %s, mutex value: %d, hold: %d\n"</span>,</span><br><span class="line">              thread-&gt;name, mutex-&gt;value, mutex-&gt;hold));</span><br><span class="line"></span><br><span class="line"><span class="comment">/* reset thread error */</span></span><br><span class="line">thread-&gt;error = RT_EOK;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (mutex-&gt;owner == thread)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* it's the same thread */</span></span><br><span class="line">    mutex-&gt;hold ++;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>若此 mutex 的擁有者與要求著相同，持有數加 1</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">681</span><br><span class="line">682</span><br><span class="line">683</span><br><span class="line">684</span><br><span class="line">685</span><br><span class="line">686</span><br><span class="line">687</span><br><span class="line">688</span><br><span class="line">689</span><br><span class="line">690</span><br><span class="line">691</span><br><span class="line">692</span><br><span class="line">693</span><br><span class="line">694</span><br><span class="line">695</span><br><span class="line">696</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">else</span></span><br><span class="line">    {</span><br><span class="line">__again:</span><br><span class="line">        <span class="comment">/* The value of mutex is 1 in initial status. Therefore, if the</span></span><br><span class="line"><span class="comment">         * value is great than 0, it indicates the mutex is avaible.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">if</span> (mutex-&gt;value &gt; <span class="number">0</span>)</span><br><span class="line">        {</span><br><span class="line">            <span class="comment">/* mutex is available */</span></span><br><span class="line">            mutex-&gt;value --;</span><br><span class="line"></span><br><span class="line">            <span class="comment">/* set mutex owner and original priority */</span></span><br><span class="line">            mutex-&gt;owner             = thread;</span><br><span class="line">            mutex-&gt;original_priority = thread-&gt;current_priority;</span><br><span class="line">            mutex-&gt;hold ++;</span><br><span class="line">        }</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果不同，且 mutex 可用，先將 value <code>--</code></li>
+<li>設定所有者，紀錄當前權限，持有數加 1</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">697</span><br><span class="line">698</span><br><span class="line">699</span><br><span class="line">700</span><br><span class="line">701</span><br><span class="line">702</span><br><span class="line">703</span><br><span class="line">704</span><br><span class="line">705</span><br><span class="line">706</span><br><span class="line">707</span><br><span class="line">708</span><br><span class="line">709</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span></span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* no waiting, return with timeout */</span></span><br><span class="line">    <span class="keyword">if</span> (time == <span class="number">0</span>)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* set error as timeout */</span></span><br><span class="line">        thread-&gt;error = -RT_ETIMEOUT;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* enable interrupt */</span></span><br><span class="line">        rt_hw_interrupt_enable(temp);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> -RT_ETIMEOUT;</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果不可用，且不等待，則啟用中斷，<code>return -RT_ETIMEOUT</code></li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">710</span><br><span class="line">711</span><br><span class="line">712</span><br><span class="line">713</span><br><span class="line">714</span><br><span class="line">715</span><br><span class="line">716</span><br><span class="line">717</span><br><span class="line">718</span><br><span class="line">719</span><br><span class="line">720</span><br><span class="line">721</span><br><span class="line">722</span><br><span class="line">723</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span></span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* mutex is unavailable, push to suspend list */</span></span><br><span class="line">    RT_DEBUG_LOG(RT_DEBUG_IPC, (<span class="string">"mutex_take: suspend thread: %s\n"</span>,</span><br><span class="line">                                thread-&gt;name));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* change the owner thread priority of mutex */</span></span><br><span class="line">    <span class="keyword">if</span> (thread-&gt;current_priority &lt; mutex-&gt;owner-&gt;current_priority)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* change the owner thread priority */</span></span><br><span class="line">        rt_thread_control(mutex-&gt;owner,</span><br><span class="line">                          RT_THREAD_CTRL_CHANGE_PRIORITY,</span><br><span class="line">                          &amp;thread-&gt;current_priority);</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>若需要等待：</li>
+<li>為了避免優先權翻轉的情形發生，如需等待的 thread 的優先級大於持有 mutex 的優先級，提升持有者的</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">724</span><br><span class="line">725</span><br><span class="line">726</span><br><span class="line">727</span><br><span class="line">728</span><br><span class="line">729</span><br><span class="line">730</span><br><span class="line">731</span><br><span class="line">732</span><br><span class="line">733</span><br><span class="line">734</span><br><span class="line">735</span><br><span class="line">736</span><br><span class="line">737</span><br><span class="line">738</span><br><span class="line">739</span><br><span class="line">740</span><br><span class="line">741</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* suspend current thread */</span></span><br><span class="line">rt_ipc_list_suspend(&amp;(mutex-&gt;parent.suspend_thread),</span><br><span class="line">                    thread,</span><br><span class="line">                    mutex-&gt;parent.parent.flag);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* has waiting time, start thread timer */</span></span><br><span class="line"><span class="keyword">if</span> (time &gt; <span class="number">0</span>)</span><br><span class="line">{</span><br><span class="line">    RT_DEBUG_LOG(RT_DEBUG_IPC,</span><br><span class="line">                 (<span class="string">"mutex_take: start the timer of thread:%s\n"</span>,</span><br><span class="line">                  thread-&gt;name));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* reset the timeout of thread timer and start it */</span></span><br><span class="line">    rt_timer_control(&amp;(thread-&gt;thread_timer),</span><br><span class="line">                     RT_TIMER_CTRL_SET_TIME,</span><br><span class="line">                     &amp;time);</span><br><span class="line">    rt_timer_start(&amp;(thread-&gt;thread_timer));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>插入 suspend list，並啟動一個 timeout 為 time 的 timer</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">742</span><br><span class="line">743</span><br><span class="line">744</span><br><span class="line">745</span><br><span class="line">746</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* enable interrupt */</span></span><br><span class="line">rt_hw_interrupt_enable(temp);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* do schedule */</span></span><br><span class="line">rt_schedule();</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>開啟中斷，並做一次調度</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">747</span><br><span class="line">748</span><br><span class="line">749</span><br><span class="line">750</span><br><span class="line">751</span><br><span class="line">752</span><br><span class="line">753</span><br><span class="line">754</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (thread-&gt;error != RT_EOK)</span><br><span class="line">{</span><br><span class="line">	<span class="comment">/* interrupt by signal, try it again */</span></span><br><span class="line">	<span class="keyword">if</span> (thread-&gt;error == -RT_EINTR) <span class="keyword">goto</span> __again;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* return error */</span></span><br><span class="line">    <span class="keyword">return</span> thread-&gt;error;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果因為中斷再次回到此 thread，重新要一次 mutex</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">755</span><br><span class="line">756</span><br><span class="line">757</span><br><span class="line">758</span><br><span class="line">759</span><br><span class="line">760</span><br><span class="line">761</span><br><span class="line">762</span><br><span class="line">763</span><br><span class="line">764</span><br><span class="line">765</span><br><span class="line">766</span><br><span class="line">767</span><br><span class="line">768</span><br><span class="line">769</span><br><span class="line">770</span><br><span class="line">771</span><br></pre></td><td class="code"><pre><span class="line">                <span class="keyword">else</span></span><br><span class="line">                {</span><br><span class="line">                    <span class="comment">/* the mutex is taken successfully. */</span></span><br><span class="line">                    <span class="comment">/* disable interrupt */</span></span><br><span class="line">                    temp = rt_hw_interrupt_disable();</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(temp);</span><br><span class="line"></span><br><span class="line">    RT_OBJECT_HOOK_CALL(rt_object_take_hook, (&amp;(mutex-&gt;parent.parent)));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_mutex_take);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<ul>
+<li>還鎖則使用 <code>rt_mutex_release</code></li>
+</ul>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>mutex</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>釋放 mutex</td>
+<td><code>RT_EOK</code></td>
+<td>欲釋放的 mutex</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">778</span><br><span class="line">779</span><br><span class="line">780</span><br><span class="line">781</span><br><span class="line">782</span><br><span class="line">783</span><br><span class="line">784</span><br><span class="line">785</span><br><span class="line">786</span><br><span class="line">787</span><br><span class="line">788</span><br><span class="line">789</span><br><span class="line">790</span><br><span class="line">791</span><br><span class="line">792</span><br><span class="line">793</span><br><span class="line">794</span><br><span class="line">795</span><br><span class="line">796</span><br><span class="line">797</span><br><span class="line">798</span><br><span class="line">799</span><br><span class="line">800</span><br><span class="line">801</span><br><span class="line">802</span><br><span class="line">803</span><br><span class="line">804</span><br><span class="line">805</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will release a mutex, if there are threads suspended on mutex,</span></span><br><span class="line"><span class="comment"> * it will be waked up.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param mutex the mutex object</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the error code</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_mutex_release(<span class="keyword">rt_mutex_t</span> mutex)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> temp;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span> *<span class="title">thread</span>;</span></span><br><span class="line">    <span class="keyword">rt_bool_t</span> need_schedule;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(mutex != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type(&amp;mutex-&gt;parent.parent) == RT_Object_Class_Mutex);</span><br><span class="line"></span><br><span class="line">    need_schedule = RT_FALSE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* only thread could release mutex because we need test the ownership */</span></span><br><span class="line">    RT_DEBUG_IN_THREAD_CONTEXT;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* get current thread */</span></span><br><span class="line">    thread = rt_thread_self();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    temp = rt_hw_interrupt_disable();</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>下面將會修改 mutex 的一些資料，這裡先將中斷關閉</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">806</span><br><span class="line">807</span><br><span class="line">808</span><br><span class="line">809</span><br><span class="line">810</span><br><span class="line">811</span><br><span class="line">812</span><br><span class="line">813</span><br><span class="line">814</span><br><span class="line">815</span><br><span class="line">816</span><br><span class="line">817</span><br><span class="line">818</span><br><span class="line">819</span><br><span class="line">820</span><br><span class="line">821</span><br></pre></td><td class="code"><pre><span class="line">RT_DEBUG_LOG(RT_DEBUG_IPC,</span><br><span class="line">             (<span class="string">"mutex_release:current thread %s, mutex value: %d, hold: %d\n"</span>,</span><br><span class="line">              thread-&gt;name, mutex-&gt;value, mutex-&gt;hold));</span><br><span class="line"></span><br><span class="line">RT_OBJECT_HOOK_CALL(rt_object_put_hook, (&amp;(mutex-&gt;parent.parent)));</span><br><span class="line"></span><br><span class="line"><span class="comment">/* mutex only can be released by owner */</span></span><br><span class="line"><span class="keyword">if</span> (thread != mutex-&gt;owner)</span><br><span class="line">{</span><br><span class="line">    thread-&gt;error = -RT_ERROR;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(temp);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> -RT_ERROR;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>檢查歸還者是否為擁有者</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">822</span><br><span class="line">823</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* decrease hold */</span></span><br><span class="line">mutex-&gt;hold --;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>持有數減 1</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">824</span><br><span class="line">825</span><br><span class="line">826</span><br><span class="line">827</span><br><span class="line">828</span><br><span class="line">829</span><br><span class="line">830</span><br><span class="line">831</span><br><span class="line">832</span><br><span class="line">833</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* if no hold */</span></span><br><span class="line"><span class="keyword">if</span> (mutex-&gt;hold == 才會</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* change the owner thread to original priority */</span></span><br><span class="line">    <span class="keyword">if</span> (mutex-&gt;original_priority != mutex-&gt;owner-&gt;current_priority)</span><br><span class="line">    {</span><br><span class="line">        rt_thread_control(mutex-&gt;owner,</span><br><span class="line">                          RT_THREAD_CTRL_CHANGE_PRIORITY,</span><br><span class="line">                          &amp;(mutex-&gt;original_priority));</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>若已不再擁有此 mutex，且優先權有被更改過，調整回來</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">834</span><br><span class="line">835</span><br><span class="line">836</span><br><span class="line">837</span><br><span class="line">838</span><br><span class="line">839</span><br><span class="line">840</span><br><span class="line">841</span><br><span class="line">842</span><br><span class="line">843</span><br><span class="line">844</span><br><span class="line">845</span><br><span class="line">846</span><br><span class="line">847</span><br><span class="line">848</span><br><span class="line">849</span><br><span class="line">850</span><br><span class="line">851</span><br><span class="line">852</span><br><span class="line">853</span><br><span class="line">854</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* wakeup suspended thread */</span></span><br><span class="line"><span class="keyword">if</span> (!rt_list_isempty(&amp;mutex-&gt;parent.suspend_thread))</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* get suspended thread */</span></span><br><span class="line">    thread = rt_list_entry(mutex-&gt;parent.suspend_thread.next,</span><br><span class="line">                           struct rt_thread,</span><br><span class="line">                           tlist);</span><br><span class="line"></span><br><span class="line">    RT_DEBUG_LOG(RT_DEBUG_IPC, (<span class="string">"mutex_release: resume thread: %s\n"</span>,</span><br><span class="line">                                thread-&gt;name));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set new owner and priority */</span></span><br><span class="line">    mutex-&gt;owner             = thread;</span><br><span class="line">    mutex-&gt;original_priority = thread-&gt;current_priority;</span><br><span class="line">    mutex-&gt;hold ++;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* resume thread */</span></span><br><span class="line">    rt_ipc_list_resume(&amp;(mutex-&gt;parent.suspend_thread));</span><br><span class="line"></span><br><span class="line">    need_schedule = RT_TRUE;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>若有人在等待此 mutex，將 mutex 傳遞給第一個正在等待的 thread</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">855</span><br><span class="line">856</span><br><span class="line">857</span><br><span class="line">858</span><br><span class="line">859</span><br><span class="line">860</span><br><span class="line">861</span><br><span class="line">862</span><br><span class="line">863</span><br><span class="line">864</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">else</span></span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* increase value */</span></span><br><span class="line">        mutex-&gt;value ++;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* clear owner */</span></span><br><span class="line">        mutex-&gt;owner             = RT_NULL;</span><br><span class="line">        mutex-&gt;original_priority = <span class="number">0xff</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果沒有人在等，value 加 1，將資料初始化</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">865</span><br><span class="line">866</span><br><span class="line">867</span><br><span class="line">868</span><br><span class="line">869</span><br><span class="line">870</span><br><span class="line">871</span><br><span class="line">872</span><br><span class="line">873</span><br><span class="line">874</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(temp);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* perform a schedule */</span></span><br><span class="line">    <span class="keyword">if</span> (need_schedule == RT_TRUE)</span><br><span class="line">        rt_schedule();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_mutex_release);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>開啟中斷，並視情況做一次調度</li>
+</ul>
+<hr>
+<h2 id="事件">事件<a class="header-anchor" href="#事件">#</a></h2>
+<ul>
+<li>可實現一對多，多對多</li>
+<li>僅用來同步，無傳輸的功能</li>
+</ul>
+<h3 id="實作">實作<a class="header-anchor" href="#實作">#</a></h3>
+<ul>
+<li>thread 的結構中有一個 32 位的事件標記，一個事件的資訊</li>
+</ul>
+<div class="alert alert-success"><p><strong>File:</strong> rtdef.h</p></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(RT_USING_EVENT)</span></span><br><span class="line">    <span class="comment">/* thread event */</span></span><br><span class="line">    <span class="keyword">rt_uint32_t</span> event_set;</span><br><span class="line">    <span class="keyword">rt_uint8_t</span>  event_info;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>標記的每一位代表一個事件，資訊包含 AND、OR 及 CLEAR</li>
+<li>當事件標記的第 2、4 位為 1，其餘為 0，代表此 thread 設置第 2、4 個事件
+<ul>
+<li>AND：即需同時接收到 2 號與 4 號事件才會被喚醒</li>
+<li>OR：只需接收到一個</li>
+<li>CLEAR：表示接收完事件喚醒後，是否須將標記清除</li>
+</ul>
+</li>
+</ul>
+<h3 id="結構-v3">結構<a class="header-anchor" href="#結構-v3">#</a></h3>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br><span class="line">639</span><br><span class="line">640</span><br><span class="line">641</span><br><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RT_USING_EVENT</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * flag defintions in event</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_EVENT_FLAG_AND               0x01            <span class="comment">/**&lt; logic and */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_EVENT_FLAG_OR                0x02            <span class="comment">/**&lt; logic or */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RT_EVENT_FLAG_CLEAR             0x04            <span class="comment">/**&lt; clear flag */</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * event structure</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_event</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_ipc_object</span> <span class="title">parent</span>;</span>                        <span class="comment">/**&lt; inherit from ipc_object */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">rt_uint32_t</span>          <span class="built_in">set</span>;                           <span class="comment">/**&lt; event set */</span></span><br><span class="line">};</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rt_event</span> *<span class="title">rt_event_t</span>;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<div class="alert alert-success"><p><strong>File:</strong> ipc.c</p></div>
+<h3 id="建立事件">建立事件<a class="header-anchor" href="#建立事件">#</a></h3>
+<h4 id="動態記憶體管理-v5">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v5">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建立事件</td>
+<td>事件</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*name</code></th>
+<th><code>flag</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>名字</td>
+<td>FIFO / PRIO</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">957</span><br><span class="line">958</span><br><span class="line">959</span><br><span class="line">960</span><br><span class="line">961</span><br><span class="line">962</span><br><span class="line">963</span><br><span class="line">964</span><br><span class="line">965</span><br><span class="line">966</span><br><span class="line">967</span><br><span class="line">968</span><br><span class="line">969</span><br><span class="line">970</span><br><span class="line">971</span><br><span class="line">972</span><br><span class="line">973</span><br><span class="line">974</span><br><span class="line">975</span><br><span class="line">976</span><br><span class="line">977</span><br><span class="line">978</span><br><span class="line">979</span><br><span class="line">980</span><br><span class="line">981</span><br><span class="line">982</span><br><span class="line">983</span><br><span class="line">984</span><br><span class="line">985</span><br><span class="line">986</span><br><span class="line">987</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will create an event object from system resource</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param name the name of event</span></span><br><span class="line"><span class="comment"> * @param flag the flag of event</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the created event, RT_NULL on error happen</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_event_t</span> rt_event_create(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">rt_uint8_t</span> flag)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">rt_event_t</span> event;</span><br><span class="line"></span><br><span class="line">    RT_DEBUG_NOT_IN_INTERRUPT;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* allocate object */</span></span><br><span class="line">    event = (<span class="keyword">rt_event_t</span>)rt_object_allocate(RT_Object_Class_Event, name);</span><br><span class="line">    <span class="keyword">if</span> (event == RT_NULL)</span><br><span class="line">        <span class="keyword">return</span> event;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set parent */</span></span><br><span class="line">    event-&gt;parent.parent.flag = flag;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init ipc object */</span></span><br><span class="line">    rt_ipc_object_init(&amp;(event-&gt;parent));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init event */</span></span><br><span class="line">    event-&gt;<span class="built_in">set</span> = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> event;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_event_create);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>一樣 allocate 記憶體，填入 flag，初始化，最後設定值為 0</li>
+</ul>
+<hr>
+<h4 id="靜態記憶體管理-v5">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v5">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始化事件</td>
+<td><code>RT_EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>event</code></th>
+<th><code>*name</code></th>
+<th><code>flag</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>事件本體</td>
+<td>名字</td>
+<td>FIFO / PRIO</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">901</span><br><span class="line">902</span><br><span class="line">903</span><br><span class="line">904</span><br><span class="line">905</span><br><span class="line">906</span><br><span class="line">907</span><br><span class="line">908</span><br><span class="line">909</span><br><span class="line">910</span><br><span class="line">911</span><br><span class="line">912</span><br><span class="line">913</span><br><span class="line">914</span><br><span class="line">915</span><br><span class="line">916</span><br><span class="line">917</span><br><span class="line">918</span><br><span class="line">919</span><br><span class="line">920</span><br><span class="line">921</span><br><span class="line">922</span><br><span class="line">923</span><br><span class="line">924</span><br><span class="line">925</span><br><span class="line">926</span><br><span class="line">927</span><br><span class="line">928</span><br><span class="line">929</span><br><span class="line">930</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will initialize an event and put it under control of resource</span></span><br><span class="line"><span class="comment"> * management.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param event the event object</span></span><br><span class="line"><span class="comment"> * @param name the name of event</span></span><br><span class="line"><span class="comment"> * @param flag the flag of event</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the operation status, RT_EOK on successful</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_event_init(<span class="keyword">rt_event_t</span> event, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">rt_uint8_t</span> flag)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(event != RT_NULL);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init object */</span></span><br><span class="line">    rt_object_init(&amp;(event-&gt;parent.parent), RT_Object_Class_Event, name);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set parent flag */</span></span><br><span class="line">    event-&gt;parent.parent.flag = flag;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init ipc object */</span></span><br><span class="line">    rt_ipc_object_init(&amp;(event-&gt;parent));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init event */</span></span><br><span class="line">    event-&gt;<span class="built_in">set</span> = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_event_init);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>這裡則不需要 allocate</li>
+</ul>
+<hr>
+<h3 id="刪除事件">刪除事件<a class="header-anchor" href="#刪除事件">#</a></h3>
+<h4 id="靜態記憶體管理-v6">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v6">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>event</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刪除事件</td>
+<td><code>RT_EOK</code></td>
+<td>欲刪除的事件</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">989</span><br><span class="line">990</span><br><span class="line">991</span><br><span class="line">992</span><br><span class="line">993</span><br><span class="line">994</span><br><span class="line">995</span><br><span class="line">996</span><br><span class="line">997</span><br><span class="line">998</span><br><span class="line">999</span><br><span class="line">1000</span><br><span class="line">1001</span><br><span class="line">1002</span><br><span class="line">1003</span><br><span class="line">1004</span><br><span class="line">1005</span><br><span class="line">1006</span><br><span class="line">1007</span><br><span class="line">1008</span><br><span class="line">1009</span><br><span class="line">1010</span><br><span class="line">1011</span><br><span class="line">1012</span><br><span class="line">1013</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will delete an event object and release the memory</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param event the event object</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the error code</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_event_delete(<span class="keyword">rt_event_t</span> event)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(event != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type(&amp;event-&gt;parent.parent) == RT_Object_Class_Event);</span><br><span class="line">    RT_ASSERT(rt_object_is_systemobject(&amp;event-&gt;parent.parent) == RT_FALSE);</span><br><span class="line"></span><br><span class="line">    RT_DEBUG_NOT_IN_INTERRUPT;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* resume all suspended thread */</span></span><br><span class="line">    rt_ipc_list_resume_all(&amp;(event-&gt;parent.suspend_thread));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* delete event object */</span></span><br><span class="line">    rt_object_delete(&amp;(event-&gt;parent.parent));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_event_delete);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>相同的，需要先將正在等待此事件的 thread 叫醒，再刪除</li>
+</ul>
+<hr>
+<h4 id="靜態記憶體管理-v7">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v7">#</a></h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>event</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刪除事件</td>
+<td><code>RT_EOK</code></td>
+<td>欲刪除的事件</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">932</span><br><span class="line">933</span><br><span class="line">934</span><br><span class="line">935</span><br><span class="line">936</span><br><span class="line">937</span><br><span class="line">938</span><br><span class="line">939</span><br><span class="line">940</span><br><span class="line">941</span><br><span class="line">942</span><br><span class="line">943</span><br><span class="line">944</span><br><span class="line">945</span><br><span class="line">946</span><br><span class="line">947</span><br><span class="line">948</span><br><span class="line">949</span><br><span class="line">950</span><br><span class="line">951</span><br><span class="line">952</span><br><span class="line">953</span><br><span class="line">954</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will detach an event object from resource management</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param event the event object</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the operation status, RT_EOK on successful</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_event_detach(<span class="keyword">rt_event_t</span> event)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(event != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type(&amp;event-&gt;parent.parent) == RT_Object_Class_Event);</span><br><span class="line">    RT_ASSERT(rt_object_is_systemobject(&amp;event-&gt;parent.parent));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* resume all suspended thread */</span></span><br><span class="line">    rt_ipc_list_resume_all(&amp;(event-&gt;parent.suspend_thread));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* detach event object */</span></span><br><span class="line">    rt_object_detach(&amp;(event-&gt;parent.parent));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_event_detach);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>這裡則用 <code>rt_object_detach</code></li>
+</ul>
+<hr>
+<h3 id="傳遞事件">傳遞事件<a class="header-anchor" href="#傳遞事件">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>傳遞事件</td>
+<td><code>RT_EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>event</code></th>
+<th><code>set</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲傳遞的事件</td>
+<td>事件編號</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1016</span><br><span class="line">1017</span><br><span class="line">1018</span><br><span class="line">1019</span><br><span class="line">1020</span><br><span class="line">1021</span><br><span class="line">1022</span><br><span class="line">1023</span><br><span class="line">1024</span><br><span class="line">1025</span><br><span class="line">1026</span><br><span class="line">1027</span><br><span class="line">1028</span><br><span class="line">1029</span><br><span class="line">1030</span><br><span class="line">1031</span><br><span class="line">1032</span><br><span class="line">1033</span><br><span class="line">1034</span><br><span class="line">1035</span><br><span class="line">1036</span><br><span class="line">1037</span><br><span class="line">1038</span><br><span class="line">1039</span><br><span class="line">1040</span><br><span class="line">1041</span><br><span class="line">1042</span><br><span class="line">1043</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will send an event to the event object, if there are threads</span></span><br><span class="line"><span class="comment"> * suspended on event object, it will be waked up.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param event the event object</span></span><br><span class="line"><span class="comment"> * @param set the event set</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the error code</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_event_send(<span class="keyword">rt_event_t</span> event, <span class="keyword">rt_uint32_t</span> <span class="built_in">set</span>)</span><br><span class="line">{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_list_node</span> *<span class="title">n</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span> *<span class="title">thread</span>;</span></span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_ubase_t</span> level;</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> status;</span><br><span class="line">    <span class="keyword">rt_bool_t</span> need_schedule;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(event != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type(&amp;event-&gt;parent.parent) == RT_Object_Class_Event);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">set</span> == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> -RT_ERROR;</span><br><span class="line"></span><br><span class="line">    need_schedule = RT_FALSE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    level = rt_hw_interrupt_disable();</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>下面會修改事件的資料，這裡先將中斷關閉</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1044</span><br><span class="line">1045</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* set event */</span></span><br><span class="line">event-&gt;<span class="built_in">set</span> |= <span class="built_in">set</span>;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>設定事件編號</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1046</span><br><span class="line">1047</span><br><span class="line">1048</span><br><span class="line">1049</span><br><span class="line">1050</span><br><span class="line">1051</span><br><span class="line">1052</span><br><span class="line">1053</span><br><span class="line">1054</span><br><span class="line">1055</span><br><span class="line">1056</span><br><span class="line">1057</span><br><span class="line">1058</span><br><span class="line">1059</span><br><span class="line">1060</span><br><span class="line">1061</span><br><span class="line">1062</span><br><span class="line">1063</span><br><span class="line">1064</span><br><span class="line">1065</span><br></pre></td><td class="code"><pre><span class="line">RT_OBJECT_HOOK_CALL(rt_object_put_hook, (&amp;(event-&gt;parent.parent)));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!rt_list_isempty(&amp;event-&gt;parent.suspend_thread))</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* search thread list to resume thread */</span></span><br><span class="line">    n = event-&gt;parent.suspend_thread.next;</span><br><span class="line">    <span class="keyword">while</span> (n != &amp;(event-&gt;parent.suspend_thread))</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* get thread */</span></span><br><span class="line">        thread = rt_list_entry(n, struct rt_thread, tlist);</span><br><span class="line"></span><br><span class="line">        status = -RT_ERROR;</span><br><span class="line">        <span class="keyword">if</span> (thread-&gt;event_info &amp; RT_EVENT_FLAG_AND)</span><br><span class="line">        {</span><br><span class="line">            <span class="keyword">if</span> ((thread-&gt;event_set &amp; event-&gt;<span class="built_in">set</span>) == thread-&gt;event_set)</span><br><span class="line">            {</span><br><span class="line">                <span class="comment">/* received an AND event */</span></span><br><span class="line">                status = RT_EOK;</span><br><span class="line">            }</span><br><span class="line">        }</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果有人在等待此事件，且滿足條件時，設定為 OK</li>
+<li>這裡為 AND，即事件編號應與 thread 所設定的一致</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1066</span><br><span class="line">1067</span><br><span class="line">1068</span><br><span class="line">1069</span><br><span class="line">1070</span><br><span class="line">1071</span><br><span class="line">1072</span><br><span class="line">1073</span><br><span class="line">1074</span><br><span class="line">1075</span><br><span class="line">1076</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (thread-&gt;event_info &amp; RT_EVENT_FLAG_OR)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">if</span> (thread-&gt;event_set &amp; event-&gt;<span class="built_in">set</span>)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* save recieved event set */</span></span><br><span class="line">        thread-&gt;event_set = thread-&gt;event_set &amp; event-&gt;<span class="built_in">set</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* received an OR event */</span></span><br><span class="line">        status = RT_EOK;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>若為 OR，則只需有一位相同即可</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1077</span><br><span class="line">1078</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* move node to the next */</span></span><br><span class="line">n = n-&gt;next;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>接著走向下一顆</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1079</span><br><span class="line">1080</span><br><span class="line">1081</span><br><span class="line">1082</span><br><span class="line">1083</span><br><span class="line">1084</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* condition is satisfied, resume thread */</span></span><br><span class="line"><span class="keyword">if</span> (status == RT_EOK)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* clear event */</span></span><br><span class="line">    <span class="keyword">if</span> (thread-&gt;event_info &amp; RT_EVENT_FLAG_CLEAR)</span><br><span class="line">        event-&gt;<span class="built_in">set</span> &amp;= ~thread-&gt;event_set;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如有人滿足條件，且被設定 CLEAR，清除其標記位</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1085</span><br><span class="line">1086</span><br><span class="line">1087</span><br><span class="line">1088</span><br><span class="line">1089</span><br><span class="line">1090</span><br><span class="line">1091</span><br><span class="line">1092</span><br></pre></td><td class="code"><pre><span class="line">            <span class="comment">/* resume thread, and thread list breaks out */</span></span><br><span class="line">            rt_thread_resume(thread);</span><br><span class="line"></span><br><span class="line">            <span class="comment">/* need do a scheduling */</span></span><br><span class="line">            need_schedule = RT_TRUE;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>並恢復此 thread，設定待會需要調度</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1093</span><br><span class="line">1094</span><br><span class="line">1095</span><br><span class="line">1096</span><br><span class="line">1097</span><br><span class="line">1098</span><br><span class="line">1099</span><br><span class="line">1100</span><br><span class="line">1101</span><br><span class="line">1102</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(level);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* do a schedule */</span></span><br><span class="line">    <span class="keyword">if</span> (need_schedule == RT_TRUE)</span><br><span class="line">        rt_schedule();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_EOK;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_event_send);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>最後開啟中斷，視情況做一次調度</li>
+</ul>
+<hr>
+<h3 id="接收事件">接收事件<a class="header-anchor" href="#接收事件">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接收事件</td>
+<td><code>RT_EOK</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>event</code></th>
+<th><code>set</code></th>
+<th><code>option</code></th>
+<th><code>timeout</code></th>
+<th><code>*recved</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲接收的事件</td>
+<td>事件編號</td>
+<td>AND /OR</td>
+<td>等待時間（如果需要）</td>
+<td>傳遞成功的事件號碼</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1110</span><br><span class="line">1111</span><br><span class="line">1112</span><br><span class="line">1113</span><br><span class="line">1114</span><br><span class="line">1115</span><br><span class="line">1116</span><br><span class="line">1117</span><br><span class="line">1118</span><br><span class="line">1119</span><br><span class="line">1120</span><br><span class="line">1121</span><br><span class="line">1122</span><br><span class="line">1123</span><br><span class="line">1124</span><br><span class="line">1125</span><br><span class="line">1126</span><br><span class="line">1127</span><br><span class="line">1128</span><br><span class="line">1129</span><br><span class="line">1130</span><br><span class="line">1131</span><br><span class="line">1132</span><br><span class="line">1133</span><br><span class="line">1134</span><br><span class="line">1135</span><br><span class="line">1136</span><br><span class="line">1137</span><br><span class="line">1138</span><br><span class="line">1139</span><br><span class="line">1140</span><br><span class="line">1141</span><br><span class="line">1142</span><br><span class="line">1143</span><br><span class="line">1144</span><br><span class="line">1145</span><br><span class="line">1146</span><br><span class="line">1147</span><br><span class="line">1148</span><br><span class="line">1149</span><br><span class="line">1150</span><br><span class="line">1151</span><br><span class="line">1152</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This function will receive an event from event object, if the event is</span></span><br><span class="line"><span class="comment"> * unavailable, the thread shall wait for a specified time.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param event the fast event object</span></span><br><span class="line"><span class="comment"> * @param set the interested event set</span></span><br><span class="line"><span class="comment"> * @param option the receive option, either RT_EVENT_FLAG_AND or</span></span><br><span class="line"><span class="comment"> *        RT_EVENT_FLAG_OR should be set.</span></span><br><span class="line"><span class="comment"> * @param timeout the waiting time</span></span><br><span class="line"><span class="comment"> * @param recved the received event, if you don't care, RT_NULL can be set.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return the error code</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rt_err_t</span> rt_event_recv(<span class="keyword">rt_event_t</span>   event,</span><br><span class="line">                       <span class="keyword">rt_uint32_t</span>  <span class="built_in">set</span>,</span><br><span class="line">                       <span class="keyword">rt_uint8_t</span>   option,</span><br><span class="line">                       <span class="keyword">rt_int32_t</span>   timeout,</span><br><span class="line">                       <span class="keyword">rt_uint32_t</span> *recved)</span><br><span class="line">{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span> *<span class="title">thread</span>;</span></span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_ubase_t</span> level;</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">rt_base_t</span> status;</span><br><span class="line"></span><br><span class="line">    RT_DEBUG_IN_THREAD_CONTEXT;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* parameter check */</span></span><br><span class="line">    RT_ASSERT(event != RT_NULL);</span><br><span class="line">    RT_ASSERT(rt_object_get_type(&amp;event-&gt;parent.parent) == RT_Object_Class_Event);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">set</span> == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> -RT_ERROR;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* init status */</span></span><br><span class="line">    status = -RT_ERROR;</span><br><span class="line">    <span class="comment">/* get current thread */</span></span><br><span class="line">    thread = rt_thread_self();</span><br><span class="line">    <span class="comment">/* reset thread error */</span></span><br><span class="line">    thread-&gt;error = RT_EOK;</span><br><span class="line"></span><br><span class="line">    RT_OBJECT_HOOK_CALL(rt_object_trytake_hook, (&amp;(event-&gt;parent.parent)));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* disable interrupt */</span></span><br><span class="line">    level = rt_hw_interrupt_disable();</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>下面會修改事件的資料，這裡先將中斷關閉</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1153</span><br><span class="line">1154</span><br><span class="line">1155</span><br><span class="line">1156</span><br><span class="line">1157</span><br><span class="line">1158</span><br><span class="line">1159</span><br><span class="line">1160</span><br><span class="line">1161</span><br><span class="line">1162</span><br><span class="line">1163</span><br><span class="line">1164</span><br><span class="line">1165</span><br><span class="line">1166</span><br><span class="line">1167</span><br><span class="line">1168</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* check event set */</span></span><br><span class="line"><span class="keyword">if</span> (option &amp; RT_EVENT_FLAG_AND)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">if</span> ((event-&gt;<span class="built_in">set</span> &amp; <span class="built_in">set</span>) == <span class="built_in">set</span>)</span><br><span class="line">        status = RT_EOK;</span><br><span class="line">}</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (option &amp; RT_EVENT_FLAG_OR)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">if</span> (event-&gt;<span class="built_in">set</span> &amp; <span class="built_in">set</span>)</span><br><span class="line">        status = RT_EOK;</span><br><span class="line">}</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* either RT_EVENT_FLAG_AND or RT_EVENT_FLAG_OR should be set */</span></span><br><span class="line">    RT_ASSERT(<span class="number">0</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果滿足條件，表示已接收到事件，設定為 OK</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1169</span><br><span class="line">1170</span><br><span class="line">1171</span><br><span class="line">1172</span><br><span class="line">1173</span><br><span class="line">1174</span><br><span class="line">1175</span><br><span class="line">1176</span><br><span class="line">1177</span><br><span class="line">1178</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (status == RT_EOK)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* set received event */</span></span><br><span class="line">    <span class="keyword">if</span> (recved)</span><br><span class="line">        *recved = (event-&gt;<span class="built_in">set</span> &amp; <span class="built_in">set</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* received event */</span></span><br><span class="line">    <span class="keyword">if</span> (option &amp; RT_EVENT_FLAG_CLEAR)</span><br><span class="line">        event-&gt;<span class="built_in">set</span> &amp;= ~<span class="built_in">set</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果已接收到事件，設定 recved 參數</li>
+<li>視情況看需不需要清除標記</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1179</span><br><span class="line">1180</span><br><span class="line">1181</span><br><span class="line">1182</span><br><span class="line">1183</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (timeout == <span class="number">0</span>)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* no waiting */</span></span><br><span class="line">    thread-&gt;error = -RT_ETIMEOUT;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>若需等待事件，但 timeout 為 0</li>
+<li>即不等待，將錯誤碼設為 TIMEOUT</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1184</span><br><span class="line">1185</span><br><span class="line">1186</span><br><span class="line">1187</span><br><span class="line">1188</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span></span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* fill thread event info */</span></span><br><span class="line">    thread-&gt;event_set  = <span class="built_in">set</span>;</span><br><span class="line">    thread-&gt;event_info = option;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如欲等待，將資訊掛在 thread 的結構上</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1189</span><br><span class="line">1190</span><br><span class="line">1191</span><br><span class="line">1192</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* put thread to suspended thread list */</span></span><br><span class="line">rt_ipc_list_suspend(&amp;(event-&gt;parent.suspend_thread),</span><br><span class="line">                    thread,</span><br><span class="line">                    event-&gt;parent.parent.flag);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>並插入等待的鏈上</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1193</span><br><span class="line">1194</span><br><span class="line">1195</span><br><span class="line">1196</span><br><span class="line">1197</span><br><span class="line">1198</span><br><span class="line">1199</span><br><span class="line">1200</span><br><span class="line">1201</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* if there is a waiting timeout, active thread timer */</span></span><br><span class="line"><span class="keyword">if</span> (timeout &gt; <span class="number">0</span>)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* reset the timeout of thread timer and start it */</span></span><br><span class="line">    rt_timer_control(&amp;(thread-&gt;thread_timer),</span><br><span class="line">                     RT_TIMER_CTRL_SET_TIME,</span><br><span class="line">                     &amp;timeout);</span><br><span class="line">    rt_timer_start(&amp;(thread-&gt;thread_timer));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>啟動一個 timer</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1202</span><br><span class="line">1203</span><br><span class="line">1204</span><br><span class="line">1205</span><br><span class="line">1206</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* enable interrupt */</span></span><br><span class="line">rt_hw_interrupt_enable(level);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* do a schedule */</span></span><br><span class="line">rt_schedule();</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>最後開啟中斷，並做一次調度</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1207</span><br><span class="line">1208</span><br><span class="line">1209</span><br><span class="line">1210</span><br><span class="line">1211</span><br><span class="line">1212</span><br><span class="line">1213</span><br><span class="line">1214</span><br><span class="line">1215</span><br><span class="line">1216</span><br><span class="line">1217</span><br><span class="line">1218</span><br><span class="line">1219</span><br><span class="line">1220</span><br><span class="line">1221</span><br><span class="line">1222</span><br><span class="line">1223</span><br><span class="line">1224</span><br><span class="line">1225</span><br><span class="line">1226</span><br><span class="line">1227</span><br><span class="line">1228</span><br></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (thread-&gt;error != RT_EOK)</span><br><span class="line">        {</span><br><span class="line">            <span class="comment">/* return error */</span></span><br><span class="line">            <span class="keyword">return</span> thread-&gt;error;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* received an event, disable interrupt to protect */</span></span><br><span class="line">        level = rt_hw_interrupt_disable();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* set received event */</span></span><br><span class="line">        <span class="keyword">if</span> (recved)</span><br><span class="line">            *recved = thread-&gt;event_set;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* enable interrupt */</span></span><br><span class="line">    rt_hw_interrupt_enable(level);</span><br><span class="line"></span><br><span class="line">    RT_OBJECT_HOOK_CALL(rt_object_take_hook, (&amp;(event-&gt;parent.parent)));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> thread-&gt;error;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rt_event_recv);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>最終接收到事件，一樣設定 recved 參數，回傳錯誤碼</li>
+</ul>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/RT-Thread/">#RT-Thread</a> <a href="/tags/kernel/">#kernel</a> <a href="/tags/IPC/">#IPC</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/RT-Thread/ipc-2.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/RT-Thread/clock.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2018-11-26 00:48:26',
+            title: 'RT-Thread - IPC Sync',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2021 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>

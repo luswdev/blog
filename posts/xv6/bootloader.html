@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="XV6 - The Boot loader">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>XV6 - The Boot loader | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158078787-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158078787-1');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>XV6 - The Boot loader</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/XV6/">XV6</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2018-08-27
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        2.3k
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><ul>
+<li>x86 開機時，會先呼叫位於主機板上的 BIOS。</li>
+<li>BIOS 的工作：準備硬體，將控制權轉給 OS (XV6)。</li>
+<li>準確的說，控制權轉給 boot sector，位於開機碟的第一個磁碟扇區(512 byte)。</li>
+<li>Boot sector 包含 boot loader—負責將 kernel 載入記憶體。</li>
+<li>BIOS 將 boot sector 寫入 0x7c00 的位置，並跳至該位址(透過設定暫存器 %ip)。</li>
+<li>XV6 boot loader 包含兩個檔案：<em>bootasm.s</em>、<em>bootmain.c</em>。</li>
+</ul>
+<h2 id="Code-Assembly-bootstrap">Code: Assembly bootstrap<a class="header-anchor" href="#Code-Assembly-bootstrap">#</a></h2>
+<h3 id="File-bootasm-s">File: bootasm.s<a class="header-anchor" href="#File-bootasm-s">#</a></h3>
+<figure class="highlight x86asm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#include <span class="string">"asm.h"</span></span><br><span class="line">#include <span class="string">"memlayout.h"</span></span><br><span class="line">#include <span class="string">"mmu.h"</span></span><br><span class="line"></span><br><span class="line"># Start the first <span class="meta">CPU</span>: switch to <span class="number">32</span>-bit protected mode, jump <span class="keyword">into</span> C.</span><br><span class="line"># The BIOS loads this code from the first sector of the hard disk <span class="keyword">into</span></span><br><span class="line"># memory <span class="meta">at</span> physical address <span class="number">0x7c00</span> <span class="keyword">and</span> starts executing <span class="keyword">in</span> real mode</span><br><span class="line"># with %cs=<span class="number">0</span> %ip=7c00.</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>第一行指令：<code>cli</code>，禁止處理器中斷。</li>
+<li>硬體可以透過中斷觸發中斷處理，進而操作系統的功能。BIOS 為了初始化硬體，可能設置了自己的中斷處理。但控制權已經給 boot loader 了，所以現在處理中斷是不安全的；當 XV6 準備完成後會重新允許中斷。</li>
+</ul>
+<figure class="highlight x86asm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.code16</span>                       # Assemble for <span class="number">16</span>-bit mode</span><br><span class="line"><span class="meta">.globl</span> start</span><br><span class="line"><span class="symbol">start:</span></span><br><span class="line">  <span class="keyword">cli</span>                         # BIOS enabled interrupts<span class="comment">; disable</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>處理器在模擬 Intel 8088 的 <strong>real mode</strong> 狀態下，有 8 個 16 位元的通用暫存器，但處理器傳送的是20位元的地址給記憶體；因此多出來的四個位元由段暫存器(<code>%cs</code>, <code>%ds</code>, <code>%es</code>, <code>%ss</code>)提供。</li>
+<li><code>%cs</code> 取指令用</li>
+<li><code>%ds</code> 讀寫資料用</li>
+<li><code>%ss</code> 讀寫堆疊用</li>
+<li>BIOS 完成工作後 <code>%ds</code>, <code>%es</code>, <code>%ss</code> 是未知的，所以將其設為 0</li>
+</ul>
+<figure class="highlight x86asm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># <span class="meta">Zero</span> data <span class="meta">segment</span> registers <span class="built_in">DS</span>, <span class="built_in">ES</span>, <span class="keyword">and</span> <span class="built_in">SS</span>.</span><br><span class="line">xorw    %ax,%ax             # Set %ax to <span class="meta">zero</span></span><br><span class="line">movw    %ax,%ds             # -&gt; Data <span class="meta">Segment</span></span><br><span class="line">movw    %ax,%es             # -&gt; Extra <span class="meta">Segment</span></span><br><span class="line">movw    %ax,%ss             # -&gt; Stack <span class="meta">Segment</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>XV6 假設 x86 的指令是使用虛擬地址，但實際上使用的是邏輯地址。</li>
+<li>一個邏輯地址包含一個段選擇器及一個差值，有時表示為 segment:offset。</li>
+<li>更多時候，段是固定的，所以程式只會使用差值。</li>
+<li>分段硬體負責將邏輯地址翻譯成線性地址。</li>
+<li>如果分頁硬體是啟用的，它會把線性地址轉成物理地址；若未啟用，處理器會把線性地址當作物理地址。</li>
+</ul>
+<p><div class="img-item" data-src="https://i.imgur.com/WqLrdy2.png" data-sub-html=".caption"><img src="https://i.imgur.com/WqLrdy2.png" alt="logic address" title="The relationship between logical, linear, and physical addresses."><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom">logic address</span></div></div></p>
+<ul>
+<li>一個 segment:offset 可能產生 21-bit 的物理地址，但在模擬 Intel 8088 下只能使用 20 bits 的記憶體位置，IBM 提出了一個方法：如果鍵盤控制器輸出端的第二位高於第一位，則第 21 個 bit 可以正常使用，反之則歸零。</li>
+<li>boot loader 用 I/O 指令控制鍵盤控制器端 0x64、0x60 來確保第 21 個 bit 正常運作。</li>
+</ul>
+<figure class="highlight x86asm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">  # Physical address line A20 is tied to <span class="meta">zero</span> so that the first PCs </span><br><span class="line">  # with <span class="number">2</span> MB would run software that assumed <span class="number">1</span> MB.  Undo that.</span><br><span class="line"><span class="symbol">seta20.1:</span></span><br><span class="line">  inb     <span class="number">$0</span>x64,%al               # Wait for <span class="keyword">not</span> busy</span><br><span class="line">  testb   <span class="number">$0</span>x2,%al</span><br><span class="line">  <span class="keyword">jnz</span>     seta20<span class="meta">.1</span></span><br><span class="line"></span><br><span class="line">  movb    <span class="number">$0</span>xd1,%al               # <span class="number">0xd1</span> -&gt; port <span class="number">0x64</span></span><br><span class="line">  outb    %al,<span class="number">$0</span>x64</span><br><span class="line"></span><br><span class="line"><span class="symbol">seta20.2:</span></span><br><span class="line">  inb     <span class="number">$0</span>x64,%al               # Wait for <span class="keyword">not</span> busy</span><br><span class="line">  testb   <span class="number">$0</span>x2,%al</span><br><span class="line">  <span class="keyword">jnz</span>     seta20<span class="meta">.2</span></span><br><span class="line"></span><br><span class="line">  movb    <span class="number">$0</span>xdf,%al               # <span class="number">0xdf</span> -&gt; port <span class="number">0x60</span></span><br><span class="line">  outb    %al,<span class="number">$0</span>x60</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>由於 real mode 只有 16-bit 的暫存器，導致一個程式如果要使用超過 65536 bytes 的記憶體會很困難，也不可能使用超過 1MB 的記憶體。</li>
+<li>x86 從 80286 開始有 <strong>protected mode</strong>，允許物理位置能擁有更多 bits，從 80386 後有 32-bit 模式。</li>
+<li>Boot loader 接著開啟 protected mode 和 32-bit 模式。</li>
+<li>在 protected mode 下的段暫存器保存著段描述符表的索引。</li>
+</ul>
+<p><div class="img-item" data-src="https://i.imgur.com/vGzE58G.png" data-sub-html=".caption"><img src="https://i.imgur.com/vGzE58G.png" alt="segment" title="Segments in protected mode."><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom">segment</span></div></div></p>
+<ul>
+<li>Limits 代表最大的虛擬地址</li>
+<li>段描述符表包含一個權限(被 protected mode 保護)，kernel 可以使用這個權限確保一個程式只會使用自己的記憶體。</li>
+</ul>
+<div class="alert alert-warning"><p>XV6 幾乎不用段，取而代之的是分頁。</p></div>
+<ul>
+<li>Boot loader 設定段描述符表 gdt，每一段的基址為 0，且 limit 為 4GB (2^32)。</li>
+<li>Flag 使程式碼會在 32-bit 中執行。</li>
+<li>由上述設定能確保當 boot loader 進入 protected mode 時，邏輯地址映射到物理地址會是 1-1 的。</li>
+<li><code>lgdt</code> 指令將 GDT 暫存器(指向 gdt) 載入 gdtdesc 的值。</li>
+</ul>
+<details class="alert alert-secondary"><summary>GDT 補充</summary><p>在創建 GDT 的時候，第一項須為空(規定)，接著我們為此臨時的 GDT 設立 code 及 data 段。</p>
+<figure class="highlight x86asm"><table><tbody><tr><td class="code"><pre><span class="line"># Line <span class="number">78</span> <span class="keyword">in</span> bootasm.S</span><br><span class="line"># Bootstrap GDT</span><br><span class="line"><span class="meta">.p2align</span> <span class="number">2</span>                                   # force <span class="number">4</span> <span class="built_in">byte</span> alignment</span><br><span class="line"><span class="symbol">gdt:</span></span><br><span class="line">     SEG_NULLASM                             # null <span class="built_in">seg</span></span><br><span class="line">     SEG_ASM(STA_X|STA_R, <span class="number">0x0</span>, <span class="number">0xffffffff</span>)   # code <span class="built_in">seg</span></span><br><span class="line">     SEG_ASM(STA_W, <span class="number">0x0</span>, <span class="number">0xffffffff</span>)         # data <span class="built_in">seg</span></span><br><span class="line"><span class="symbol">gdtdesc:</span></span><br><span class="line"><span class="meta">     .word</span>   (gdtdesc - gdt - <span class="number">1</span>)             # sizeof(gdt) - <span class="number">1</span></span><br><span class="line"><span class="meta">     .long</span>   gdt                             # address gdt</span><br></pre></td></tr></tbody></table></figure></details>
+<figure class="highlight x86asm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"># Switch from real to protected mode.  Use a bootstrap GDT that makes</span><br><span class="line"># virtual addresses map directly to physical addresses so that the</span><br><span class="line"># effective memory map doesn<span class="string">'t change during the transition.</span></span><br><span class="line"><span class="string">lgdt    gdtdesc</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>Boot loader 將 <code>%cr0</code> 中的 <code>CRO_PE</code> 設為 1，來啟用 protected mode。</li>
+<li>啟用 protceted mode 不會立即改變處理器轉譯邏輯地址的過程；只有當段暫存器載入了新的值，處理器讀取 GDT 改變其內部的斷設定。</li>
+</ul>
+<figure class="highlight x86asm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">movl    %cr0, %eax</span><br><span class="line">orl     $CR0_PE, %eax</span><br><span class="line">movl    %eax, %cr0</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>ljmp</code> 指令語法：<code>ljmp segment offset</code>，此時段暫存器為 <code>SEG_KCODE&lt;&lt;3</code>，即 8 (<code>SEG_KCODE == 1</code>，定義於<code>mmu.h</code>)</li>
+<li><code>ljmp</code> 指令跳至 start32 執行。</li>
+</ul>
+<figure class="highlight x86asm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">//PAGEBREAK!</span><br><span class="line">  # Complete transition to <span class="number">32</span>-bit protected mode by using long <span class="keyword">jmp</span></span><br><span class="line">  # to reload %cs <span class="keyword">and</span> %eip.  The <span class="meta">segment</span> descriptors are set <span class="meta">up</span> with no</span><br><span class="line">  # translation, so that the mapping is still the identity mapping.</span><br><span class="line">  ljmp    $(SEG_KCODE&lt;&lt;<span class="number">3</span>), $start32</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>進入 32 位元後的第一個動作：用<code>SEG_KDATA</code>初始化數據段暫存器</li>
+</ul>
+<figure class="highlight x86asm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.code32</span>  # Tell assembler to generate <span class="number">32</span>-bit code now.</span><br><span class="line"><span class="symbol">start32:</span></span><br><span class="line">  # Set <span class="meta">up</span> the protected-mode data <span class="meta">segment</span> registers</span><br><span class="line">  movw    $(SEG_KDATA&lt;&lt;<span class="number">3</span>), %ax    # Our data <span class="meta">segment</span> selector</span><br><span class="line">  movw    %ax, %ds                # -&gt; <span class="built_in">DS</span>: Data <span class="meta">Segment</span></span><br><span class="line">  movw    %ax, %es                # -&gt; <span class="built_in">ES</span>: Extra <span class="meta">Segment</span></span><br><span class="line">  movw    %ax, %ss                # -&gt; <span class="built_in">SS</span>: Stack <span class="meta">Segment</span></span><br><span class="line">  movw    <span class="number">$0</span>, %ax                 # <span class="meta">Zero</span> segments <span class="keyword">not</span> ready for use</span><br><span class="line">  movw    %ax, %fs                # -&gt; <span class="built_in">FS</span></span><br><span class="line">  movw    %ax, %gs                # -&gt; <span class="built_in">GS</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>最後建立一個 stack，跳至 <em>bootmain.c</em>。</li>
+<li>記憶體 0xa0000 至 0x100000 為設備區，XV6 kernel 放在 0x100000。</li>
+<li>Boot loader 位於 0x7c00 至 0x7e00 (512 bytes)，所以其他位置都能拿來建立堆疊；這裡選擇 0x7c00 當作 top (<code>$start</code>)，堆疊向下延伸，直到 0x0000。</li>
+</ul>
+<figure class="highlight x86asm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"># Set <span class="meta">up</span> the stack pointer <span class="keyword">and</span> <span class="keyword">call</span> <span class="keyword">into</span> C.</span><br><span class="line">movl    $start, %esp</span><br><span class="line"><span class="keyword">call</span>    bootmain</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果出錯了，會向 0x8a00 端輸出一些字。</li>
+<li>實際上沒有設備連接到 0x8a00。</li>
+<li>如果使用模擬器，boot loader 會把控制權還給模擬器。</li>
+</ul>
+<div class="alert alert-warning"><p>真正的 boot loader 會印出一些錯誤訊息。</p></div>
+<figure class="highlight x86asm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"># If bootmain returns (it shouldnt), trigger a Bochs</span><br><span class="line"># breakpoint if running under Bochs, then <span class="keyword">loop</span>.</span><br><span class="line">movw    <span class="number">$0</span>x8a00, %ax            # <span class="number">0x8a00</span> -&gt; port <span class="number">0x8a00</span></span><br><span class="line">movw    %ax, %dx</span><br><span class="line">outw    %ax, %dx</span><br><span class="line">movw    <span class="number">$0</span>x8ae0, %ax            # <span class="number">0x8ae0</span> -&gt; port <span class="number">0x8a00</span></span><br><span class="line">outw    %ax, %dx</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>接著進入無限迴圈</li>
+</ul>
+<figure class="highlight x86asm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">spin:</span></span><br><span class="line">  <span class="keyword">jmp</span>     spin</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="Code-C-bootstrap">Code: C bootstrap<a class="header-anchor" href="#Code-C-bootstrap">#</a></h2>
+<h3 id="File-bootmain-c">File: bootmain.c<a class="header-anchor" href="#File-bootmain-c">#</a></h3>
+<ul>
+<li><em>bootmain</em> 的工作：載入並執行 kernel。</li>
+<li>Kernel 為 ELF 格式的二進位檔。</li>
+</ul>
+<div class="alert alert-info"><p>ELF(Executable and Linking Format) ，為 UNIX 中的目錄檔格式。</p></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>開機程序（執行 kernel)</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Boot loader.</span></span><br><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="comment">// Part of the boot sector, along with bootasm.S, which calls bootmain().</span></span><br><span class="line"><span class="comment">// bootasm.S has put the processor into protected 32-bit mode.</span></span><br><span class="line"><span class="comment">// bootmain() loads an ELF kernel image from the disk starting at</span></span><br><span class="line"><span class="comment">// sector 1 and then jumps to the kernel entry routine.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"types.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"elf.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"x86.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"memlayout.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SECTSIZE  512</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">readseg</span><span class="params">(uchar*, uint, uint)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">bootmain(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">elfhdr</span> *<span class="title">elf</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proghdr</span> *<span class="title">ph</span>, *<span class="title">eph</span>;</span></span><br><span class="line">  <span class="keyword">void</span> (*entry)(<span class="keyword">void</span>);</span><br><span class="line">  uchar* pa;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>為了存取 ELF 開頭，<em>bootmain</em> 載入 ELF 文件的前 4096 bytes，並拷貝到 010000 中。</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">elf = (struct elfhdr*)<span class="number">0x10000</span>;  <span class="comment">// scratch space</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Read 1st page off disk</span></span><br><span class="line">readseg((uchar*)elf, <span class="number">4096</span>, <span class="number">0</span>);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>接著確認是否為 ELF 文件。</li>
+</ul>
+<div class="alert alert-danger"><p>正常情況下 <em>bootmain</em> 不會<code>return</code>，這裡<code>return</code>會跳回 <em>bootasm.S</em> 中，由 <em>bootasm.S</em> 來處理此錯誤。</p></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Is this an ELF executable?</span></span><br><span class="line"><span class="keyword">if</span>(elf-&gt;magic != ELF_MAGIC)</span><br><span class="line">  <span class="keyword">return</span>;  <span class="comment">// let bootasm.S handle error</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><em>bootmain</em> 從 ELF 開頭之後的 off bytes 讀取內容，並存入 paddr 中(呼叫<code>readseg</code>)。</li>
+<li>呼叫<code>stosb</code>將段的剩餘部分設 0</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Load each program segment (ignores ph flags).</span></span><br><span class="line">ph = (struct proghdr*)((uchar*)elf + elf-&gt;phoff);</span><br><span class="line">eph = ph + elf-&gt;phnum;</span><br><span class="line"><span class="keyword">for</span>(; ph &lt; eph; ph++){</span><br><span class="line">  pa = (uchar*)ph-&gt;paddr;</span><br><span class="line">  readseg(pa, ph-&gt;filesz, ph-&gt;off);</span><br><span class="line">  <span class="keyword">if</span>(ph-&gt;memsz &gt; ph-&gt;filesz)</span><br><span class="line">    stosb(pa + ph-&gt;filesz, <span class="number">0</span>, ph-&gt;memsz - ph-&gt;filesz);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>Boot loader 最後一項工作：呼叫 kernel 的進入指令，即 kernel 第一條執行指令的地址(0x10000c)。</li>
+<li><em>entry.S</em> 中定義的<code>_start</code>即為 ELF 入口。</li>
+<li>XV6 虛擬記憶體尚未建立，因此 entry 為物理地址。</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">// Call the entry point from the ELF header.</span></span><br><span class="line">  <span class="comment">// Does not return!</span></span><br><span class="line">  entry = (<span class="keyword">void</span>(*)(<span class="keyword">void</span>))(elf-&gt;entry);</span><br><span class="line">  entry();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<div class="alert alert-info"><p><strong>函數指標</strong>的補充<sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[指標函數和函數指標有什麼區別](http://bluelove1968.pixnet.net/blog/post/222285883-%E6%8C%87%E6%A8%99%E5%87%BD%E6%95%B8%E5%92%8C%E5%87%BD%E6%95%B8%E6%8C%87%E6%A8%99%E6%9C%89%E4%BB%80%E9%BA%BC%E5%8D%80%E5%88%A5)">[1]</span></a></sup>：<br><br>
+上述用一個 <code>void (*entry)(void)</code> 指標即為一個函數指標，此指標指向一個函數，於上述 42 行將此指標指向 <code>elf-&gt;entry</code>，此動作將 <code>entry</code> 指標指向一個函數的進入點位置（<code>elf-&gt;entry</code>）。<br>
+此時呼叫 <code>entry()</code> 會進入此指標位置，並當作一個副函式執行；因此執行完上述程式碼會進入 <em>entry.S</em>，並執行其中的程式碼。</p></div>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>等待磁碟</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">waitdisk(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  <span class="comment">// Wait for disk ready.</span></span><br><span class="line">  <span class="keyword">while</span>((inb(<span class="number">0x1F7</span>) &amp; <span class="number">0xC0</span>) != <span class="number">0x40</span>)</span><br><span class="line">    ;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>讀取一個磁碟區</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*dst</code></th>
+<th><code>offset</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目標磁碟</td>
+<td>目標磁碟區</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Read a single sector at offset into dst.</span></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">readsect(<span class="keyword">void</span> *dst, uint offset)</span><br><span class="line">{</span><br><span class="line">  <span class="comment">// Issue command.</span></span><br><span class="line">  waitdisk();</span><br><span class="line">  outb(<span class="number">0x1F2</span>, <span class="number">1</span>);   <span class="comment">// count = 1</span></span><br><span class="line">  outb(<span class="number">0x1F3</span>, offset);</span><br><span class="line">  outb(<span class="number">0x1F4</span>, offset &gt;&gt; <span class="number">8</span>);</span><br><span class="line">  outb(<span class="number">0x1F5</span>, offset &gt;&gt; <span class="number">16</span>);</span><br><span class="line">  outb(<span class="number">0x1F6</span>, (offset &gt;&gt; <span class="number">24</span>) | <span class="number">0xE0</span>);</span><br><span class="line">  outb(<span class="number">0x1F7</span>, <span class="number">0x20</span>);  <span class="comment">// cmd 0x20 - read sectors</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Read data.</span></span><br><span class="line">  waitdisk();</span><br><span class="line">  insl(<span class="number">0x1F0</span>, dst, SECTSIZE/<span class="number">4</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>讀取一段磁碟資料</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*pa</code></th>
+<th><code>count | </code>offset`</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目標位址</td>
+<td>數量</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Read 'count' bytes at 'offset' from kernel into physical address 'pa'.</span></span><br><span class="line"><span class="comment">// Might copy more than asked.</span></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">readseg(uchar* pa, uint count, uint offset)</span><br><span class="line">{</span><br><span class="line">  uchar* epa;</span><br><span class="line"></span><br><span class="line">  epa = pa + count;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Round down to sector boundary.</span></span><br><span class="line">  pa -= offset % SECTSIZE;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Translate from bytes to sectors; kernel starts at sector 1.</span></span><br><span class="line">  offset = (offset / SECTSIZE) + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// If this is too slow, we could read lots of sectors at a time.</span></span><br><span class="line">  <span class="comment">// We'd write more to memory than asked, but it doesn't matter --</span></span><br><span class="line">  <span class="comment">// we load in increasing order.</span></span><br><span class="line">  <span class="keyword">for</span>(; pa &lt; epa; pa += SECTSIZE, offset++)</span><br><span class="line">    readsect(pa, offset);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure><div id="footnotes"><hr class="block-hr"><div id="footnotelist" class="card card-default"><div class="card-header">Reference</div><ol class="list-group list-group-flush" style="list-style: none; padding-left: 0; margin-left: 0px"><li id="fn:1" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="http://bluelove1968.pixnet.net/blog/post/222285883-%E6%8C%87%E6%A8%99%E5%87%BD%E6%95%B8%E5%92%8C%E5%87%BD%E6%95%B8%E6%8C%87%E6%A8%99%E6%9C%89%E4%BB%80%E9%BA%BC%E5%8D%80%E5%88%A5" target="_blank" rel="noopener">指標函數和函數指標有什麼區別</a><a href="#fnref:1" rev="footnote"> ↩</a></span></li></ol></div></div><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/kernel/">#kernel</a> <a href="/tags/XV6/">#XV6</a> <a href="/tags/Bootloader/">#Bootloader</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/xv6/running.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/xv6/hardware.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2018-08-27 06:15:00',
+            title: 'XV6 - The Boot loader',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2021 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>

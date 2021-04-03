@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="XV6 - Locking">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>XV6 - Locking | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158078787-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158078787-1');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>XV6 - Locking</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/XV6/">XV6</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2018-08-07
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        779
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="Race-conditions">Race conditions<a class="header-anchor" href="#Race-conditions">#</a></h2>
+<h3 id="例子">例子<a class="header-anchor" href="#例子">#</a></h3>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list</span>{</span></span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">next</span>;</span></span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">list</span> = 0;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">insert(<span class="keyword">int</span> data)</span><br><span class="line">{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">l</span>;</span></span><br><span class="line">    l = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span> *l);</span><br><span class="line">    l-&gt;data = data;</span><br><span class="line">    l-&gt;next = <span class="built_in">list</span>;</span><br><span class="line">    <span class="built_in">list</span> = l;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><div class="img-item" data-src="https://i.imgur.com/T6893f9.png" data-sub-html=".caption"><img src="https://i.imgur.com/T6893f9.png" alt title="Example race"><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom"></span></div></div></p>
+<p>假設現在有兩個 process 同時在不同的 CPU 上執行上述程式碼，當兩個 process 都執行到 14 行，則兩條鏈結的 <code>next</code> 都設置為 <code>list</code>；接著，先執行的 process A 將 list 設定為自己的鏈結，後執行的 process B 也將 list 設為自己的鏈結。</p>
+<p><strong>問題</strong>：此時 list 上將會遺失原本 process A <code>insert</code> 的節點。</p>
+<h3 id="圖解">圖解<a class="header-anchor" href="#圖解">#</a></h3>
+<ul>
+<li>一開始的 list</li>
+</ul>
+<p><div class="img-item" data-src="https://i.imgur.com/2eXmAxp.png" data-sub-html=".caption"><img src="https://i.imgur.com/2eXmAxp.png" alt><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom"></span></div></div></p>
+<ul>
+<li>假設 pocess A 及 B 同時將自己的資料插在 list 的第一顆<br>
+<div class="img-item" data-src="https://i.imgur.com/h95r477.png" data-sub-html=".caption"><img src="https://i.imgur.com/h95r477.png" alt><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom"></span></div></div></li>
+<li>接著 process A 以些微的差距先將 list 設為 l（自己的鏈結），此時 list 的第一顆為 A 的資料<br>
+<div class="img-item" data-src="https://i.imgur.com/u0udl7M.png" data-sub-html=".caption"><img src="https://i.imgur.com/u0udl7M.png" alt><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom"></span></div></div></li>
+<li>最後 process B 也將 list 設為 l，此時 list 上的第一顆為 B 的資料，且 A 的資料遺失了。<br>
+<div class="img-item" data-src="https://i.imgur.com/B659a3t.png" data-sub-html=".caption"><img src="https://i.imgur.com/B659a3t.png" alt><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom"></span></div></div></li>
+</ul>
+<h3 id="使用鎖">使用鎖<a class="header-anchor" href="#使用鎖">#</a></h3>
+<figure class="highlight diff"><table><tbody><tr><td class="code"><pre><span class="line">struct list *list = 0;</span><br><span class="line">struct lock listlock;</span><br><span class="line"></span><br><span class="line">void</span><br><span class="line">insert(int data)</span><br><span class="line">{</span><br><span class="line">    struct list *l;</span><br><span class="line"><span class="addition">+    acquire(&amp;listlock);</span></span><br><span class="line">    l = malloc(sizeof *l);</span><br><span class="line">    l-&gt;data = data;</span><br><span class="line">    l-&gt;next = list;</span><br><span class="line">    list = l;</span><br><span class="line"><span class="addition">+    release(&amp;listlock);</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="Code-鎖">Code: 鎖<a class="header-anchor" href="#Code-鎖">#</a></h2>
+<ul>
+<li>XV6 使用 <code>struct spinlock</code>，其中以 locked 作為標記。
+<ul>
+<li>為 0 時，此鎖無人使用，可以被取用</li>
+<li><strong>非</strong> 0 時，此鎖有人在使用，無法被取用</li>
+</ul>
+</li>
+</ul>
+<h3 id="File-spinlock-h">File: spinlock.h<a class="header-anchor" href="#File-spinlock-h">#</a></h3>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Mutual exclusion lock.</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">spinlock</span> {</span></span><br><span class="line">  uint locked;       <span class="comment">// Is the lock held?</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// For debugging:</span></span><br><span class="line">  <span class="keyword">char</span> *name;        <span class="comment">// Name of lock.</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">cpu</span> *<span class="title">cpu</span>;</span>   <span class="comment">// The cpu holding the lock.</span></span><br><span class="line">  uint pcs[<span class="number">10</span>];      <span class="comment">// The call stack (an array of program counters)</span></span><br><span class="line">                     <span class="comment">// that locked the lock.</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>邏輯上，<code>acquire</code> 應該長這樣：</li>
+</ul>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">acquire(struct spinlock *lk)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">for</span>(;;) {</span><br><span class="line">        <span class="keyword">if</span>(!lk-&gt;locked) {</span><br><span class="line">            lk-&gt;locked = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>但是我們發現，可能會有多個 CPU 執行至第五行，發現 <code>lk-&gt;locked</code> 為 <code>0</code>，接著都拿到了鎖，即違反了互斥</li>
+<li>XV6 使用 x86 的特殊指令 <code>xchg</code> 來完成動作。</li>
+</ul>
+<hr>
+<div class="alert alert-success"><p><strong>File:</strong> spinlock.c</p></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*lk</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>要求鎖</td>
+<td>void</td>
+<td>欲要求的鎖</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Acquire the lock.</span></span><br><span class="line"><span class="comment">// Loops (spins) until the lock is acquired.</span></span><br><span class="line"><span class="comment">// Holding a lock for a long time may cause</span></span><br><span class="line"><span class="comment">// other CPUs to waste time spinning to acquire it.</span></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">acquire(struct spinlock *lk)</span><br><span class="line">{</span><br><span class="line">  pushcli(); <span class="comment">// disable interrupts to avoid deadlock.</span></span><br><span class="line">  <span class="keyword">if</span>(holding(lk))</span><br><span class="line">    panic(<span class="string">"acquire"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The xchg is atomic.</span></span><br><span class="line">  <span class="comment">// It also serializes, so that reads after acquire are not</span></span><br><span class="line">  <span class="comment">// reordered before it. </span></span><br><span class="line">  <span class="keyword">while</span>(xchg(&amp;lk-&gt;locked, <span class="number">1</span>) != <span class="number">0</span>)</span><br><span class="line">    ;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Record info about lock acquisition for debugging.</span></span><br><span class="line">  lk-&gt;cpu = cpu;</span><br><span class="line">  getcallerpcs(&amp;lk, lk-&gt;pcs);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*lk</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>還鎖</td>
+<td>void</td>
+<td>欲還的鎖</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Release the lock.</span></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">release(struct spinlock *lk)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">if</span>(!holding(lk))</span><br><span class="line">    panic(<span class="string">"release"</span>);</span><br><span class="line"></span><br><span class="line">  lk-&gt;pcs[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">  lk-&gt;cpu = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The xchg serializes, so that reads before release are </span></span><br><span class="line">  <span class="comment">// not reordered after it.  The 1996 PentiumPro manual (Volume 3,</span></span><br><span class="line">  <span class="comment">// 7.2) says reads can be carried out speculatively and in</span></span><br><span class="line">  <span class="comment">// any order, which implies we need to serialize here.</span></span><br><span class="line">  <span class="comment">// But the 2007 Intel 64 Architecture Memory Ordering White</span></span><br><span class="line">  <span class="comment">// Paper says that Intel 64 and IA-32 will not move a load</span></span><br><span class="line">  <span class="comment">// after a store. So lock-&gt;locked = 0 would work here.</span></span><br><span class="line">  <span class="comment">// The xchg being asm volatile ensures gcc emits it after</span></span><br><span class="line">  <span class="comment">// the above assignments (and after the critical section).</span></span><br><span class="line">  xchg(&amp;lk-&gt;locked, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  popcli();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<div class="alert alert-success"><p><strong>File:</strong> x86.h</p></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>交換值（x86特殊指令）</td>
+<td>結果</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*addr</code></th>
+<th><code>newval</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲交換值得目標</td>
+<td>欲填的值</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">inline</span> uint</span><br><span class="line">xchg(<span class="keyword">volatile</span> uint *addr, uint newval)</span><br><span class="line">{</span><br><span class="line">  uint result;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// The + in "+m" denotes a read-modify-write operand.</span></span><br><span class="line">  <span class="function"><span class="keyword">asm</span> <span class="title">volatile</span><span class="params">(<span class="string">"lock; xchgl %0, %1"</span> :</span></span></span><br><span class="line"><span class="function"><span class="params">               <span class="string">"+m"</span> (*addr), <span class="string">"=a"</span> (result) :</span></span></span><br><span class="line"><span class="function"><span class="params">               <span class="string">"1"</span> (newval) :</span></span></span><br><span class="line"><span class="function"><span class="params">               <span class="string">"cc"</span>)</span></span>;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/kernel/">#kernel</a> <a href="/tags/XV6/">#XV6</a> <a href="/tags/lock/">#lock</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/xv6/scheduler.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/xv6/trap.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2018-08-07 06:14:40',
+            title: 'XV6 - Locking',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2021 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>

@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="XV6 - Page Tables">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>XV6 - Page Tables | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158078787-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158078787-1');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>XV6 - Page Tables</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/XV6/">XV6</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2018-07-23
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        2.6k
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><div class="alert alert-success"><p><strong>File:</strong> vm.c</p></div>
+<h2 id="分頁硬體">分頁硬體<a class="header-anchor" href="#分頁硬體">#</a></h2>
+<ul>
+<li>PTE：Page table entry，包含 20-bit PPN 及 flags</li>
+<li>PPN：Physical Page number</li>
+<li>x86的頁表：$2^{20}$ 條 PTE。</li>
+</ul>
+<h3 id="目標">目標<a class="header-anchor" href="#目標">#</a></h3>
+<blockquote>
+<p>分頁硬體使用虛擬位址找到對應的 PTE，接著把高 20-bit 替換為 PTE 的 PPN，低 12-bit 直接沿用，即完成轉譯的動作。</p>
+</blockquote>
+<h3 id="XV6-頁表">XV6 頁表<a class="header-anchor" href="#XV6-頁表">#</a></h3>
+<p><div class="img-item" data-src="https://i.imgur.com/Jj4vbJt.png" data-sub-html=".caption"><img src="https://i.imgur.com/Jj4vbJt.png" alt title="x86 page table hardware."><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom"></span></div></div></p>
+<ul>
+<li>一個頁表在物理記憶體中為一顆兩層的樹
+<ul>
+<li>樹根為一個 4096 字節的目錄（page dir），包含 1024 個類 PTE，分別指向不同的頁表頁（page table page）。</li>
+<li>每頁包含 1024 個 32-bit PTE。</li>
+</ul>
+</li>
+<li>轉譯過程
+<ol>
+<li>分頁硬體用虛擬地址的高 10-bit 找到指定的頁。</li>
+<li>如果指向的頁存在的話，繼續使用接著的 10-bit 來找到指定的 PTE。</li>
+<li>不存在的話，拋出錯誤。</li>
+</ol>
+</li>
+</ul>
+<h3 id="flags">flags<a class="header-anchor" href="#flags">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th style="text-align:center">flags</th>
+<th>name</th>
+<th>為 1 時</th>
+<th>為 0 時</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">P</td>
+<td>Present</td>
+<td>表示頁存在</td>
+<td>不存在</td>
+</tr>
+<tr>
+<td style="text-align:center">W</td>
+<td>Writable</td>
+<td>可以寫入</td>
+<td>只能讀/取</td>
+</tr>
+<tr>
+<td style="text-align:center">U</td>
+<td>User</td>
+<td>user 能使用此頁</td>
+<td>只有 kernel 能使用</td>
+</tr>
+<tr>
+<td style="text-align:center">WT</td>
+<td>-</td>
+<td>Write-through</td>
+<td>Write-back</td>
+</tr>
+<tr>
+<td style="text-align:center">CD</td>
+<td>Cache Disable</td>
+<td>不會對此頁進行 cache</td>
+<td>進行 cache</td>
+</tr>
+<tr>
+<td style="text-align:center">A</td>
+<td>Accessed</td>
+<td>為 0 時被存取， 處理器會將此位設為 1</td>
+<td>-</td>
+</tr>
+<tr>
+<td style="text-align:center">D</td>
+<td>Dirty</td>
+<td>為 0 時寫入此頁， 處理器會將此位設為 1</td>
+<td>-</td>
+</tr>
+<tr>
+<td style="text-align:center">AVL</td>
+<td>Available for system use</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table></div>
+<div class="alert alert-warning"><p>只有軟體可以將 A、D 清 0。<sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[記憶體管理／分頁架構](https://www.csie.ntu.edu.tw/~wcchen/asm98/asm/proj/b85506061/chap2/paging.html)">[1]</span></a></sup></p></div>
+<h3 id="名詞解釋">名詞解釋<a class="header-anchor" href="#名詞解釋">#</a></h3>
+<ul>
+<li>物理記憶體：DRAM</li>
+<li>物理地址：DRAM 的位址</li>
+</ul>
+<hr>
+<h2 id="Process-address-space">Process address space<a class="header-anchor" href="#Process-address-space">#</a></h2>
+<ul>
+<li><code>main</code> 呼叫 <code>kvmalloc</code> 跳到新的頁表，重新映射至記憶體。<br>
+<div class="img-item" data-src="https://i.imgur.com/xq8Po1n.png" data-sub-html=".caption"><img src="https://i.imgur.com/xq8Po1n.png" alt title="Layout of the virtual address space of a process and physical address space."><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom"></span></div></div></li>
+<li>每個 process 都有自己的頁表，在切換 process 時也會切換頁表。</li>
+<li>process 的頁表從 0 開始，最多至 <code>KERNBASE</code>，限制 process 最多使用 2GB。</li>
+<li>如果需要更多記憶體時：
+<ol>
+<li>XV6 先找到一個空的頁</li>
+<li>將對應的 PTE 加入 process 的頁表裡</li>
+</ol>
+</li>
+<li>每個 process 的頁表都有包含對應的 kernel 映射（ <code>KERNBASE</code> 之上），這樣當發生中斷時就不需要切換頁表。</li>
+<li><code>KERNBASE</code> 之上的頁對應的 PTE，PTE_U 均設為 0。</li>
+</ul>
+<hr>
+<h2 id="Code-建立-address-space">Code: 建立 address space<a class="header-anchor" href="#Code-建立-address-space">#</a></h2>
+<ul>
+<li><code>main</code> 呼叫 <code>kvmalloc</code> 來建立 <code>KERNBASE</code> 之上的頁表</li>
+</ul>
+<h3 id="kvmalloc">kvmalloc<a class="header-anchor" href="#kvmalloc">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建立 kernel page</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Allocate one page table for the machine for the kernel address</span></span><br><span class="line"><span class="comment">// space for scheduler processes.</span></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">kvmalloc(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  kpgdir = setupkvm();</span><br><span class="line">  switchkvm();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>建立頁表的工作由 <code>setupkvm</code> 完成</li>
+</ul>
+<h3 id="setupkvm">setupkvm<a class="header-anchor" href="#setupkvm">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>設定 kernel page</td>
+<td>PDE</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Set up kernel part of a page table.</span></span><br><span class="line"><span class="keyword">pde_t</span>*</span><br><span class="line">setupkvm(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">pde_t</span> *pgdir;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">kmap</span> *<span class="title">k</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>((pgdir = (<span class="keyword">pde_t</span>*)kalloc()) == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先分配一頁來存放目錄</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br></pre></td><td class="code"><pre><span class="line">  <span class="built_in">memset</span>(pgdir, <span class="number">0</span>, PGSIZE);</span><br><span class="line">  <span class="keyword">if</span> (p2v(PHYSTOP) &gt; (<span class="keyword">void</span>*)DEVSPACE)</span><br><span class="line">    panic(<span class="string">"PHYSTOP too high"</span>);</span><br><span class="line">  <span class="keyword">for</span>(k = kmap; k &lt; &amp;kmap[NELEM(kmap)]; k++)</span><br><span class="line">    <span class="keyword">if</span>(mappages(pgdir, k-&gt;virt, k-&gt;phys_end - k-&gt;phys_start, </span><br><span class="line">                (uint)k-&gt;phys_start, k-&gt;perm) &lt; <span class="number">0</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> pgdir;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>接著呼叫 <code>mappages</code> 來建立 kernel 所需的映射。</li>
+<li>映射存放在 kmap 裡</li>
+</ul>
+<hr>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// This table defines the kernel's mappings, which are present in</span></span><br><span class="line"><span class="comment">// every process's page table.</span></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">kmap</span> {</span></span><br><span class="line">  <span class="keyword">void</span> *virt;</span><br><span class="line">  uint phys_start;</span><br><span class="line">  uint phys_end;</span><br><span class="line">  <span class="keyword">int</span> perm;</span><br><span class="line">} kmap[] = {</span><br><span class="line"> { (<span class="keyword">void</span>*)KERNBASE, <span class="number">0</span>,             EXTMEM,    PTE_W}, <span class="comment">// I/O space</span></span><br><span class="line"> { (<span class="keyword">void</span>*)KERNLINK, V2P(KERNLINK), V2P(data), <span class="number">0</span>},     <span class="comment">// kern text+rodata</span></span><br><span class="line"> { (<span class="keyword">void</span>*)data,     V2P(data),     PHYSTOP,   PTE_W}, <span class="comment">// kern data+memory</span></span><br><span class="line"> { (<span class="keyword">void</span>*)DEVSPACE, DEVSPACE,      <span class="number">0</span>,         PTE_W}, <span class="comment">// more devices</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>kmap 包含 kernel 的資料及指令、<code>PHYTOP</code>以下的物理記憶體、及 I/O 設備的記憶體。</li>
+<li>這裡不會建立有關 user 的映射</li>
+</ul>
+<h3 id="mappages">mappages<a class="header-anchor" href="#mappages">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>設定 PTE</td>
+<td>0 (ok) / -1 (err)</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create PTEs for virtual addresses starting at va that refer to</span></span><br><span class="line"><span class="comment">// physical addresses starting at pa. va and size might not</span></span><br><span class="line"><span class="comment">// be page-aligned.</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span></span><br><span class="line">mappages(<span class="keyword">pde_t</span> *pgdir, <span class="keyword">void</span> *va, uint size, uint pa, <span class="keyword">int</span> perm)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">char</span> *a, *last;</span><br><span class="line">  <span class="keyword">pte_t</span> *pte;</span><br><span class="line">  </span><br><span class="line">  a = (<span class="keyword">char</span>*)PGROUNDDOWN((uint)va);</span><br><span class="line">  last = (<span class="keyword">char</span>*)PGROUNDDOWN(((uint)va) + size - <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">for</span>(;;){</span><br><span class="line">    <span class="keyword">if</span>((pte = walkpgdir(pgdir, a, <span class="number">1</span>)) == <span class="number">0</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先呼叫 <code>walkpgdir</code> 來找到對應的 PTE</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(*pte &amp; PTE_P)</span><br><span class="line">  panic(<span class="string">"remap"</span>);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>接著確認 PTE_P flags</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">    *pte = pa | perm | PTE_P;</span><br><span class="line">    <span class="keyword">if</span>(a == last)</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    a += PGSIZE;</span><br><span class="line">    pa += PGSIZE;</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>最後初始化 PTE。</li>
+<li>問題：如何初始化</li>
+</ul>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>從目錄尋找對應的 PTE</td>
+<td>PTE</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*pgdir</code></th>
+<th><code>*va</code></th>
+<th><code>alloc</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目標目錄</td>
+<td>目標虛擬地址</td>
+<td>是否有 alloc</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Return the address of the PTE in page table pgdir</span></span><br><span class="line"><span class="comment">// that corresponds to virtual address va.  If alloc!=0,</span></span><br><span class="line"><span class="comment">// create any required page table pages.</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">pte_t</span> *</span><br><span class="line">walkpgdir(<span class="keyword">pde_t</span> *pgdir, <span class="keyword">const</span> <span class="keyword">void</span> *va, <span class="keyword">int</span> alloc)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">pde_t</span> *pde;</span><br><span class="line">  <span class="keyword">pte_t</span> *pgtab;</span><br><span class="line"></span><br><span class="line">  pde = &amp;pgdir[PDX(va)];</span><br><span class="line">  <span class="keyword">if</span>(*pde &amp; PTE_P){</span><br><span class="line">    pgtab = (<span class="keyword">pte_t</span>*)p2v(PTE_ADDR(*pde));</span><br><span class="line">  } <span class="keyword">else</span> {</span><br><span class="line">    <span class="keyword">if</span>(!alloc || (pgtab = (<span class="keyword">pte_t</span>*)kalloc()) == <span class="number">0</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// Make sure all those PTE_P bits are zero.</span></span><br><span class="line">    <span class="built_in">memset</span>(pgtab, <span class="number">0</span>, PGSIZE);</span><br><span class="line">    <span class="comment">// The permissions here are overly generous, but they can</span></span><br><span class="line">    <span class="comment">// be further restricted by the permissions in the page table </span></span><br><span class="line">    <span class="comment">// entries, if necessary.</span></span><br><span class="line">    *pde = v2p(pgtab) | PTE_P | PTE_W | PTE_U;</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">return</span> &amp;pgtab[PTX(va)];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>切換至 kernel 頁</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">switchkvm(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  lcr3(v2p(kpgdir));   <span class="comment">// switch to the kernel page table</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="分配物理記憶體">分配物理記憶體<a class="header-anchor" href="#分配物理記憶體">#</a></h2>
+<p>kernel 在運行時須為以下物件分配物理記憶體：</p>
+<ul>
+<li>Page table</li>
+<li>Process 的 user 記憶體</li>
+<li>kernel stack</li>
+<li>Pipe buffers</li>
+</ul>
+<h2 id="Code-物理記憶體分配器">Code: 物理記憶體分配器<a class="header-anchor" href="#Code-物理記憶體分配器">#</a></h2>
+<div class="alert alert-success"><p><strong>File:</strong> kalloc.c</p></div>
+<ul>
+<li>分配器為一個可分配的記憶體頁所構成的 <strong>free list</strong></li>
+<li><code>main</code> 呼叫 <code>kinit1(end, P2V(4*1024*1024))</code> 及 <code>kinit2(P2V(4*1024*1024), P2V(PHYSTOP))</code> 初始化分配器</li>
+</ul>
+<h3 id="kinit1-2">kinit1 / 2<a class="header-anchor" href="#kinit1-2">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始化物理記憶體分配器</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*vstart</code></th>
+<th><code>*vend</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>起始位址</td>
+<td>結束位址</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">kinit1(<span class="keyword">void</span> *vstart, <span class="keyword">void</span> *vend)</span><br><span class="line">{</span><br><span class="line">  initlock(&amp;kmem.lock, <span class="string">"kmem"</span>);</span><br><span class="line">  kmem.use_lock = <span class="number">0</span>;</span><br><span class="line">  freerange(vstart, vend);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始化物理記憶體分配器</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*vstart</code></th>
+<th><code>*vend</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>起始位址</td>
+<td>結束位址</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">kinit2(<span class="keyword">void</span> *vstart, <span class="keyword">void</span> *vend)</span><br><span class="line">{</span><br><span class="line">  freerange(vstart, vend);</span><br><span class="line">  kmem.use_lock = <span class="number">1</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>kinit1 / 2</code> 呼叫 <code>freerange</code> 將記憶體加入 free list</li>
+</ul>
+<h3 id="freerange">freerange<a class="header-anchor" href="#freerange">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>釋放一段記憶體</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*vstart</code></th>
+<th><code>*vend</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>起始位址</td>
+<td>結束位址</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">freerange(<span class="keyword">void</span> *vstart, <span class="keyword">void</span> *vend)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">char</span> *p;</span><br><span class="line">  p = (<span class="keyword">char</span>*)PGROUNDUP((uint)vstart);</span><br><span class="line">  <span class="keyword">for</span>(; p + PGSIZE &lt;= (<span class="keyword">char</span>*)vend; p += PGSIZE)</span><br><span class="line">    kfree(p);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>freerange</code> 呼叫 <code>kfree</code> 來完成工作</li>
+</ul>
+<h3 id="kfree">kfree<a class="header-anchor" href="#kfree">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*v</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>釋放記憶體</td>
+<td>void</td>
+<td>欲 free 的虛擬地址</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//PAGEBREAK: 21</span></span><br><span class="line"><span class="comment">// Free the page of physical memory pointed at by v,</span></span><br><span class="line"><span class="comment">// which normally should have been returned by a</span></span><br><span class="line"><span class="comment">// call to kalloc().  (The exception is when</span></span><br><span class="line"><span class="comment">// initializing the allocator; see kinit above.)</span></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">kfree(<span class="keyword">char</span> *v)</span><br><span class="line">{</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">r</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>((uint)v % PGSIZE || v &lt; end || v2p(v) &gt;= PHYSTOP)</span><br><span class="line">    panic(<span class="string">"kfree"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Fill with junk to catch dangling refs.</span></span><br><span class="line">  <span class="built_in">memset</span>(v, <span class="number">1</span>, PGSIZE);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先將每個字節設為 1</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">if</span>(kmem.use_lock)</span><br><span class="line">    acquire(&amp;kmem.lock);</span><br><span class="line">  r = (struct run*)v;</span><br><span class="line">  r-&gt;next = kmem.freelist;</span><br><span class="line">  kmem.freelist = r;</span><br><span class="line">  <span class="keyword">if</span>(kmem.use_lock)</span><br><span class="line">    release(&amp;kmem.lock);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>接著把 v 轉為 <code>struct run</code> 的指標，插在 free list 的第一顆。</li>
+</ul>
+<hr>
+<h2 id="User-part-of-an-address-space">User part of an address space<a class="header-anchor" href="#User-part-of-an-address-space">#</a></h2>
+<p><div class="img-item" data-src="https://i.imgur.com/sZaPwda.png" data-sub-html=".caption"><img src="https://i.imgur.com/sZaPwda.png" alt title="Memory layout of a user process with its initial stack"><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom"></span></div></div></p>
+<h2 id="Code-sbrk">Code: sbrk<a class="header-anchor" href="#Code-sbrk">#</a></h2>
+<div class="alert alert-success"><p><strong>File:</strong> sysproc.c</p></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>增長/收縮 process 的記憶體</td>
+<td>記憶體大小（結果）</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span></span><br><span class="line">sys_sbrk(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">int</span> addr;</span><br><span class="line">  <span class="keyword">int</span> n;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(argint(<span class="number">0</span>, &amp;n) &lt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  addr = proc-&gt;sz;</span><br><span class="line">  <span class="keyword">if</span>(growproc(n) &lt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">return</span> addr;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>sbrk</code> 透過呼叫 <code>growproc</code> 來完成工作。</li>
+</ul>
+<hr>
+<div class="alert alert-success"><p><strong>File:</strong> proc.c</p></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>n</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>增長/收縮 process 的記憶體</td>
+<td>0 (ok) / -1 (err)</td>
+<td>增長/收縮大小</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Grow current process's memory by n bytes.</span></span><br><span class="line"><span class="comment">// Return 0 on success, -1 on failure.</span></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">growproc(<span class="keyword">int</span> n)</span><br><span class="line">{</span><br><span class="line">  uint sz;</span><br><span class="line">  </span><br><span class="line">  sz = proc-&gt;sz;</span><br><span class="line">  <span class="keyword">if</span>(n &gt; <span class="number">0</span>){</span><br><span class="line">    <span class="keyword">if</span>((sz = allocuvm(proc-&gt;pgdir, sz, sz + n)) == <span class="number">0</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  } <span class="keyword">else</span> <span class="keyword">if</span>(n &lt; <span class="number">0</span>){</span><br><span class="line">    <span class="keyword">if</span>((sz = deallocuvm(proc-&gt;pgdir, sz, sz + n)) == <span class="number">0</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  }</span><br><span class="line">  proc-&gt;sz = sz;</span><br><span class="line">  switchuvm(proc);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>如果 n&gt;0：<code>allocuvm</code></li>
+<li>如果 n&lt;0：<code>deallocuvm</code></li>
+</ul>
+<hr>
+<h3 id="allocuvm、deallocuvm">allocuvm、deallocuvm<a class="header-anchor" href="#allocuvm、deallocuvm">#</a></h3>
+<div class="alert alert-success"><p><strong>File:</strong> vm.c</p></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>增長記憶體</td>
+<td>記憶體大小（結果）</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*pgdir</code></th>
+<th><code>oldsz</code></th>
+<th><code>newsz</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>從該目錄尋找可用記憶體</td>
+<td>舊的大小</td>
+<td>新的大小</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Allocate page tables and physical memory to grow process from oldsz to</span></span><br><span class="line"><span class="comment">// newsz, which need not be page aligned.  Returns new size or 0 on error.</span></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">allocuvm(<span class="keyword">pde_t</span> *pgdir, uint oldsz, uint newsz)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">char</span> *mem;</span><br><span class="line">  uint a;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(newsz &gt;= KERNBASE)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span>(newsz &lt; oldsz)</span><br><span class="line">    <span class="keyword">return</span> oldsz;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>首先檢查是否有要超過大小，及動作是否合法。</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br></pre></td><td class="code"><pre><span class="line">  a = PGROUNDUP(oldsz);</span><br><span class="line">  <span class="keyword">for</span>(; a &lt; newsz; a += PGSIZE){</span><br><span class="line">    mem = kalloc();</span><br><span class="line">    <span class="keyword">if</span>(mem == <span class="number">0</span>){</span><br><span class="line">      cprintf(<span class="string">"allocuvm out of memory\n"</span>);</span><br><span class="line">      deallocuvm(pgdir, newsz, oldsz);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="built_in">memset</span>(mem, <span class="number">0</span>, PGSIZE);</span><br><span class="line">    mappages(pgdir, (<span class="keyword">char</span>*)a, PGSIZE, v2p(mem), PTE_W|PTE_U);</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">return</span> newsz;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>接著透過 <code>kalloc()</code> 來要記憶體，並將要到的記憶體清空</li>
+<li>最後回傳 process 目前總共的大小</li>
+</ul>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>縮減記憶體</td>
+<td>記憶體大小（結果）</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*pgdir</code></th>
+<th><code>oldsz</code></th>
+<th><code>newsz</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>從該目錄釋放記憶體</td>
+<td>舊的大小</td>
+<td>新的大小</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Deallocate user pages to bring the process size from oldsz to</span></span><br><span class="line"><span class="comment">// newsz.  oldsz and newsz need not be page-aligned, nor does newsz</span></span><br><span class="line"><span class="comment">// need to be less than oldsz.  oldsz can be larger than the actual</span></span><br><span class="line"><span class="comment">// process size.  Returns the new process size.</span></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">deallocuvm(<span class="keyword">pde_t</span> *pgdir, uint oldsz, uint newsz)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">pte_t</span> *pte;</span><br><span class="line">  uint a, pa;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(newsz &gt;= oldsz)</span><br><span class="line">    <span class="keyword">return</span> oldsz;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>一樣先檢查動作是否合法</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br></pre></td><td class="code"><pre><span class="line">  a = PGROUNDUP(newsz);</span><br><span class="line">  <span class="keyword">for</span>(; a  &lt; oldsz; a += PGSIZE){</span><br><span class="line">    pte = walkpgdir(pgdir, (<span class="keyword">char</span>*)a, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span>(!pte)</span><br><span class="line">      a += (NPTENTRIES - <span class="number">1</span>) * PGSIZE;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>((*pte &amp; PTE_P) != <span class="number">0</span>){</span><br><span class="line">      pa = PTE_ADDR(*pte);</span><br><span class="line">      <span class="keyword">if</span>(pa == <span class="number">0</span>)</span><br><span class="line">        panic(<span class="string">"kfree"</span>);</span><br><span class="line">      <span class="keyword">char</span> *v = p2v(pa);</span><br><span class="line">      kfree(v);</span><br><span class="line">      *pte = <span class="number">0</span>;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">return</span> newsz;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>接著一個一個 pte free，先將 flags 歸0，再透過 <code>kfree</code> 完成工作。</li>
+</ul>
+<hr>
+<h2 id="Code-exec">Code: exec<a class="header-anchor" href="#Code-exec">#</a></h2>
+<ul>
+<li>功用：創建 user part address space</li>
+<li>概觀：打開及讀取 ELF 文件來初始化 user part</li>
+</ul>
+<h3 id="struct-elfhdr">struct elfhdr<a class="header-anchor" href="#struct-elfhdr">#</a></h3>
+<div class="alert alert-success"><p><strong>File:</strong> elf.h</p></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// File header</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">elfhdr</span> {</span></span><br><span class="line">  uint magic;  <span class="comment">// must equal ELF_MAGIC</span></span><br><span class="line">  uchar elf[<span class="number">12</span>];</span><br><span class="line">  ushort type;</span><br><span class="line">  ushort machine;</span><br><span class="line">  uint version;</span><br><span class="line">  uint entry;</span><br><span class="line">  uint phoff;</span><br><span class="line">  uint shoff;</span><br><span class="line">  uint flags;</span><br><span class="line">  ushort ehsize;</span><br><span class="line">  ushort phentsize;</span><br><span class="line">  ushort phnum;</span><br><span class="line">  ushort shentsize;</span><br><span class="line">  ushort shnum;</span><br><span class="line">  ushort shstrndx;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>一個 ELF 文件包含一個 elfhdr、program setion hdr(struct proghdr)</li>
+</ul>
+<h3 id="struct-proghdr">struct proghdr<a class="header-anchor" href="#struct-proghdr">#</a></h3>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Program section header</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">proghdr</span> {</span></span><br><span class="line">  uint type;</span><br><span class="line">  uint off;</span><br><span class="line">  uint vaddr;</span><br><span class="line">  uint paddr;</span><br><span class="line">  uint filesz;</span><br><span class="line">  uint memsz;</span><br><span class="line">  uint flags;</span><br><span class="line">  uint align;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>一個 proghdr 描述了須載入至記憶體的 program section</li>
+</ul>
+<div class="alert alert-info"><p>XV6 的 program 只有一個 section，其他 OS 可能會有多個。</p></div>
+<h3 id="File-exec-c">File: exec.c<a class="header-anchor" href="#File-exec-c">#</a></h3>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"types.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"param.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"memlayout.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"mmu.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"proc.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"defs.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"x86.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"elf.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">exec(<span class="keyword">char</span> *path, <span class="keyword">char</span> **argv)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">char</span> *s, *last;</span><br><span class="line">  <span class="keyword">int</span> i, off;</span><br><span class="line">  uint argc, sz, sp, ustack[<span class="number">3</span>+MAXARG+<span class="number">1</span>];</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">elfhdr</span> <span class="title">elf</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">inode</span> *<span class="title">ip</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proghdr</span> <span class="title">ph</span>;</span></span><br><span class="line">  <span class="keyword">pde_t</span> *pgdir, *oldpgdir;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>((ip = namei(path)) == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>用 <code>namei</code> 打開二進制文件（ch6 會說明）</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">ilock(ip);</span><br><span class="line">pgdir = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Check ELF header</span></span><br><span class="line"><span class="keyword">if</span>(readi(ip, (<span class="keyword">char</span>*)&amp;elf, <span class="number">0</span>, <span class="keyword">sizeof</span>(elf)) &lt; <span class="keyword">sizeof</span>(elf))</span><br><span class="line">  <span class="keyword">goto</span> bad;</span><br><span class="line"><span class="keyword">if</span>(elf.magic != ELF_MAGIC)</span><br><span class="line">  <span class="keyword">goto</span> bad;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>接著確認 ELF 是否正確（藉由 ELF_magic）</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>((pgdir = setupkvm()) == <span class="number">0</span>)</span><br><span class="line">  <span class="keyword">goto</span> bad;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Load program into memory.</span></span><br><span class="line">sz = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>, off=elf.phoff; i&lt;elf.phnum; i++, off+=<span class="keyword">sizeof</span>(ph)){</span><br><span class="line">  <span class="keyword">if</span>(readi(ip, (<span class="keyword">char</span>*)&amp;ph, off, <span class="keyword">sizeof</span>(ph)) != <span class="keyword">sizeof</span>(ph))</span><br><span class="line">    <span class="keyword">goto</span> bad;</span><br><span class="line">  <span class="keyword">if</span>(ph.type != ELF_PROG_LOAD)</span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line">  <span class="keyword">if</span>(ph.memsz &lt; ph.filesz)</span><br><span class="line">    <span class="keyword">goto</span> bad;</span><br><span class="line">  <span class="keyword">if</span>((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">goto</span> bad;</span><br><span class="line">  <span class="keyword">if</span>(loaduvm(pgdir, (<span class="keyword">char</span>*)ph.vaddr, ip, ph.off, ph.filesz) &lt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">goto</span> bad;</span><br><span class="line">}</span><br><span class="line">iunlockput(ip);</span><br><span class="line">ip = <span class="number">0</span>;</span><br></pre></td></tr></tbody></table></figure>
+<ol>
+<li><code>setupkvm</code> 分配一個沒有 user part 的頁</li>
+<li><code>allocuvm</code> 分配給每個 ELF 的 program section 記憶體。</li>
+<li><code>loaduvm</code> 將 section 載入至記憶體</li>
+</ol>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">// Allocate two pages at the next page boundary.</span></span><br><span class="line">  <span class="comment">// Make the first inaccessible.  Use the second as the user stack.</span></span><br><span class="line">  sz = PGROUNDUP(sz);</span><br><span class="line">  <span class="keyword">if</span>((sz = allocuvm(pgdir, sz, sz + <span class="number">2</span>*PGSIZE)) == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">goto</span> bad;</span><br><span class="line">  clearpteu(pgdir, (<span class="keyword">char</span>*)(sz - <span class="number">2</span>*PGSIZE));</span><br><span class="line">  sp = sz;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Push argument strings, prepare rest of stack in ustack.</span></span><br><span class="line">  <span class="keyword">for</span>(argc = <span class="number">0</span>; argv[argc]; argc++) {</span><br><span class="line">    <span class="keyword">if</span>(argc &gt;= MAXARG)</span><br><span class="line">      <span class="keyword">goto</span> bad;</span><br><span class="line">    sp = (sp - (<span class="built_in">strlen</span>(argv[argc]) + <span class="number">1</span>)) &amp; ~<span class="number">3</span>;</span><br><span class="line">    <span class="keyword">if</span>(copyout(pgdir, sp, argv[argc], <span class="built_in">strlen</span>(argv[argc]) + <span class="number">1</span>) &lt; <span class="number">0</span>)</span><br><span class="line">      <span class="keyword">goto</span> bad;</span><br><span class="line">    ustack[<span class="number">3</span>+argc] = sp;</span><br><span class="line">  }</span><br><span class="line">  ustack[<span class="number">3</span>+argc] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  ustack[<span class="number">0</span>] = <span class="number">0xffffffff</span>;  <span class="comment">// fake return PC</span></span><br><span class="line">  ustack[<span class="number">1</span>] = argc;</span><br><span class="line">  ustack[<span class="number">2</span>] = sp - (argc+<span class="number">1</span>)*<span class="number">4</span>;  <span class="comment">// argv pointer</span></span><br><span class="line"></span><br><span class="line">  sp -= (<span class="number">3</span>+argc+<span class="number">1</span>) * <span class="number">4</span>;</span><br><span class="line">  <span class="keyword">if</span>(copyout(pgdir, sp, ustack, (<span class="number">3</span>+argc+<span class="number">1</span>)*<span class="number">4</span>) &lt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">goto</span> bad;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Save program name for debugging.</span></span><br><span class="line">  <span class="keyword">for</span>(last=s=path; *s; s++)</span><br><span class="line">    <span class="keyword">if</span>(*s == <span class="string">'/'</span>)</span><br><span class="line">      last = s+<span class="number">1</span>;</span><br><span class="line">  safestrcpy(proc-&gt;name, last, <span class="keyword">sizeof</span>(proc-&gt;name));</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Commit to the user image.</span></span><br><span class="line">  oldpgdir = proc-&gt;pgdir;</span><br><span class="line">  proc-&gt;pgdir = pgdir;</span><br><span class="line">  proc-&gt;sz = sz;</span><br><span class="line">  proc-&gt;tf-&gt;eip = elf.entry;  <span class="comment">// main</span></span><br><span class="line">  proc-&gt;tf-&gt;esp = sp;</span><br><span class="line">  switchuvm(proc);</span><br><span class="line">  freevm(oldpgdir);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"> bad:</span><br><span class="line">  <span class="keyword">if</span>(pgdir)</span><br><span class="line">    freevm(pgdir);</span><br><span class="line">  <span class="keyword">if</span>(ip)</span><br><span class="line">    iunlockput(ip);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure><div id="footnotes"><hr class="block-hr"><div id="footnotelist" class="card card-default"><div class="card-header">Reference</div><ol class="list-group list-group-flush" style="list-style: none; padding-left: 0; margin-left: 0px"><li id="fn:1" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://www.csie.ntu.edu.tw/~wcchen/asm98/asm/proj/b85506061/chap2/paging.html" target="_blank" rel="noopener">記憶體管理／分頁架構</a><a href="#fnref:1" rev="footnote"> ↩</a></span></li></ol></div></div><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/kernel/">#kernel</a> <a href="/tags/XV6/">#XV6</a> <a href="/tags/MemMan/">#記憶體管理</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/xv6/trap.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/xv6/process.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2018-07-23 06:14:35',
+            title: 'XV6 - Page Tables',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2021 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>

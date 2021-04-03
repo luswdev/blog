@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="XV6 - File System">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>XV6 - File System | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158078787-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158078787-1');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>XV6 - File System</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/XV6/">XV6</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2018-08-23
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        1.3k
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote>
+<p>本文沒有按照 XV6 官方文本的順序介紹</p>
+</blockquote>
+<h2 id="概觀">概觀<a class="header-anchor" href="#概觀">#</a></h2>
+<ul>
+<li>XV6 的檔案系統分為 6 層，本文將從上到下介紹。<br>
+<div class="img-item" data-src="https://i.imgur.com/yTmir5p.png" data-sub-html=".caption"><img src="https://i.imgur.com/yTmir5p.png" alt title="Layers of the XV6 file system"><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom"></span></div></div></li>
+</ul>
+<hr>
+<h2 id="檔案描述符">檔案描述符<a class="header-anchor" href="#檔案描述符">#</a></h2>
+<div class="alert alert-success"><p><strong>File:</strong> proc.h</p></div>
+<ul>
+<li>UNIX 大部分的資源都是一個文件，而此統一性由檔案描述符實現。</li>
+<li>每個 process 都有一個表記錄著開啟的文件（行 13），一個開啟的文件即為 <code>struct file</code></li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Per-process state</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">proc</span> {</span></span><br><span class="line">  uint sz;                     <span class="comment">// Size of process memory (bytes)</span></span><br><span class="line">  <span class="keyword">pde_t</span>* pgdir;                <span class="comment">// Page table</span></span><br><span class="line">  <span class="keyword">char</span> *kstack;                <span class="comment">// Bottom of kernel stack for this process</span></span><br><span class="line">  <span class="keyword">enum</span> procstate state;        <span class="comment">// Process state</span></span><br><span class="line">  <span class="keyword">volatile</span> <span class="keyword">int</span> pid;            <span class="comment">// Process ID</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">parent</span>;</span>         <span class="comment">// Parent process</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">trapframe</span> *<span class="title">tf</span>;</span>        <span class="comment">// Trap frame for current syscall</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">context</span> *<span class="title">context</span>;</span>     <span class="comment">// swtch() here to run process</span></span><br><span class="line">  <span class="keyword">void</span> *chan;                  <span class="comment">// If non-zero, sleeping on chan</span></span><br><span class="line">  <span class="keyword">int</span> killed;                  <span class="comment">// If non-zero, have been killed</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">file</span> *<span class="title">ofile</span>[<span class="title">NOFILE</span>];</span>  <span class="comment">// Open files</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">inode</span> *<span class="title">cwd</span>;</span>           <span class="comment">// Current directory</span></span><br><span class="line">  <span class="keyword">char</span> name[<span class="number">16</span>];               <span class="comment">// Process name (debugging)</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<div class="alert alert-success"><p><strong>File:</strong> file.h</p></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">file</span> {</span></span><br><span class="line">  <span class="keyword">enum</span> { FD_NONE, FD_PIPE, FD_INODE } type;</span><br><span class="line">  <span class="keyword">int</span> ref; <span class="comment">// reference count</span></span><br><span class="line">  <span class="keyword">char</span> readable;</span><br><span class="line">  <span class="keyword">char</span> writable;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">pipe</span> *<span class="title">pipe</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">inode</span> *<span class="title">ip</span>;</span></span><br><span class="line">  uint off;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<div class="alert alert-success"><p><strong>File:</strong> proc.c</p></div>
+<ul>
+<li>所有的 open files 皆被存放在 <code>ftable</code> 中：</li>
+</ul>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> {</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">spinlock</span> <span class="title">lock</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">file</span> <span class="title">file</span>[<span class="title">NFILE</span>];</span></span><br><span class="line">} ftable;</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<div class="alert alert-success"><p><strong>File:</strong> file.c</p></div>
+<h3 id="Code-filealloc、dup-and-close">Code: filealloc、dup and close<a class="header-anchor" href="#Code-filealloc、dup-and-close">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建立一個檔案</td>
+<td>檔案結構</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Allocate a file structure.</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">file</span>*</span></span><br><span class="line"><span class="class"><span class="title">filealloc</span>(<span class="title">void</span>)</span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">file</span> *<span class="title">f</span>;</span></span><br><span class="line"></span><br><span class="line">  acquire(&amp;ftable.lock);</span><br><span class="line">  <span class="keyword">for</span>(f = ftable.file; f &lt; ftable.file + NFILE; f++){</span><br><span class="line">    <span class="keyword">if</span>(f-&gt;ref == <span class="number">0</span>){</span><br><span class="line">      f-&gt;ref = <span class="number">1</span>;</span><br><span class="line">      release(&amp;ftable.lock);</span><br><span class="line">      <span class="keyword">return</span> f;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  release(&amp;ftable.lock);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>filealloc</code> 在 <code>ftable</code> 找到一個 <code>f-&gt;ref</code> 為零的，並返回。</li>
+</ul>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*f</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>再次一個檔案</td>
+<td>開啟的檔案結構</td>
+<td>欲開啟的檔案</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Increment ref count for file f.</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">file</span>*</span></span><br><span class="line"><span class="class"><span class="title">filedup</span>(<span class="title">struct</span> <span class="title">file</span> *<span class="title">f</span>)</span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">  acquire(&amp;ftable.lock);</span><br><span class="line">  <span class="keyword">if</span>(f-&gt;ref &lt; <span class="number">1</span>)</span><br><span class="line">    panic(<span class="string">"filedup"</span>);</span><br><span class="line">  f-&gt;ref++;</span><br><span class="line">  release(&amp;ftable.lock);</span><br><span class="line">  <span class="keyword">return</span> f;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>filedup</code> 增加引用次數。</li>
+</ul>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*f</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>關閉檔案</td>
+<td>void</td>
+<td>欲關閉的檔案</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Close file f.  (Decrement ref count, close when reaches 0.)</span></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">fileclose(struct file *f)</span><br><span class="line">{</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">file</span> <span class="title">ff</span>;</span></span><br><span class="line"></span><br><span class="line">  acquire(&amp;ftable.lock);</span><br><span class="line">  <span class="keyword">if</span>(f-&gt;ref &lt; <span class="number">1</span>)</span><br><span class="line">    panic(<span class="string">"fileclose"</span>);</span><br><span class="line">  <span class="keyword">if</span>(--f-&gt;ref &gt; <span class="number">0</span>){</span><br><span class="line">    release(&amp;ftable.lock);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  }</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>fileclose</code> 減少引用次數。</li>
+</ul>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">  ff = *f;</span><br><span class="line">  f-&gt;ref = <span class="number">0</span>;</span><br><span class="line">  f-&gt;type = FD_NONE;</span><br><span class="line">  release(&amp;ftable.lock);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span>(ff.type == FD_PIPE)</span><br><span class="line">    pipeclose(ff.pipe, ff.writable);</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span>(ff.type == FD_INODE){</span><br><span class="line">    begin_trans();</span><br><span class="line">    iput(ff.ip);</span><br><span class="line">    commit_trans();</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>若引用次數降為 0 時，則依據類型的不同釋放當前的 pipe 或是 inode。</li>
+</ul>
+<h3 id="Code-filestat、read-and-write">Code: filestat、read and write<a class="header-anchor" href="#Code-filestat、read-and-write">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>讀取檔案狀態</td>
+<td>0 (ok) / -1 (err)</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*f</code></th>
+<th><code>*st</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲讀取的檔案</td>
+<td>寫入狀態的結構</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Get metadata about file f.</span></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">filestat(struct file *f, struct stat *st)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">if</span>(f-&gt;type == FD_INODE){</span><br><span class="line">    ilock(f-&gt;ip);</span><br><span class="line">    stati(f-&gt;ip, st);</span><br><span class="line">    iunlock(f-&gt;ip);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>須為 <code>inode</code> 才可使用 <code>filestat</code>，通過呼叫 <code>stati</code> 來實現操作。</li>
+</ul>
+<hr>
+<p><i class="fa fa-code"></i> Code: <code>fileread</code></p>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>讀取檔案</td>
+<td>讀取大小</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*f</code></th>
+<th><code>*addr</code></th>
+<th><code>n</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲讀取的檔案</td>
+<td>欲寫入資料的記憶體</td>
+<td>欲寫入的大小</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Read from file f.</span></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">fileread(struct file *f, <span class="keyword">char</span> *addr, <span class="keyword">int</span> n)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">int</span> r;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(f-&gt;readable == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">if</span>(f-&gt;type == FD_PIPE)</span><br><span class="line">    <span class="keyword">return</span> piperead(f-&gt;pipe, addr, n);</span><br><span class="line">  <span class="keyword">if</span>(f-&gt;type == FD_INODE){</span><br><span class="line">    ilock(f-&gt;ip);</span><br><span class="line">    <span class="keyword">if</span>((r = readi(f-&gt;ip, addr, f-&gt;off, n)) &gt; <span class="number">0</span>)</span><br><span class="line">      f-&gt;off += r;</span><br><span class="line">    iunlock(f-&gt;ip);</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">  }</span><br><span class="line">  panic(<span class="string">"fileread"</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>fileread</code> 針對不同類型有不同的操作：
+<ul>
+<li>pipe：呼叫 <code>piperead</code>，於 <a href="https://omuskywalker.github.io/2018/08/14/ch5/#piperead" target="_blank" rel="noopener">ch5</a> 介紹過。</li>
+<li>inode：由 <code>readi</code> 完成動作，下面會介紹。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>寫入檔案</td>
+<td>寫入大小</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*f</code></th>
+<th><code>*addr</code></th>
+<th><code>n</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲寫入的檔案</td>
+<td>欲寫入的資料</td>
+<td>欲寫入的大小</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//PAGEBREAK!</span></span><br><span class="line"><span class="comment">// Write to file f.</span></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">filewrite(struct file *f, <span class="keyword">char</span> *addr, <span class="keyword">int</span> n)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">int</span> r;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(f-&gt;writable == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">if</span>(f-&gt;type == FD_PIPE)</span><br><span class="line">    <span class="keyword">return</span> pipewrite(f-&gt;pipe, addr, n);</span><br><span class="line">  <span class="keyword">if</span>(f-&gt;type == FD_INODE){</span><br><span class="line">    <span class="comment">// write a few blocks at a time to avoid exceeding</span></span><br><span class="line">    <span class="comment">// the maximum log transaction size, including</span></span><br><span class="line">    <span class="comment">// i-node, indirect block, allocation blocks,</span></span><br><span class="line">    <span class="comment">// and 2 blocks of slop for non-aligned writes.</span></span><br><span class="line">    <span class="comment">// this really belongs lower down, since writei()</span></span><br><span class="line">    <span class="comment">// might be writing a device like the console.</span></span><br><span class="line">    <span class="keyword">int</span> max = ((LOGSIZE<span class="number">-1</span><span class="number">-1</span><span class="number">-2</span>) / <span class="number">2</span>) * <span class="number">512</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(i &lt; n){</span><br><span class="line">      <span class="keyword">int</span> n1 = n - i;</span><br><span class="line">      <span class="keyword">if</span>(n1 &gt; max)</span><br><span class="line">        n1 = max;</span><br><span class="line"></span><br><span class="line">      begin_trans();</span><br><span class="line">      ilock(f-&gt;ip);</span><br><span class="line">      <span class="keyword">if</span> ((r = writei(f-&gt;ip, addr + i, f-&gt;off, n1)) &gt; <span class="number">0</span>)</span><br><span class="line">        f-&gt;off += r;</span><br><span class="line">      iunlock(f-&gt;ip);</span><br><span class="line">      commit_trans();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(r &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">if</span>(r != n1)</span><br><span class="line">        panic(<span class="string">"short filewrite"</span>);</span><br><span class="line">      i += r;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> i == n ? n : <span class="number">-1</span>;</span><br><span class="line">  }</span><br><span class="line">  panic(<span class="string">"filewrite"</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>filewrite</code> 針對不同類型有不同的操作：
+<ul>
+<li>pipe：呼叫 <code>pipewrite</code>，於 <a href="https://omuskywalker.github.io/2018/08/14/ch5/#pipewrite" target="_blank" rel="noopener">ch5</a> 介紹過。</li>
+<li>inode：由 <code>writei</code> 完成動作，下面會介紹。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<div class="alert alert-success"><p><strong>File:</strong> fs.c</p></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>寫入檔案狀態</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*ip</code></th>
+<th><code>*st</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲讀取的檔案</td>
+<td>寫入狀態的結構</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Copy stat information from inode.</span></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">stati(struct inode *ip, struct stat *st)</span><br><span class="line">{</span><br><span class="line">  st-&gt;dev = ip-&gt;dev;</span><br><span class="line">  st-&gt;ino = ip-&gt;inum;</span><br><span class="line">  st-&gt;type = ip-&gt;type;</span><br><span class="line">  st-&gt;nlink = ip-&gt;nlink;</span><br><span class="line">  st-&gt;size = ip-&gt;size;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="Code-Path-names">Code: Path names<a class="header-anchor" href="#Code-Path-names">#</a></h2>
+<h3 id="namex">namex<a class="header-anchor" href="#namex">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>從路徑尋找檔案</td>
+<td>inode 結構</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*path</code></th>
+<th><code>nameiparent</code></th>
+<th><code>*name</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>路徑名</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br><span class="line">624</span><br><span class="line">625</span><br><span class="line">626</span><br><span class="line">627</span><br><span class="line">628</span><br><span class="line">629</span><br><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br><span class="line">639</span><br><span class="line">640</span><br><span class="line">641</span><br><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br><span class="line">649</span><br><span class="line">650</span><br><span class="line">651</span><br><span class="line">652</span><br><span class="line">653</span><br><span class="line">654</span><br><span class="line">655</span><br><span class="line">656</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Look up and return the inode for a path name.</span></span><br><span class="line"><span class="comment">// If parent != 0, return the inode for the parent and copy the final</span></span><br><span class="line"><span class="comment">// path element into name, which must have room for DIRSIZ bytes.</span></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">inode</span>*</span></span><br><span class="line"><span class="class"><span class="title">namex</span>(<span class="title">char</span> *<span class="title">path</span>, <span class="title">int</span> <span class="title">nameiparent</span>, <span class="title">char</span> *<span class="title">name</span>)</span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">inode</span> *<span class="title">ip</span>, *<span class="title">next</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(*path == <span class="string">'/'</span>)</span><br><span class="line">    ip = iget(ROOTDEV, ROOTINO);</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    ip = idup(myproc()-&gt;cwd);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span>((path = skipelem(path, name)) != <span class="number">0</span>){</span><br><span class="line">    ilock(ip);</span><br><span class="line">    <span class="keyword">if</span>(ip-&gt;type != T_DIR){</span><br><span class="line">      iunlockput(ip);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span>(nameiparent &amp;&amp; *path == <span class="string">'\0'</span>){</span><br><span class="line">      <span class="comment">// Stop one level early.</span></span><br><span class="line">      iunlock(ip);</span><br><span class="line">      <span class="keyword">return</span> ip;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span>((next = dirlookup(ip, name, <span class="number">0</span>)) == <span class="number">0</span>){</span><br><span class="line">      iunlockput(ip);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    }</span><br><span class="line">    iunlockput(ip);</span><br><span class="line">    ip = next;</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">if</span>(nameiparent){</span><br><span class="line">    iput(ip);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">return</span> ip;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="Code-目錄">Code: 目錄<a class="header-anchor" href="#Code-目錄">#</a></h2>
+<ul>
+<li>目錄的 inode type 為 <code>T_DIR</code>，存在 <code>struct dirent</code> 中。</li>
+</ul>
+<div class="alert alert-success"><p><strong>File:</strong> file.</p></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">dirent</span> {</span></span><br><span class="line">  ushort inum;</span><br><span class="line">  <span class="keyword">char</span> name[DIRSIZ];</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>inum</code> 為 inode 編號，為 0 的代表可用。</li>
+</ul>
+<hr>
+<h2 id="Inode">Inode<a class="header-anchor" href="#Inode">#</a></h2>
+<hr>
+<h2 id="Logging">Logging<a class="header-anchor" href="#Logging">#</a></h2>
+<hr>
+<h2 id="Buffer">Buffer<a class="header-anchor" href="#Buffer">#</a></h2>
+<ul>
+<li>buffer 有兩個任務：
+<ol>
+<li>同步硬碟，保證只會有一份拷貝放在記憶體，並只有一個 kernel thread 使用。</li>
+<li>快取常用的 block 以提升性能 (<em>bio.c</em>);</li>
+</ol>
+</li>
+</ul>
+<h3 id="Code-Buffer-cache">Code: Buffer cache<a class="header-anchor" href="#Code-Buffer-cache">#</a></h3>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/kernel/">#kernel</a> <a href="/tags/XV6/">#XV6</a> <a href="/tags/file-system/">#file system</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/xv6/hardware.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/xv6/scheduler.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2018-08-23 06:14:45',
+            title: 'XV6 - File System',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2021 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>
