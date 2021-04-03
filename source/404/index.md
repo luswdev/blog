@@ -8,7 +8,7 @@ type: "404"
 This is not the web page you are looking for. Since we are working on SEO, links will changing sometimes. 
 
 ## You can
-- Go to [Home]("/")
+- Go to [Home](/)
 - Learning about [xv6](/categories/XV6)
 - Learning about [RT-Thread](/tags/RT-Thread)
 - Learning about [C Languange](/categories/Clang)
