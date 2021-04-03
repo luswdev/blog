@@ -9,10 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Timezone
-        run:
-          export TZ="Asia/Taipei"
-          export NOW=$(date +"%Y-%m-%d %H:%M:%S")
+      - name: Setup timezone
+        uses: zcong1993/setup-timezone@master
+        with:
+          timezone: Asia/Taipei
       - uses: actions/checkout@v1
       - name: Cache node modules
         uses: actions/cache@v1
