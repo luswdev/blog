@@ -1,4 +1,4 @@
-name: Hexo CI
+name: Site CI
 
 on:
   push:
