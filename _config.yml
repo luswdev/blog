@@ -117,7 +117,7 @@ feed:
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/luswdev/blog.git
+  repo: git@github.com:luswdev/blog.git
   branch: gh-page
 
 search:
