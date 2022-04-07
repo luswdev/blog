@@ -172,9 +172,9 @@
 </span>  
                 
                 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="init-行程">init 行程<a class="header-anchor" href="#init-行程">#</a></h2>
-<p>init 行程（process/tas）是 Linux 內核下的第一個行程，內核會在初始化完硬體後建立該行程。</p>
+<p>init 行程（process/task）是 Linux 內核下的第一個行程，內核會在初始化完硬體後建立該行程。</p>
 <blockquote>
-<p>如<a href="https://blog.lusw.dev/starting-xv6/#toc-heading-3">XV6 啟動流程</a> 中提到的 <code>userinit()</code></p>
+<p>如 <a href="https://blog.lusw.dev/starting-xv6/#toc-heading-3">XV6 啟動流程</a> 中提到的 <code>userinit()</code></p>
 </blockquote>
 <p>正常來說 init 應該被放在 <code>/sbin/init</code> 中，如果內核找不到，會試著在 <code>/bin/sh</code> 中尋找，若都失敗則將導致<strong>啟動失敗</strong>。</p>
 <h2 id="init-等級">init 等級<a class="header-anchor" href="#init-等級">#</a></h2>
@@ -202,7 +202,7 @@
 </tbody>
 </table></div>
 <ul>
-<li>對於 2 ~ 5，不同的發行版有不同的解釋，大部分的系統中：
+<li>對於 2 ~ 5，不同的發行版有不同的解釋，大部分的系統中：
 <ul>
 <li>3 代表正常啟動 CLI</li>
 <li>5 代表正常啟動 GUI</li>
