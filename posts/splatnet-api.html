@@ -163,7 +163,7 @@
     
         <span class="post-meta-split">&nbsp;|&nbsp;</span>
         <i class="far fa-file-word fa-fw"></i>
-        357
+        356
     
 
     
@@ -172,13 +172,13 @@
 </span>  
                 
                 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="SplatNet-Token">SplatNet Token<a class="header-anchor" href="#SplatNet-Token">#</a></h2>
-<p>要透過 SplatNet APIs 獲取遊戲紀錄的話，首先必須要登入帳號，並取得 token。一個比較簡單快速的方式是透過 <a href="https://github.com/frozenpandaman/splatnet2statink" target="_blank" rel="noopener">splatnet2statink</a> 這個 repo 來取得。</p>
+<p>要透過 SplatNet APIs 獲取遊戲紀錄的話，首先必須要登入帳號，並取得 cookies。一個比較簡單快速的方式是透過 <a href="https://github.com/frozenpandaman/splatnet2statink" target="_blank" rel="noopener">splatnet2statink</a> 這個 repo 來取得。</p>
 <h3 id="splatnet2statink">splatnet2statink<a class="header-anchor" href="#splatnet2statink">#</a></h3>
 <p>Clone 下來後執行：</p>
 <figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">python3 splatnet2statink.py -M 100</span><br></pre></td></tr></tbody></table></figure>
-<p>上述的指令是每 150 秒獲取一次資料，在第一次執行的時候會首先要你登入，並產生 token。我們可以利用此 repo 產生的 token 來認證。</p>
+<p>上述的指令是每 150 秒獲取一次資料，在第一次執行的時候會首先要你登入，並產生 cookies。我們可以利用此 repo 產生的 cookies 來認證。</p>
 <ul>
-<li>登入完後開啟 <em>config.txt</em>，並存下 token</li>
+<li>登入完後開啟 <em>config.txt</em>，並存下 cookies</li>
 </ul>
 <figure class="highlight json"><table><tbody><tr><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="attr">"api_key"</span>: <span class="string">"your_key"</span>,</span><br><span class="line">    <span class="attr">"cookie"</span>: <span class="string">"your_cookie"</span>,</span><br><span class="line">    <span class="attr">"session_token"</span>: <span class="string">"your_token"</span>,</span><br><span class="line">    <span class="attr">"user_lang"</span>: <span class="string">"en-US"</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <h2 id="APIs">APIs<a class="header-anchor" href="#APIs">#</a></h2>
@@ -195,7 +195,7 @@
 </li>
 </ul>
 <h3 id="Request">Request<a class="header-anchor" href="#Request">#</a></h3>
-<p>要使用 APIs 需要在 header 帶入 token cookies，格式為 <code>iksm_session=api_cookie</code></p>
+<p>要使用 APIs 需要在 header 帶入 cookies，格式為 <code>iksm_session=api_cookie</code></p>
 <ul>
 <li>完整 header 參考下表（以 PHP cURL lib 展示）</li>
 </ul>
