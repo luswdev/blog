@@ -5,7 +5,7 @@ date: 2022-04-10 10:07:22
 category: Note
 ---
 
-## SplatNet Token
+## SplatNet Cookies
 
 要透過 SplatNet APIs 獲取遊戲紀錄的話，首先必須要登入帳號，並取得 cookies。一個比較簡單快速的方式是透過 [splatnet2statink](https://github.com/frozenpandaman/splatnet2statink) 這個 repo 來取得。
 
