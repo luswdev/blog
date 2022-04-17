@@ -7,7 +7,7 @@ category: Note
 
 ## SplatNet Token
 
-要透過 SplatNet APIs 獲取遊戲紀錄的話，首先必須要登入帳號，並取得 token。一個比較簡單快速的方式是透過 [splatnet2statink](https://github.com/frozenpandaman/splatnet2statink) 這個 repo 來取得。
+要透過 SplatNet APIs 獲取遊戲紀錄的話，首先必須要登入帳號，並取得 cookies。一個比較簡單快速的方式是透過 [splatnet2statink](https://github.com/frozenpandaman/splatnet2statink) 這個 repo 來取得。
 
 ### splatnet2statink
 
@@ -17,9 +17,9 @@ Clone 下來後執行：
 python3 splatnet2statink.py -M 100
 ```
 
-上述的指令是每 150 秒獲取一次資料，在第一次執行的時候會首先要你登入，並產生 token。我們可以利用此 repo 產生的 token 來認證。
+上述的指令是每 150 秒獲取一次資料，在第一次執行的時候會首先要你登入，並產生 cookies。我們可以利用此 repo 產生的 cookies 來認證。
 
-- 登入完後開啟 *config.txt*，並存下 token
+- 登入完後開啟 *config.txt*，並存下 cookies
 
 ```json
 {
@@ -42,7 +42,7 @@ python3 splatnet2statink.py -M 100
 
 ### Request
 
-要使用 APIs 需要在 header 帶入 token cookies，格式為 `iksm_session=api_cookie`
+要使用 APIs 需要在 header 帶入 cookies，格式為 `iksm_session=api_cookie`
 
 - 完整 header 參考下表（以 PHP cURL lib 展示）
 
