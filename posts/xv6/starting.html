@@ -1,52 +1,52 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-<head><meta name="generator" content="Hexo 3.9.0">
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
 <!--Description-->
 
 
 
-    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware."/>
 
 
 <!--Author-->
 
-    <meta name="author" content="LuSkywalker">
+    <meta name="author" content="LuSkywalker"/>
 
 
 <!--Open Graph Title-->
 
-    <meta property="og:title" content="XV6 - Starting Process">
+    <meta property="og:title" content="XV6 - Starting Process"/>
 
 
 <!--Open Graph Description-->
 
-    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware."/>
 
 
 <!--Open Graph Site Name-->
-    <meta property="og:site_name" content="HackTech">
+    <meta property="og:site_name" content="HackTech"/>
 
 <!--Type page-->
 
-    <meta property="og:type" content="article">
+    <meta property="og:type" content="article"/>
 
 
 <!--Page Cover-->
 
 
-    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg"/>
 
 
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary_large_image"/>
 
 
 
 
-    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg"/>
 
 
 <!-- Title -->
@@ -57,14 +57,16 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
 
 <!-- Custom CSS -->
+
 <link rel="stylesheet" href="/css/main.css">
 
+
 <!-- Custom Fonts -->
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
-<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css" />
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css" />
 <link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -79,7 +81,7 @@
 
 <!-- favicon -->
 
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.png"/>
 
 
 
@@ -97,6 +99,8 @@
 
 
 
+<meta name="generator" content="Hexo 6.1.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 <!-- Head tag -->
@@ -163,7 +167,7 @@
     
         <span class="post-meta-split">&nbsp;|&nbsp;</span>
         <i class="far fa-file-word fa-fw"></i>
-        775
+        723
     
 
     
@@ -194,11 +198,11 @@
 </tr>
 </tbody>
 </table></div>
-<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">startothers(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">extern</span> uchar _binary_entryother_start[], _binary_entryother_size[];</span><br><span class="line">  uchar *code;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">cpu</span> *<span class="title">c</span>;</span></span><br><span class="line">  <span class="keyword">char</span> *<span class="built_in">stack</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Write entry code to unused memory at 0x7000.</span></span><br><span class="line">  <span class="comment">// The linker has placed the image of entryother.S in</span></span><br><span class="line">  <span class="comment">// _binary_entryother_start.</span></span><br><span class="line">  code = p2v(<span class="number">0x7000</span>);</span><br><span class="line">  memmove(code, _binary_entryother_start, (uint)_binary_entryother_size);</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">startothers</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">{</span><br><span class="line">  <span class="keyword">extern</span> uchar _binary_entryother_start[], _binary_entryother_size[];</span><br><span class="line">  uchar *code;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">cpu</span> *<span class="title">c</span>;</span></span><br><span class="line">  <span class="type">char</span> *<span class="built_in">stack</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Write entry code to unused memory at 0x7000.</span></span><br><span class="line">  <span class="comment">// The linker has placed the image of entryother.S in</span></span><br><span class="line">  <span class="comment">// _binary_entryother_start.</span></span><br><span class="line">  code = p2v(<span class="number">0x7000</span>);</span><br><span class="line">  memmove(code, _binary_entryother_start, (uint)_binary_entryother_size);</span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li>entryother.S 的入口被 linked 到 <code>0x7000</code>，這裡將 code 指向 <code>0x7000</code> 作為 entryother.S 的進入點。</li>
 </ul>
-<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(c = cpus; c &lt; cpus+ncpu; c++){</span><br><span class="line">  <span class="keyword">if</span>(c == cpus+cpunum())  <span class="comment">// We've started already.</span></span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Tell entryother.S what stack to use, where to enter, and what </span></span><br><span class="line">  <span class="comment">// pgdir to use. We cannot use kpgdir yet, because the AP processor</span></span><br><span class="line">  <span class="comment">// is running in low  memory, so we use entrypgdir for the APs too.</span></span><br><span class="line">  <span class="built_in">stack</span> = kalloc();</span><br><span class="line">  *(<span class="keyword">void</span>**)(code<span class="number">-4</span>) = <span class="built_in">stack</span> + KSTACKSIZE;</span><br><span class="line">  *(<span class="keyword">void</span>**)(code<span class="number">-8</span>) = mpenter;</span><br><span class="line">  *(<span class="keyword">int</span>**)(code<span class="number">-12</span>) = (<span class="keyword">void</span> *) v2p(entrypgdir);</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(c = cpus; c &lt; cpus+ncpu; c++){</span><br><span class="line">  <span class="keyword">if</span>(c == cpus+cpunum())  <span class="comment">// We've started already.</span></span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Tell entryother.S what stack to use, where to enter, and what </span></span><br><span class="line">  <span class="comment">// pgdir to use. We cannot use kpgdir yet, because the AP processor</span></span><br><span class="line">  <span class="comment">// is running in low  memory, so we use entrypgdir for the APs too.</span></span><br><span class="line">  <span class="built_in">stack</span> = kalloc();</span><br><span class="line">  *(<span class="type">void</span>**)(code<span class="number">-4</span>) = <span class="built_in">stack</span> + KSTACKSIZE;</span><br><span class="line">  *(<span class="type">void</span>**)(code<span class="number">-8</span>) = mpenter;</span><br><span class="line">  *(<span class="type">int</span>**)(code<span class="number">-12</span>) = (<span class="type">void</span> *) v2p(entrypgdir);</span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li>為待會的 entryother 建立一個堆疊 …</li>
 </ul>
@@ -227,7 +231,7 @@
 </tr>
 </tbody>
 </table></div>
-<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">mpenter(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  switchkvm(); </span><br><span class="line">  seginit();</span><br><span class="line">  lapicinit();</span><br><span class="line">  mpmain();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">mpenter</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">{</span><br><span class="line">  switchkvm(); </span><br><span class="line">  seginit();</span><br><span class="line">  lapicinit();</span><br><span class="line">  mpmain();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <hr>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
@@ -244,7 +248,7 @@
 </tr>
 </tbody>
 </table></div>
-<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">mpmain(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  cprintf(<span class="string">"cpu%d: starting\n"</span>, cpu-&gt;id);</span><br><span class="line">  idtinit();       <span class="comment">// load idt register</span></span><br><span class="line">  xchg(&amp;cpu-&gt;started, <span class="number">1</span>); <span class="comment">// tell startothers() we're up</span></span><br><span class="line">  scheduler();     <span class="comment">// start running processes</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">mpmain</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">{</span><br><span class="line">  cprintf(<span class="string">"cpu%d: starting\n"</span>, cpu-&gt;id);</span><br><span class="line">  idtinit();       <span class="comment">// load idt register</span></span><br><span class="line">  xchg(&amp;cpu-&gt;started, <span class="number">1</span>); <span class="comment">// tell startothers() we're up</span></span><br><span class="line">  scheduler();     <span class="comment">// start running processes</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <h3 id="lapicstartup">lapicstartup<a class="header-anchor" href="#lapicstartup">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
@@ -276,11 +280,11 @@
 </tr>
 </tbody>
 </table></div>
-<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">lapicstartap(uchar apicid, uint addr)</span><br><span class="line">{</span><br><span class="line">  <span class="keyword">int</span> i;</span><br><span class="line">  ushort *wrv;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// "The BSP must initialize CMOS shutdown code to 0AH</span></span><br><span class="line">  <span class="comment">// and the warm reset vector (DWORD based at 40:67) to point at</span></span><br><span class="line">  <span class="comment">// the AP startup code prior to the [universal startup algorithm]."</span></span><br><span class="line">  outb(IO_RTC, <span class="number">0xF</span>);  <span class="comment">// offset 0xF is shutdown code</span></span><br><span class="line">  outb(IO_RTC+<span class="number">1</span>, <span class="number">0x0A</span>);</span><br><span class="line">  wrv = (ushort*)P2V((<span class="number">0x40</span>&lt;&lt;<span class="number">4</span> | <span class="number">0x67</span>));  <span class="comment">// Warm reset vector</span></span><br><span class="line">  wrv[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">  wrv[<span class="number">1</span>] = addr &gt;&gt; <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// "Universal startup algorithm."</span></span><br><span class="line">  <span class="comment">// Send INIT (level-triggered) interrupt to reset other CPU.</span></span><br><span class="line">  lapicw(ICRHI, apicid&lt;&lt;<span class="number">24</span>);</span><br><span class="line">  lapicw(ICRLO, INIT | LEVEL | ASSERT);</span><br><span class="line">  microdelay(<span class="number">200</span>);</span><br><span class="line">  lapicw(ICRLO, INIT | LEVEL);</span><br><span class="line">  microdelay(<span class="number">100</span>);    <span class="comment">// should be 10ms, but too slow in Bochs!</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Send startup IPI (twice!) to enter code.</span></span><br><span class="line">  <span class="comment">// Regular hardware is supposed to only accept a STARTUP</span></span><br><span class="line">  <span class="comment">// when it is in the halted state due to an INIT.  So the second</span></span><br><span class="line">  <span class="comment">// should be ignored, but it is part of the official Intel algorithm.</span></span><br><span class="line">  <span class="comment">// Bochs complains about the second one.  Too bad for Bochs.</span></span><br><span class="line">  <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++){</span><br><span class="line">    lapicw(ICRHI, apicid&lt;&lt;<span class="number">24</span>);</span><br><span class="line">    lapicw(ICRLO, STARTUP | (addr&gt;&gt;<span class="number">12</span>));</span><br><span class="line">    microdelay(<span class="number">200</span>);</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">lapicstartap</span><span class="params">(uchar apicid, uint addr)</span></span><br><span class="line">{</span><br><span class="line">  <span class="type">int</span> i;</span><br><span class="line">  ushort *wrv;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// "The BSP must initialize CMOS shutdown code to 0AH</span></span><br><span class="line">  <span class="comment">// and the warm reset vector (DWORD based at 40:67) to point at</span></span><br><span class="line">  <span class="comment">// the AP startup code prior to the [universal startup algorithm]."</span></span><br><span class="line">  outb(IO_RTC, <span class="number">0xF</span>);  <span class="comment">// offset 0xF is shutdown code</span></span><br><span class="line">  outb(IO_RTC+<span class="number">1</span>, <span class="number">0x0A</span>);</span><br><span class="line">  wrv = (ushort*)P2V((<span class="number">0x40</span>&lt;&lt;<span class="number">4</span> | <span class="number">0x67</span>));  <span class="comment">// Warm reset vector</span></span><br><span class="line">  wrv[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">  wrv[<span class="number">1</span>] = addr &gt;&gt; <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// "Universal startup algorithm."</span></span><br><span class="line">  <span class="comment">// Send INIT (level-triggered) interrupt to reset other CPU.</span></span><br><span class="line">  lapicw(ICRHI, apicid&lt;&lt;<span class="number">24</span>);</span><br><span class="line">  lapicw(ICRLO, INIT | LEVEL | ASSERT);</span><br><span class="line">  microdelay(<span class="number">200</span>);</span><br><span class="line">  lapicw(ICRLO, INIT | LEVEL);</span><br><span class="line">  microdelay(<span class="number">100</span>);    <span class="comment">// should be 10ms, but too slow in Bochs!</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Send startup IPI (twice!) to enter code.</span></span><br><span class="line">  <span class="comment">// Regular hardware is supposed to only accept a STARTUP</span></span><br><span class="line">  <span class="comment">// when it is in the halted state due to an INIT.  So the second</span></span><br><span class="line">  <span class="comment">// should be ignored, but it is part of the official Intel algorithm.</span></span><br><span class="line">  <span class="comment">// Bochs complains about the second one.  Too bad for Bochs.</span></span><br><span class="line">  <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++){</span><br><span class="line">    lapicw(ICRHI, apicid&lt;&lt;<span class="number">24</span>);</span><br><span class="line">    lapicw(ICRLO, STARTUP | (addr&gt;&gt;<span class="number">12</span>));</span><br><span class="line">    microdelay(<span class="number">200</span>);</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <hr>
 <h2 id="Main-解析">Main 解析<a class="header-anchor" href="#Main-解析">#</a></h2>
 <h3 id="main">main<a class="header-anchor" href="#main">#</a></h3>
-<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span></span><br><span class="line">main(<span class="keyword">void</span>)</span><br><span class="line">{</span><br><span class="line">  kinit1(end, P2V(<span class="number">4</span>*<span class="number">1024</span>*<span class="number">1024</span>)); <span class="comment">// phys page allocator</span></span><br><span class="line">  kvmalloc();      <span class="comment">// kernel page table</span></span><br><span class="line">  mpinit();        <span class="comment">// collect info about this machine</span></span><br><span class="line">  lapicinit();</span><br><span class="line">  seginit();       <span class="comment">// set up segments</span></span><br><span class="line">  cprintf(<span class="string">"\ncpu%d: starting XV6\n\n"</span>, cpu-&gt;id);</span><br><span class="line">  picinit();       <span class="comment">// interrupt controller</span></span><br><span class="line">  ioapicinit();    <span class="comment">// another interrupt controller</span></span><br><span class="line">  consoleinit();   <span class="comment">// I/O devices &amp; their interrupts</span></span><br><span class="line">  uartinit();      <span class="comment">// serial port</span></span><br><span class="line">  pinit();         <span class="comment">// process table</span></span><br><span class="line">  tvinit();        <span class="comment">// trap vectors</span></span><br><span class="line">  binit();         <span class="comment">// buffer cache</span></span><br><span class="line">  fileinit();      <span class="comment">// file table</span></span><br><span class="line">  iinit();         <span class="comment">// inode cache</span></span><br><span class="line">  ideinit();       <span class="comment">// disk</span></span><br><span class="line">  <span class="keyword">if</span>(!ismp)</span><br><span class="line">    timerinit();   <span class="comment">// uniprocessor timer</span></span><br><span class="line">  startothers();   <span class="comment">// start other processors</span></span><br><span class="line">  kinit2(P2V(<span class="number">4</span>*<span class="number">1024</span>*<span class="number">1024</span>), P2V(PHYSTOP)); <span class="comment">// must come after startothers()</span></span><br><span class="line">  userinit();      <span class="comment">// first user process</span></span><br><span class="line">  <span class="comment">// Finish setting up this processor in mpmain.</span></span><br><span class="line">  mpmain();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">{</span><br><span class="line">  kinit1(end, P2V(<span class="number">4</span>*<span class="number">1024</span>*<span class="number">1024</span>)); <span class="comment">// phys page allocator</span></span><br><span class="line">  kvmalloc();      <span class="comment">// kernel page table</span></span><br><span class="line">  mpinit();        <span class="comment">// collect info about this machine</span></span><br><span class="line">  lapicinit();</span><br><span class="line">  seginit();       <span class="comment">// set up segments</span></span><br><span class="line">  cprintf(<span class="string">"\ncpu%d: starting XV6\n\n"</span>, cpu-&gt;id);</span><br><span class="line">  picinit();       <span class="comment">// interrupt controller</span></span><br><span class="line">  ioapicinit();    <span class="comment">// another interrupt controller</span></span><br><span class="line">  consoleinit();   <span class="comment">// I/O devices &amp; their interrupts</span></span><br><span class="line">  uartinit();      <span class="comment">// serial port</span></span><br><span class="line">  pinit();         <span class="comment">// process table</span></span><br><span class="line">  tvinit();        <span class="comment">// trap vectors</span></span><br><span class="line">  binit();         <span class="comment">// buffer cache</span></span><br><span class="line">  fileinit();      <span class="comment">// file table</span></span><br><span class="line">  iinit();         <span class="comment">// inode cache</span></span><br><span class="line">  ideinit();       <span class="comment">// disk</span></span><br><span class="line">  <span class="keyword">if</span>(!ismp)</span><br><span class="line">    timerinit();   <span class="comment">// uniprocessor timer</span></span><br><span class="line">  startothers();   <span class="comment">// start other processors</span></span><br><span class="line">  kinit2(P2V(<span class="number">4</span>*<span class="number">1024</span>*<span class="number">1024</span>), P2V(PHYSTOP)); <span class="comment">// must come after startothers()</span></span><br><span class="line">  userinit();      <span class="comment">// first user process</span></span><br><span class="line">  <span class="comment">// Finish setting up this processor in mpmain.</span></span><br><span class="line">  mpmain();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li><code>kinit1()</code> <a href="/post/xv6/mem.html#kinit1-2">In ch2</a></li>
 <li><code>kvmalloc()</code> <a href="/post/xv6/mem.html#kvmalloc">In Ch2</a></li>
@@ -303,25 +307,7 @@
 <li><code>userinit()</code> <a href="/post/xv6/process.html#userinit">In Ch1</a></li>
 <li><code>mpmain()</code></li>
 </ul>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
             </div>
 
             <!-- Post information -->
@@ -401,7 +387,7 @@
         <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
             <i class="fas fa-list"></i>
         </button>
-        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+        <div class="dropdown-menu dropdown-menu-right p-2"  aria-labelledby="tocLabel">
             <div class="toc-widget">
                 <div id="toc-content" class="text-truncate">
                 </div>
@@ -431,7 +417,7 @@
 
 
     <!-- Footer -->
-    <hr>
+    <hr />
 
 <!-- Footer -->
 <footer id="footer">
@@ -542,7 +528,7 @@
                 </ul>
                 <p class="copyright footer-author">
                     &copy; 2018-2022 
-                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br/>
                     Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
                     <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
                     Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
@@ -570,7 +556,9 @@
 
 
 <!-- Search script -->
+
 <script src="/js/search.js"></script>
+
 <script type="text/javascript">
     $(function () {
         searchFunc( '/search.xml' , 'searchInput', 'searchResult');
@@ -578,7 +566,9 @@
 </script>
 
 
+
 <script src="/js/main.js"></script>
+
 
 
     <!-- Search Modal -->

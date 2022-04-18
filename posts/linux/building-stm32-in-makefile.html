@@ -1,52 +1,52 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-<head><meta name="generator" content="Hexo 3.9.0">
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
 <!--Description-->
 
 
 
-    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware."/>
 
 
 <!--Author-->
 
-    <meta name="author" content="LuSkywalker">
+    <meta name="author" content="LuSkywalker"/>
 
 
 <!--Open Graph Title-->
 
-    <meta property="og:title" content="STM32 Makefile 專案建置">
+    <meta property="og:title" content="STM32 Makefile 專案建置"/>
 
 
 <!--Open Graph Description-->
 
-    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware."/>
 
 
 <!--Open Graph Site Name-->
-    <meta property="og:site_name" content="HackTech">
+    <meta property="og:site_name" content="HackTech"/>
 
 <!--Type page-->
 
-    <meta property="og:type" content="article">
+    <meta property="og:type" content="article"/>
 
 
 <!--Page Cover-->
 
 
-    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg"/>
 
 
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary_large_image"/>
 
 
 
 
-    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg"/>
 
 
 <!-- Title -->
@@ -57,14 +57,16 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
 
 <!-- Custom CSS -->
+
 <link rel="stylesheet" href="/css/main.css">
 
+
 <!-- Custom Fonts -->
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
-<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css" />
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css" />
 <link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -79,7 +81,7 @@
 
 <!-- favicon -->
 
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.png"/>
 
 
 
@@ -97,6 +99,8 @@
 
 
 
+<meta name="generator" content="Hexo 6.1.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 <!-- Head tag -->
@@ -163,7 +167,7 @@
     
         <span class="post-meta-split">&nbsp;|&nbsp;</span>
         <i class="far fa-file-word fa-fw"></i>
-        834
+        782
     
 
     
@@ -173,20 +177,20 @@
                 
                 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="資料夾結構">資料夾結構<a class="header-anchor" href="#資料夾結構">#</a></h2>
 <p>第一步，建立三個資料夾 “System”、“OS” 及 “User”</p>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|-- System</span><br><span class="line">|</span><br><span class="line">|-- OS</span><br><span class="line">|</span><br><span class="line">`-- User</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight 1c"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line"><span class="string">|-- System</span></span><br><span class="line"><span class="string">|</span></span><br><span class="line"><span class="string">|-- OS</span></span><br><span class="line"><span class="string">|</span></span><br><span class="line">`-- User</span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li>System 放驅動程式</li>
 <li>OS 就是作業系統（也可不用）</li>
 <li>User 放的是我們的專案</li>
 </ul>
 <p>接著，在每個資料夾底下新增一個 makefile。</p>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|-- System</span><br><span class="line">|   `-- makefile</span><br><span class="line">|</span><br><span class="line">|-- OS</span><br><span class="line">|   `-- makefile</span><br><span class="line">|</span><br><span class="line">|-- User</span><br><span class="line">|   `-- makefile</span><br><span class="line">|</span><br><span class="line">`-- makefile</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight 1c"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line"><span class="string">|-- System</span></span><br><span class="line"><span class="string">|   `-- makefile</span></span><br><span class="line"><span class="string">|</span></span><br><span class="line"><span class="string">|-- OS</span></span><br><span class="line"><span class="string">|   `-- makefile</span></span><br><span class="line"><span class="string">|</span></span><br><span class="line"><span class="string">|-- User</span></span><br><span class="line"><span class="string">|   `-- makefile</span></span><br><span class="line"><span class="string">|</span></span><br><span class="line">`-- makefile</span><br></pre></td></tr></tbody></table></figure>
 <p>準備步驟的最後，將所有程式碼正確的擺放。如範例：</p>
-<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|<span class="string">-- System</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">-- STM32</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   `-- inc</span></span><br><span class="line">|<span class="string">   </span>|</span><br><span class="line">|<span class="string">   </span>|<span class="string">-- STM32F429</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   `-- inc</span></span><br><span class="line">|<span class="string">   </span>|</span><br><span class="line">|<span class="string">   </span>|<span class="string">-- CMSIS</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   `-- inc</span></span><br><span class="line">|<span class="string">   </span>|</span><br><span class="line">|<span class="string">   `-- makefile</span></span><br><span class="line">|</span><br><span class="line">|<span class="string">-- OS</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line">|<span class="string">   `-- makefile</span></span><br><span class="line">|</span><br><span class="line">|<span class="string">-- User</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line">|<span class="string">   `-- makefile</span></span><br><span class="line">|</span><br><span class="line">`-- makefile</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|<span class="string">-- System</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">-- STM32</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   `-- inc</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|</span><br><span class="line">|<span class="string">   </span>|<span class="string">-- STM32F429</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   `-- inc</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|</span><br><span class="line">|<span class="string">   </span>|<span class="string">-- CMSIS</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   `-- inc</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|</span><br><span class="line">|<span class="string">   `-- makefile</span></span><br><span class="line"><span class="string"></span>|</span><br><span class="line">|<span class="string">-- OS</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line"><span class="string"></span>|<span class="string">   `-- makefile</span></span><br><span class="line"><span class="string"></span>|</span><br><span class="line">|<span class="string">-- User</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line"><span class="string"></span>|<span class="string">   `-- makefile</span></span><br><span class="line"><span class="string"></span>|</span><br><span class="line">`-- makefile</span><br></pre></td></tr></tbody></table></figure>
 <div class="alert alert-info"><p>在這個例子，我們在 System 底下放了三個驅動，所以需要將程式碼分成三個資料夾。<br>
 當然你也可以直接全部放在一起是沒問題的。</p></div>
 <p>最後的最後，別忘了在驅動的底下也加一個 makefile。</p>
-<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|<span class="string">-- System</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">-- STM32</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   `-- makefile</span></span><br><span class="line">|<span class="string">   </span>|</span><br><span class="line">|<span class="string">   </span>|<span class="string">-- STM32F429</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   `-- makefile</span></span><br><span class="line">|<span class="string">   </span>|</span><br><span class="line">|<span class="string">   </span>|<span class="string">-- CMSIS</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">   `-- makefile</span></span><br><span class="line">|<span class="string">   </span>|</span><br><span class="line">|<span class="string">   `-- makefile</span></span><br><span class="line">|</span><br><span class="line">|<span class="string">-- OS</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line">|<span class="string">   `-- makefile</span></span><br><span class="line">|</span><br><span class="line">|<span class="string">-- User</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line">|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line">|<span class="string">   `-- makefile</span></span><br><span class="line">|</span><br><span class="line">`-- makefile</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|<span class="string">-- System</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">-- STM32</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   `-- makefile</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|</span><br><span class="line">|<span class="string">   </span>|<span class="string">-- STM32F429</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   `-- makefile</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|</span><br><span class="line">|<span class="string">   </span>|<span class="string">-- CMSIS</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">   `-- makefile</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|</span><br><span class="line">|<span class="string">   `-- makefile</span></span><br><span class="line"><span class="string"></span>|</span><br><span class="line">|<span class="string">-- OS</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line"><span class="string"></span>|<span class="string">   `-- makefile</span></span><br><span class="line"><span class="string"></span>|</span><br><span class="line">|<span class="string">-- User</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string">   </span>|<span class="string">-- inc</span></span><br><span class="line"><span class="string"></span>|<span class="string">   `-- makefile</span></span><br><span class="line"><span class="string"></span>|</span><br><span class="line">`-- makefile</span><br></pre></td></tr></tbody></table></figure>
 <hr>
 <p>下一步，來寫 makefile！</p>
 <h2 id="GCC">GCC<a class="header-anchor" href="#GCC">#</a></h2>
@@ -203,7 +207,7 @@
 <p>接著告訴主要的 makefile 要去底下的 makefile 執行編譯</p>
 <figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">obj:</span></span><br><span class="line">	<span class="variable">$(MAKE)</span> all -C System</span><br><span class="line">	<span class="variable">$(MAKE)</span> all -C OS</span><br><span class="line">	<span class="variable">$(MAKE)</span> all -C User</span><br></pre></td></tr></tbody></table></figure>
 <p><code>-C</code> 意味著要去下層資料夾執行目標，所以第二行等同於：</p>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line">cd ./System</span><br><span class="line">make all</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight vim"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">cd</span> ./System</span><br><span class="line"><span class="keyword">make</span> <span class="keyword">all</span></span><br></pre></td></tr></tbody></table></figure>
 <h3 id="Startup-o">Startup.o<a class="header-anchor" href="#Startup-o">#</a></h3>
 <p>Startup.o 是必須的，把它放在 <code>User</code> 理，但不要放進 <code>src</code>；編譯他的道理是類似的</p>
 <figure class="highlight makefile"><table><tbody><tr><td class="code"><pre><span class="line">OBJS +=\</span><br><span class="line">startup.o</span><br><span class="line"></span><br><span class="line"><span class="section">Startup/startup.o: ./startup.s | <span class="variable">$(OBJDIR)</span></span></span><br><span class="line">	@echo <span class="string">"bulid file: <span class="variable">$&lt;</span>"</span></span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> -MMD -MF$(@:%.o=%.d) -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br></pre></td></tr></tbody></table></figure>
@@ -219,7 +223,7 @@
 <p>再將 <code>.elf</code> 轉成 <code>.bin</code> 燒錄。</p>
 <figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">TCPREFIX = arm-none-eabi-</span><br><span class="line">CP       = <span class="variable">$(TCPREFIX)</span>objcopy</span><br><span class="line">OD       = <span class="variable">$(TCPREFIX)</span>objdump</span><br><span class="line"></span><br><span class="line"><span class="section">main.bin: obj main.elf</span></span><br><span class="line">	@echo <span class="string">"copy file main.elf"</span></span><br><span class="line">	<span class="variable">$(CP)</span> <span class="variable">$(CPFLAGS)</span> main.elf <span class="variable">$@</span></span><br><span class="line">	<span class="variable">$(OD)</span> <span class="variable">$(ODFLAGS)</span> main.elf &gt; main.lst</span><br></pre></td></tr></tbody></table></figure>
 <h2 id="Openocd">Openocd<a class="header-anchor" href="#Openocd">#</a></h2>
-<p>最後一件事，燒錄；這裡使用 <a href="http://openocd.org/" target="_blank" rel="noopener">openocd</a>。</p>
+<p>最後一件事，燒錄；這裡使用 <a href="http://openocd.org/">openocd</a>。</p>
 <figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">run: main.bin</span></span><br><span class="line">	@echo <span class="variable">$(YELLOW)</span><span class="string">"Flash <span class="variable">$&lt;</span> into board..."</span><span class="variable">$(RST)</span></span><br><span class="line">	openocd -f <span class="variable">$(OCDCFG)</span>  				\</span><br><span class="line">			-c <span class="string">"init"</span>                   \</span><br><span class="line">            -c <span class="string">"reset init"</span>             \</span><br><span class="line">            -c <span class="string">"stm32f2x unlock 0"</span>      \</span><br><span class="line">            -c <span class="string">"flash probe 0"</span>          \</span><br><span class="line">            -c <span class="string">"flash info 0"</span>           \</span><br><span class="line">            -c <span class="string">"flash write_image erase <span class="variable">$&lt;</span> 0x8000000"</span> \</span><br><span class="line">            -c <span class="string">"reset run"</span> -c shutdown</span><br><span class="line">	@echo <span class="variable">$(GREEN)</span><span class="string">"Finish flash <span class="variable">$&lt;</span> into board."</span><span class="variable">$(RST)</span></span><br><span class="line">	@echo <span class="string">""</span></span><br></pre></td></tr></tbody></table></figure>
 <h2 id="總結">總結<a class="header-anchor" href="#總結">#</a></h2>
 <p>在主 makefile 寫下以下片段，將所有東西整合吧。</p>
@@ -228,27 +232,9 @@
 <hr>
 <p>這是我的一個專案建置的範例，可以參考。</p>
 <ul>
-<li><a href="https://github.com/luswdev/GUI-workspace" target="_blank" rel="noopener">GUI Workspace</a></li>
+<li><a href="https://github.com/luswdev/GUI-workspace">GUI Workspace</a></li>
 </ul>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
             </div>
 
             <!-- Post information -->
@@ -328,7 +314,7 @@
         <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
             <i class="fas fa-list"></i>
         </button>
-        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+        <div class="dropdown-menu dropdown-menu-right p-2"  aria-labelledby="tocLabel">
             <div class="toc-widget">
                 <div id="toc-content" class="text-truncate">
                 </div>
@@ -358,7 +344,7 @@
 
 
     <!-- Footer -->
-    <hr>
+    <hr />
 
 <!-- Footer -->
 <footer id="footer">
@@ -469,7 +455,7 @@
                 </ul>
                 <p class="copyright footer-author">
                     &copy; 2018-2022 
-                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br/>
                     Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
                     <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
                     Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
@@ -497,7 +483,9 @@
 
 
 <!-- Search script -->
+
 <script src="/js/search.js"></script>
+
 <script type="text/javascript">
     $(function () {
         searchFunc( '/search.xml' , 'searchInput', 'searchResult');
@@ -505,7 +493,9 @@
 </script>
 
 
+
 <script src="/js/main.js"></script>
+
 
 
     <!-- Search Modal -->

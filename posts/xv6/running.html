@@ -1,52 +1,52 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-<head><meta name="generator" content="Hexo 3.9.0">
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
 <!--Description-->
 
 
 
-    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware."/>
 
 
 <!--Author-->
 
-    <meta name="author" content="LuSkywalker">
+    <meta name="author" content="LuSkywalker"/>
 
 
 <!--Open Graph Title-->
 
-    <meta property="og:title" content="XV6 - Running">
+    <meta property="og:title" content="XV6 - Running"/>
 
 
 <!--Open Graph Description-->
 
-    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware."/>
 
 
 <!--Open Graph Site Name-->
-    <meta property="og:site_name" content="HackTech">
+    <meta property="og:site_name" content="HackTech"/>
 
 <!--Type page-->
 
-    <meta property="og:type" content="article">
+    <meta property="og:type" content="article"/>
 
 
 <!--Page Cover-->
 
 
-    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg"/>
 
 
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary_large_image"/>
 
 
 
 
-    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg"/>
 
 
 <!-- Title -->
@@ -57,14 +57,16 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
 
 <!-- Custom CSS -->
+
 <link rel="stylesheet" href="/css/main.css">
 
+
 <!-- Custom Fonts -->
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
-<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css" />
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css" />
 <link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -79,7 +81,7 @@
 
 <!-- favicon -->
 
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.png"/>
 
 
 
@@ -97,6 +99,8 @@
 
 
 
+<meta name="generator" content="Hexo 6.1.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 <!-- Head tag -->
@@ -301,7 +305,7 @@
 </ul>
 <figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">tags: <span class="variable">$(OBJS)</span> bootother.S _init</span></span><br><span class="line">	etags *.S *.c</span><br><span class="line"></span><br><span class="line"><span class="section">vectors.S: vectors.pl</span></span><br><span class="line">	perl vectors.pl &gt; vectors.S</span><br></pre></td></tr></tbody></table></figure>
 <ul>
-<li>使用 <a href="http://vectors.pl" target="_blank" rel="noopener">vectors.pl</a> 生成 vectors.S</li>
+<li>使用 <a href="http://vectors.pl">vectors.pl</a> 生成 vectors.S</li>
 </ul>
 <figure class="highlight makefile line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">ULIB = ulib.o usys.o printf.o umalloc.o</span><br><span class="line"></span><br><span class="line"><span class="section">_%: %.o <span class="variable">$(ULIB)</span></span></span><br><span class="line">	<span class="variable">$(LD)</span> <span class="variable">$(LDFLAGS)</span> -N -e main -Ttext 0 -o <span class="variable">$@</span> <span class="variable">$^</span></span><br><span class="line">	<span class="variable">$(OBJDUMP)</span> -S <span class="variable">$@</span> &gt; <span class="variable">$*</span>.asm</span><br><span class="line">	<span class="variable">$(OBJDUMP)</span> -t <span class="variable">$@</span> | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' &gt; <span class="variable">$*</span>.sym</span><br></pre></td></tr></tbody></table></figure>
 <div class="table-responsive">
@@ -339,7 +343,7 @@
 <hr>
 <h2 id="Make">Make<a class="header-anchor" href="#Make">#</a></h2>
 <blockquote>
-<p>我本來是打算在 MacOX 的環境下 make XV6 的，但是如果要 make 的話需要有 <code>i386-jos-elf</code> 的相關工具，需另外安裝（<a href="https://pdos.csail.mit.edu/6.828/2016/tools.html" target="_blank" rel="noopener">安裝方法</a>）。由於我一直沒辦法安裝，最後只好裝 ubuntu 來 make。</p>
+<p>我本來是打算在 MacOX 的環境下 make XV6 的，但是如果要 make 的話需要有 <code>i386-jos-elf</code> 的相關工具，需另外安裝（<a href="https://pdos.csail.mit.edu/6.828/2016/tools.html">安裝方法</a>）。由於我一直沒辦法安裝，最後只好裝 ubuntu 來 make。</p>
 </blockquote>
 <ul>
 <li>在主目錄下輸入 <code>make</code> 指令</li>
@@ -360,25 +364,7 @@
 <li>設定記憶體位置到 <code>0x8010000</code>（虛擬地址，分頁硬體會映射至實體位置 <code>0x0010000</code>）</li>
 <li><em>bootmain.c</em> 將 ELF 指標指向 <code>0x100000</code> 接著將 kernel 讀入。</li>
 </ul>
-<figure class="highlight armasm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">	<span class="meta">.text</span> : AT(<span class="number">0x100000</span>) {</span><br><span class="line">		*(<span class="meta">.text</span> .stub <span class="meta">.text</span>.* .gnu.linkonce.t.*)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	PROVIDE(etext = .)<span class="comment">;	/* Define the 'etext' symbol to this value */</span></span><br><span class="line"></span><br><span class="line">	.rodata : {</span><br><span class="line">		*(.rodata .rodata.* .gnu.linkonce.r.*)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Include debugging information in kernel memory */</span></span><br><span class="line">	.stab : {</span><br><span class="line">		PROVIDE(__STAB_BEGIN__ = .)<span class="comment">;</span></span><br><span class="line">		*(.stab)<span class="comment">;</span></span><br><span class="line">		PROVIDE(__STAB_END__ = .)<span class="comment">;</span></span><br><span class="line">		<span class="keyword">BYTE(0)	</span>	<span class="comment">/* Force the linker to allocate space</span></span><br><span class="line"><span class="comment">				   for this section */</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	.stabstr : {</span><br><span class="line">		PROVIDE(__STABSTR_BEGIN__ = .)<span class="comment">;</span></span><br><span class="line">		*(.stabstr)<span class="comment">;</span></span><br><span class="line">		PROVIDE(__STABSTR_END__ = .)<span class="comment">;</span></span><br><span class="line">		<span class="keyword">BYTE(0)	</span>	<span class="comment">/* Force the linker to allocate space</span></span><br><span class="line"><span class="comment">				   for this section */</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Adjust the address for the data segment to the next page */</span></span><br><span class="line">	. = <span class="meta">ALIGN</span>(<span class="number">0x1000</span>)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Conventionally, Unix linkers provide pseudo-symbols</span></span><br><span class="line"><span class="comment">	 * etext, edata, and end, at the end of the text, data, and bss.</span></span><br><span class="line"><span class="comment">	 * For the kernel mapping, we need the address at the beginning</span></span><br><span class="line"><span class="comment">	 * of the data section, but that's not one of the conventional</span></span><br><span class="line"><span class="comment">	 * symbols, because the convention started before there was a</span></span><br><span class="line"><span class="comment">	 * read-only rodata section between text and data. */</span></span><br><span class="line">	PROVIDE(<span class="meta">data</span> = .)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* The data segment */</span></span><br><span class="line">	<span class="meta">.data</span> : {</span><br><span class="line">		*(<span class="meta">.data</span>)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	PROVIDE(edata = .)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">	.<span class="keyword">bss </span>: {</span><br><span class="line">		*(.<span class="keyword">bss)</span></span><br><span class="line"><span class="keyword">	</span>}</span><br><span class="line"></span><br><span class="line">	PROVIDE(<span class="meta">end</span> = .)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">	/DISCARD/ : {</span><br><span class="line">		*(.eh_frame .note.GNU-stack)</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure><div id="footnotes"><hr class="block-hr"><div id="footnotelist" class="card card-default"><div class="card-header">Reference</div><ol class="list-group list-group-flush" style="list-style: none; padding-left: 0; margin-left: 0px"><li id="fn:1" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://blog.csdn.net/QQ1452008/article/details/50855810" target="_blank" rel="noopener">Linux Makefile 生成 .d 依赖文件及 gcc -M -MF -MP 等相关选项说明</a><a href="#fnref:1" rev="footnote"> ↩</a></span></li><li id="fn:2" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">2.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="http://leenjewel.github.io/blog/2014/07/24/%5B%28xue-xi-xv6-%29%5D-zai-mac-osx-xia-yun-xing-xv6/" target="_blank" rel="noopener">【學習 XV6 】在 Mac OSX 下運行 XV6</a><a href="#fnref:2" rev="footnote"> ↩</a></span></li></ol></div></div><script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+<figure class="highlight armasm line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">	<span class="meta">.text</span> : AT(<span class="number">0x100000</span>) {</span><br><span class="line">		*(<span class="meta">.text</span> .stub <span class="meta">.text</span>.* .gnu.linkonce.t.*)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	PROVIDE(etext = .)<span class="comment">;	/* Define the 'etext' symbol to this value */</span></span><br><span class="line"></span><br><span class="line">	.rodata : {</span><br><span class="line">		*(.rodata .rodata.* .gnu.linkonce.r.*)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Include debugging information in kernel memory */</span></span><br><span class="line">	.stab : {</span><br><span class="line">		PROVIDE(__STAB_BEGIN__ = .)<span class="comment">;</span></span><br><span class="line">		*(.stab)<span class="comment">;</span></span><br><span class="line">		PROVIDE(__STAB_END__ = .)<span class="comment">;</span></span><br><span class="line">		BYTE(<span class="number">0</span>)		<span class="comment">/* Force the linker to allocate space</span></span><br><span class="line"><span class="comment">				   for this section */</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	.stabstr : {</span><br><span class="line">		PROVIDE(__STABSTR_BEGIN__ = .)<span class="comment">;</span></span><br><span class="line">		*(.stabstr)<span class="comment">;</span></span><br><span class="line">		PROVIDE(__STABSTR_END__ = .)<span class="comment">;</span></span><br><span class="line">		BYTE(<span class="number">0</span>)		<span class="comment">/* Force the linker to allocate space</span></span><br><span class="line"><span class="comment">				   for this section */</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Adjust the address for the data segment to the next page */</span></span><br><span class="line">	. = <span class="meta">ALIGN</span>(<span class="number">0x1000</span>)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Conventionally, Unix linkers provide pseudo-symbols</span></span><br><span class="line"><span class="comment">	 * etext, edata, and end, at the end of the text, data, and bss.</span></span><br><span class="line"><span class="comment">	 * For the kernel mapping, we need the address at the beginning</span></span><br><span class="line"><span class="comment">	 * of the data section, but that's not one of the conventional</span></span><br><span class="line"><span class="comment">	 * symbols, because the convention started before there was a</span></span><br><span class="line"><span class="comment">	 * read-only rodata section between text and data. */</span></span><br><span class="line">	PROVIDE(<span class="meta">data</span> = .)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* The data segment */</span></span><br><span class="line">	<span class="meta">.data</span> : {</span><br><span class="line">		*(<span class="meta">.data</span>)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	PROVIDE(edata = .)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">	.bss : {</span><br><span class="line">		*(.bss)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	PROVIDE(<span class="meta">end</span> = .)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">	/DISCARD/ : {</span><br><span class="line">		*(.eh_frame .note.GNU-stack)</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure><div id="footnotes"><hr class="block-hr"><div id="footnotelist" class="card card-default"><div class="card-header">Reference</div><ol class="list-group list-group-flush" style="list-style: none; padding-left: 0; margin-left: 0px"><li id="fn:1" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://blog.csdn.net/QQ1452008/article/details/50855810">Linux Makefile 生成 .d 依赖文件及 gcc -M -MF -MP 等相关选项说明</a><a href="#fnref:1" rev="footnote"> ↩</a></span></li><li id="fn:2" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">2.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="http://leenjewel.github.io/blog/2014/07/24/%5B%28xue-xi-xv6-%29%5D-zai-mac-osx-xia-yun-xing-xv6/">【學習 XV6 】在 Mac OSX 下運行 XV6</a><a href="#fnref:2" rev="footnote"> ↩</a></span></li></ol></div></div>
             </div>
 
             <!-- Post information -->
@@ -458,7 +444,7 @@
         <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
             <i class="fas fa-list"></i>
         </button>
-        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+        <div class="dropdown-menu dropdown-menu-right p-2"  aria-labelledby="tocLabel">
             <div class="toc-widget">
                 <div id="toc-content" class="text-truncate">
                 </div>
@@ -488,7 +474,7 @@
 
 
     <!-- Footer -->
-    <hr>
+    <hr />
 
 <!-- Footer -->
 <footer id="footer">
@@ -599,7 +585,7 @@
                 </ul>
                 <p class="copyright footer-author">
                     &copy; 2018-2022 
-                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br/>
                     Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
                     <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
                     Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
@@ -627,7 +613,9 @@
 
 
 <!-- Search script -->
+
 <script src="/js/search.js"></script>
+
 <script type="text/javascript">
     $(function () {
         searchFunc( '/search.xml' , 'searchInput', 'searchResult');
@@ -635,7 +623,9 @@
 </script>
 
 
+
 <script src="/js/main.js"></script>
+
 
 
     <!-- Search Modal -->

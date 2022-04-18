@@ -1,52 +1,52 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-<head><meta name="generator" content="Hexo 3.9.0">
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
 <!--Description-->
 
 
 
-    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware."/>
 
 
 <!--Author-->
 
-    <meta name="author" content="LuSkywalker">
+    <meta name="author" content="LuSkywalker"/>
 
 
 <!--Open Graph Title-->
 
-    <meta property="og:title" content="RT-Thread GUI - Framework">
+    <meta property="og:title" content="RT-Thread GUI - Framework"/>
 
 
 <!--Open Graph Description-->
 
-    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware."/>
 
 
 <!--Open Graph Site Name-->
-    <meta property="og:site_name" content="HackTech">
+    <meta property="og:site_name" content="HackTech"/>
 
 <!--Type page-->
 
-    <meta property="og:type" content="article">
+    <meta property="og:type" content="article"/>
 
 
 <!--Page Cover-->
 
 
-    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg"/>
 
 
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary_large_image"/>
 
 
 
 
-    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg"/>
 
 
 <!-- Title -->
@@ -57,14 +57,16 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
 
 <!-- Custom CSS -->
+
 <link rel="stylesheet" href="/css/main.css">
 
+
 <!-- Custom Fonts -->
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
-<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css" />
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css" />
 <link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -79,7 +81,7 @@
 
 <!-- favicon -->
 
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.png"/>
 
 
 
@@ -97,6 +99,8 @@
 
 
 
+<meta name="generator" content="Hexo 6.1.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 <!-- Head tag -->
@@ -163,7 +167,7 @@
     
         <span class="post-meta-split">&nbsp;|&nbsp;</span>
         <i class="far fa-file-word fa-fw"></i>
-        307
+        255
     
 
     
@@ -171,40 +175,22 @@
     
 </span>  
                 
-                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>RT-Thread 的 GUI 放在 package 中（<a href="https://github.com/RT-Thread-packages/gui_engine.git" target="_blank" rel="noopener">git 原始碼</a>），本文將簡單將此 GUI engine 分工。</p>
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>RT-Thread 的 GUI 放在 package 中（<a href="https://github.com/RT-Thread-packages/gui_engine.git">git 原始碼</a>），本文將簡單將此 GUI engine 分工。</p>
 <h2 id="Font">Font<a class="header-anchor" href="#Font">#</a></h2>
 <p>處理文字編碼，及字型相關的</p>
-<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">. </span><br><span class="line">|<span class="string">-- src</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- asc12font.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- asc16font.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- font_bmp.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- font_fnt.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- font_freetype.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- font_hz_bmp.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- font_hz_file.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- font.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- hz12font.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- hz16font.c</span></span><br><span class="line">|<span class="string"> ˋ-- gb2312.c</span></span><br><span class="line">|</span><br><span class="line">ˋ-- include</span><br><span class="line">  ˋ-- rtgui</span><br><span class="line">    |<span class="string">-- font_fnt.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- font_freetype.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- font.h</span></span><br><span class="line"><span class="string">    ˋ-- gb2312.h</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">. </span><br><span class="line">|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- asc12font.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- asc16font.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- font_bmp.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- font_fnt.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- font_freetype.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- font_hz_bmp.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- font_hz_file.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- font.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- hz12font.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- hz16font.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> ˋ-- gb2312.c</span></span><br><span class="line"><span class="string"></span>|</span><br><span class="line">ˋ-- include</span><br><span class="line">  ˋ-- rtgui</span><br><span class="line">    |<span class="string">-- font_fnt.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- font_freetype.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- font.h</span></span><br><span class="line"><span class="string">    ˋ-- gb2312.h</span></span><br></pre></td></tr></tbody></table></figure>
 <h2 id="Image">Image<a class="header-anchor" href="#Image">#</a></h2>
 <p>處理圖片格式相關的</p>
-<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|<span class="string">-- src</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- blit.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- image_bmp.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- image_jpg.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- image_png.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- image_xpm.c</span></span><br><span class="line">|<span class="string"> ˋ-- image.c</span></span><br><span class="line">|</span><br><span class="line">ˋ-- include</span><br><span class="line">  ˋ-- rtgui</span><br><span class="line">    |<span class="string">-- bilt.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- image_bmp.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- image_container.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- image_hdc.h</span></span><br><span class="line"><span class="string">    ˋ-- image.h</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- blit.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- image_bmp.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- image_jpg.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- image_png.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- image_xpm.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> ˋ-- image.c</span></span><br><span class="line"><span class="string"></span>|</span><br><span class="line">ˋ-- include</span><br><span class="line">  ˋ-- rtgui</span><br><span class="line">    |<span class="string">-- bilt.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- image_bmp.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- image_container.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- image_hdc.h</span></span><br><span class="line"><span class="string">    ˋ-- image.h</span></span><br></pre></td></tr></tbody></table></figure>
 <h2 id="Draw">Draw<a class="header-anchor" href="#Draw">#</a></h2>
 <p>協助使用者繪製一些圖形等</p>
-<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|<span class="string">-- src</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- color.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- dc_blend.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- dc_duffer.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- dc_client.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- dc_hw.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- dc_rotozoom.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- dc_trans.c</span></span><br><span class="line">|<span class="string"> ˋ-- dc.c</span></span><br><span class="line">|</span><br><span class="line">ˋ-- include</span><br><span class="line">  ˋ-- rtgui</span><br><span class="line">    |<span class="string">-- color.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- dc_draw.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- dc_trans.h</span></span><br><span class="line"><span class="string">    ˋ-- dc.h</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- color.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- dc_blend.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- dc_duffer.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- dc_client.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- dc_hw.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- dc_rotozoom.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- dc_trans.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> ˋ-- dc.c</span></span><br><span class="line"><span class="string"></span>|</span><br><span class="line">ˋ-- include</span><br><span class="line">  ˋ-- rtgui</span><br><span class="line">    |<span class="string">-- color.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- dc_draw.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- dc_trans.h</span></span><br><span class="line"><span class="string">    ˋ-- dc.h</span></span><br></pre></td></tr></tbody></table></figure>
 <h2 id="Widgets">Widgets<a class="header-anchor" href="#Widgets">#</a></h2>
 <p>一些相關的 widgets，如按鈕、視窗等</p>
-<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|<span class="string">-- src</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- box.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- container.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- matrix.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- region.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- title.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- topwin.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- topwin.h</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- widgets.c</span></span><br><span class="line">|<span class="string"> ˋ-- window.c</span></span><br><span class="line">|</span><br><span class="line">ˋ-- include</span><br><span class="line">  ˋ-- rtgui</span><br><span class="line">    ˋ-- widgets</span><br><span class="line">      |<span class="string">-- box.h</span></span><br><span class="line"><span class="string">      </span>|<span class="string">-- container.h</span></span><br><span class="line"><span class="string">      </span>|<span class="string">-- matrix.h</span></span><br><span class="line"><span class="string">      </span>|<span class="string">-- region.h</span></span><br><span class="line"><span class="string">      </span>|<span class="string">-- title.h</span></span><br><span class="line"><span class="string">      </span>|<span class="string">-- widget.h</span></span><br><span class="line"><span class="string">      ˋ-- window.h</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- box.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- container.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- matrix.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- region.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- title.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- topwin.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- topwin.h</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- widgets.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> ˋ-- window.c</span></span><br><span class="line"><span class="string"></span>|</span><br><span class="line">ˋ-- include</span><br><span class="line">  ˋ-- rtgui</span><br><span class="line">    ˋ-- widgets</span><br><span class="line">      |<span class="string">-- box.h</span></span><br><span class="line"><span class="string">      </span>|<span class="string">-- container.h</span></span><br><span class="line"><span class="string">      </span>|<span class="string">-- matrix.h</span></span><br><span class="line"><span class="string">      </span>|<span class="string">-- region.h</span></span><br><span class="line"><span class="string">      </span>|<span class="string">-- title.h</span></span><br><span class="line"><span class="string">      </span>|<span class="string">-- widget.h</span></span><br><span class="line"><span class="string">      ˋ-- window.h</span></span><br></pre></td></tr></tbody></table></figure>
 <h2 id="System">System<a class="header-anchor" href="#System">#</a></h2>
 <p>系統層面的工作、及協助外部硬體，如鍵盤等。</p>
-<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|<span class="string">-- src</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- filerw.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- mouse.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- mouse.h</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- server.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- rtgui_app.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- rtgui_driver.c</span></span><br><span class="line">|<span class="string"> </span>|<span class="string">-- rtgui_object.c</span></span><br><span class="line">|<span class="string"> ˋ-- rtgui_system.c</span></span><br><span class="line">|</span><br><span class="line">ˋ-- include</span><br><span class="line">  ˋ-- rtgui</span><br><span class="line">    |<span class="string">-- driver.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- event.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- filerw.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- kbddef.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- list.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- rtgui_app.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- rtgui_config.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- rtgui_object.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- rtgui_server.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- rtgui_system.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- rtgui.h</span></span><br><span class="line"><span class="string">    ˋ-- tree.h</span></span><br></pre></td></tr></tbody></table></figure><script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+<figure class="highlight gherkin"><table><tbody><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|<span class="string">-- src</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- filerw.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- mouse.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- mouse.h</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- server.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- rtgui_app.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- rtgui_driver.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> </span>|<span class="string">-- rtgui_object.c</span></span><br><span class="line"><span class="string"></span>|<span class="string"> ˋ-- rtgui_system.c</span></span><br><span class="line"><span class="string"></span>|</span><br><span class="line">ˋ-- include</span><br><span class="line">  ˋ-- rtgui</span><br><span class="line">    |<span class="string">-- driver.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- event.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- filerw.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- kbddef.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- list.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- rtgui_app.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- rtgui_config.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- rtgui_object.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- rtgui_server.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- rtgui_system.h</span></span><br><span class="line"><span class="string">    </span>|<span class="string">-- rtgui.h</span></span><br><span class="line"><span class="string">    ˋ-- tree.h</span></span><br></pre></td></tr></tbody></table></figure>
             </div>
 
             <!-- Post information -->
@@ -284,7 +270,7 @@
         <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
             <i class="fas fa-list"></i>
         </button>
-        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+        <div class="dropdown-menu dropdown-menu-right p-2"  aria-labelledby="tocLabel">
             <div class="toc-widget">
                 <div id="toc-content" class="text-truncate">
                 </div>
@@ -314,7 +300,7 @@
 
 
     <!-- Footer -->
-    <hr>
+    <hr />
 
 <!-- Footer -->
 <footer id="footer">
@@ -425,7 +411,7 @@
                 </ul>
                 <p class="copyright footer-author">
                     &copy; 2018-2022 
-                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br/>
                     Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
                     <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
                     Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
@@ -453,7 +439,9 @@
 
 
 <!-- Search script -->
+
 <script src="/js/search.js"></script>
+
 <script type="text/javascript">
     $(function () {
         searchFunc( '/search.xml' , 'searchInput', 'searchResult');
@@ -461,7 +449,9 @@
 </script>
 
 
+
 <script src="/js/main.js"></script>
+
 
 
     <!-- Search Modal -->

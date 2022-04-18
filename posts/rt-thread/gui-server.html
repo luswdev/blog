@@ -1,52 +1,52 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-<head><meta name="generator" content="Hexo 3.9.0">
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
 <!--Description-->
 
 
 
-    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware."/>
 
 
 <!--Author-->
 
-    <meta name="author" content="LuSkywalker">
+    <meta name="author" content="LuSkywalker"/>
 
 
 <!--Open Graph Title-->
 
-    <meta property="og:title" content="RT-Thread GUI - Server">
+    <meta property="og:title" content="RT-Thread GUI - Server"/>
 
 
 <!--Open Graph Description-->
 
-    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware."/>
 
 
 <!--Open Graph Site Name-->
-    <meta property="og:site_name" content="HackTech">
+    <meta property="og:site_name" content="HackTech"/>
 
 <!--Type page-->
 
-    <meta property="og:type" content="article">
+    <meta property="og:type" content="article"/>
 
 
 <!--Page Cover-->
 
 
-    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg"/>
 
 
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary_large_image"/>
 
 
 
 
-    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg"/>
 
 
 <!-- Title -->
@@ -57,14 +57,16 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
 
 <!-- Custom CSS -->
+
 <link rel="stylesheet" href="/css/main.css">
 
+
 <!-- Custom Fonts -->
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
-<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css" />
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css" />
 <link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -79,7 +81,7 @@
 
 <!-- favicon -->
 
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.png"/>
 
 
 
@@ -97,6 +99,8 @@
 
 
 
+<meta name="generator" content="Hexo 6.1.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 <!-- Head tag -->
@@ -163,7 +167,7 @@
     
         <span class="post-meta-split">&nbsp;|&nbsp;</span>
         <i class="far fa-file-word fa-fw"></i>
-        332
+        280
     
 
     
@@ -174,17 +178,17 @@
                 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="基本事件結構">基本事件結構<a class="header-anchor" href="#基本事件結構">#</a></h2>
 <p>server 掌管整個 GUI system 的所有事件 (event)，而根據不同的事件定義不同的結構；在每個不同的結構中都有基本的欄位 <code>_RTGUI_EVENT_WIN_ELEMENTS</code>：</p>
 <div class="alert alert-success"><p><strong>File:</strong> event.c</p></div>
-<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * RTGUI Window Event</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _RTGUI_EVENT_WIN_ELEMENTS \</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event</span> <span class="title">parent</span>;</span> \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_win</span> *<span class="title">wid</span>;</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * RTGUI Window Event</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _RTGUI_EVENT_WIN_ELEMENTS \</span></span><br><span class="line"><span class="meta">    struct rtgui_event parent; \</span></span><br><span class="line"><span class="meta">    struct rtgui_win *wid;</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p><code>rtgui_event</code> 即為事件的基本結構：</p>
-<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="comment">/* the event type */</span></span><br><span class="line">    <span class="keyword">enum</span> _rtgui_event_type type;</span><br><span class="line">    <span class="comment">/* user field of event */</span></span><br><span class="line">    <span class="keyword">rt_uint16_t</span> user;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* the event sender */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_app</span> *<span class="title">sender</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* mailbox to acknowledge request */</span></span><br><span class="line">    <span class="keyword">rt_mailbox_t</span> ack;</span><br><span class="line">};</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event</span> <span class="title">rtgui_event_t</span>;</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="comment">/* the event type */</span></span><br><span class="line">    <span class="class"><span class="keyword">enum</span> _<span class="title">rtgui_event_type</span> <span class="title">type</span>;</span></span><br><span class="line">    <span class="comment">/* user field of event */</span></span><br><span class="line">    <span class="type">rt_uint16_t</span> user;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* the event sender */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_app</span> *<span class="title">sender</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* mailbox to acknowledge request */</span></span><br><span class="line">    <span class="type">rt_mailbox_t</span> ack;</span><br><span class="line">};</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event</span> <span class="title">rtgui_event_t</span>;</span></span><br></pre></td></tr></tbody></table></figure>
 <hr>
 <h3 id="基本結構設定">基本結構設定<a class="header-anchor" href="#基本結構設定">#</a></h3>
-<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RTGUI_EVENT_INIT(e, t)  do      \</span></span><br><span class="line">{                                       \</span><br><span class="line">    (e)-&gt;type = (t);                    \</span><br><span class="line">    (e)-&gt;user = <span class="number">0</span>;                      \</span><br><span class="line">    (e)-&gt;sender = rtgui_app_self();     \</span><br><span class="line">    (e)-&gt;ack = RT_NULL;                 \</span><br><span class="line">} <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> RTGUI_EVENT_INIT(e, t)  do      \</span></span><br><span class="line"><span class="meta">{                                       \</span></span><br><span class="line"><span class="meta">    (e)-&gt;type = (t);                    \</span></span><br><span class="line"><span class="meta">    (e)-&gt;user = 0;                      \</span></span><br><span class="line"><span class="meta">    (e)-&gt;sender = rtgui_app_self();     \</span></span><br><span class="line"><span class="meta">    (e)-&gt;ack = RT_NULL;                 \</span></span><br><span class="line"><span class="meta">} while (0)</span></span><br></pre></td></tr></tbody></table></figure>
 <hr>
 <h2 id="啟動-server">啟動 server<a class="header-anchor" href="#啟動-server">#</a></h2>
 <div class="alert alert-success"><p><strong>File:</strong> server.c</p></div>
 <p>首先，定義一個 app 名叫 server :</p>
-<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_app</span> *<span class="title">rtgui_server_app</span> = <span class="title">RT_NULL</span>;</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_app</span> *<span class="title">rtgui_server_app</span> =</span> RT_NULL;</span><br></pre></td></tr></tbody></table></figure>
 <p>接著透過 <code>rtgui_server_entry</code> 啟動 app，也就是 server:</p>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
@@ -203,30 +207,12 @@
 </tr>
 </tbody>
 </table></div>
-<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * rtgui server thread's entry</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">rtgui_server_entry</span><span class="params">(<span class="keyword">void</span> *parameter)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _WIN32_NATIVE</span></span><br><span class="line">    <span class="comment">/* set the server thread to highest */</span></span><br><span class="line">    HANDLE hCurrentThread = GetCurrentThread();</span><br><span class="line">    SetThreadPriority(hCurrentThread, THREAD_PRIORITY_HIGHEST);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* create rtgui server application */</span></span><br><span class="line">    rtgui_server_app = rtgui_app_create(<span class="string">"rtgui"</span>);</span><br><span class="line">    <span class="keyword">if</span> (rtgui_server_app == RT_NULL)</span><br><span class="line">    {</span><br><span class="line">        rt_kprintf(<span class="string">"Create GUI server failed.\n"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    rtgui_object_set_event_handler(RTGUI_OBJECT(rtgui_server_app),</span><br><span class="line">                                   rtgui_server_event_handler);</span><br><span class="line">    <span class="comment">/* init mouse and show */</span></span><br><span class="line">    rtgui_mouse_init();</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RTGUI_USING_MOUSE_CURSOR</span></span><br><span class="line">    rtgui_mouse_show_cursor();</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    rtgui_app_run(rtgui_server_app);</span><br><span class="line"></span><br><span class="line">    rtgui_app_destroy(rtgui_server_app);</span><br><span class="line">    rtgui_server_app = RT_NULL;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * rtgui server thread's entry</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">rtgui_server_entry</span><span class="params">(<span class="type">void</span> *parameter)</span></span><br><span class="line">{</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> _WIN32_NATIVE</span></span><br><span class="line">    <span class="comment">/* set the server thread to highest */</span></span><br><span class="line">    HANDLE hCurrentThread = GetCurrentThread();</span><br><span class="line">    SetThreadPriority(hCurrentThread, THREAD_PRIORITY_HIGHEST);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* create rtgui server application */</span></span><br><span class="line">    rtgui_server_app = rtgui_app_create(<span class="string">"rtgui"</span>);</span><br><span class="line">    <span class="keyword">if</span> (rtgui_server_app == RT_NULL)</span><br><span class="line">    {</span><br><span class="line">        rt_kprintf(<span class="string">"Create GUI server failed.\n"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    rtgui_object_set_event_handler(RTGUI_OBJECT(rtgui_server_app),</span><br><span class="line">                                   rtgui_server_event_handler);</span><br><span class="line">    <span class="comment">/* init mouse and show */</span></span><br><span class="line">    rtgui_mouse_init();</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> RTGUI_USING_MOUSE_CURSOR</span></span><br><span class="line">    rtgui_mouse_show_cursor();</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    rtgui_app_run(rtgui_server_app);</span><br><span class="line"></span><br><span class="line">    rtgui_app_destroy(rtgui_server_app);</span><br><span class="line">    rtgui_server_app = RT_NULL;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <p>最後會進入 <code>rtgui_app_run</code> 並正式開始執行 server，也就是進入所屬的 event handler</p>
 <hr>
 <h2 id="Event-Handler">Event Handler<a class="header-anchor" href="#Event-Handler">#</a></h2>
 <p>Event handler 也就是 server 的進入點</p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
             </div>
 
             <!-- Post information -->
@@ -306,7 +292,7 @@
         <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
             <i class="fas fa-list"></i>
         </button>
-        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+        <div class="dropdown-menu dropdown-menu-right p-2"  aria-labelledby="tocLabel">
             <div class="toc-widget">
                 <div id="toc-content" class="text-truncate">
                 </div>
@@ -336,7 +322,7 @@
 
 
     <!-- Footer -->
-    <hr>
+    <hr />
 
 <!-- Footer -->
 <footer id="footer">
@@ -447,7 +433,7 @@
                 </ul>
                 <p class="copyright footer-author">
                     &copy; 2018-2022 
-                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br/>
                     Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
                     <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
                     Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
@@ -475,7 +461,9 @@
 
 
 <!-- Search script -->
+
 <script src="/js/search.js"></script>
+
 <script type="text/javascript">
     $(function () {
         searchFunc( '/search.xml' , 'searchInput', 'searchResult');
@@ -483,7 +471,9 @@
 </script>
 
 
+
 <script src="/js/main.js"></script>
+
 
 
     <!-- Search Modal -->
