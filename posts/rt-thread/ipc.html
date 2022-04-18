@@ -268,15 +268,15 @@
 <li>當不可用時，將 thread 掛在等待的鏈上</li>
 </ul>
 <div class="alert alert-success"><p><strong>File:</strong> rtdef.h</p></div>
-<h3 id="結構-v12">結構<a class="header-anchor" href="#結構-v12">#</a></h3>
+<h3 id="結構-v7">結構<a class="header-anchor" href="#結構-v7">#</a></h3>
 <figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> RT_USING_SEMAPHORE</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Semaphore structure</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_semaphore</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_ipc_object</span> <span class="title">parent</span>;</span>                        <span class="comment">/**&lt; inherit from ipc_object */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_uint16_t</span>          value;                         <span class="comment">/**&lt; value of semaphore. */</span></span><br><span class="line">};</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rt_semaphore</span> *<span class="title">rt_sem_t</span>;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
 <hr>
-<h3 id="flags-v2">flags<a class="header-anchor" href="#flags-v2">#</a></h3>
+<h3 id="flags">flags<a class="header-anchor" href="#flags">#</a></h3>
 <figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * IPC flags and control command definitions</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> RT_IPC_FLAG_FIFO                0x00            <span class="comment">/**&lt; FIFOed IPC. @ref IPC. */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> RT_IPC_FLAG_PRIO                0x01            <span class="comment">/**&lt; PRIOed IPC. @ref IPC. */</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> RT_IPC_CMD_UNKNOWN              0x00            <span class="comment">/**&lt; unknown IPC command */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> RT_IPC_CMD_RESET                0x01            <span class="comment">/**&lt; reset IPC object */</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> RT_WAITING_FOREVER              -1              <span class="comment">/**&lt; Block forever until get resource. */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> RT_WAITING_NO                   0               <span class="comment">/**&lt; Non-block. */</span></span></span><br></pre></td></tr></tbody></table></figure>
 <hr>
 <div class="alert alert-success"><p><strong>File:</strong> ipc.c</p></div>
 <h3 id="建立-semaphore">建立 semaphore<a class="header-anchor" href="#建立-semaphore">#</a></h3>
-<h4 id="動態記憶體管理-v9">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v9">#</a></h4>
+<h4 id="動態記憶體管理-v5">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v5">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -314,7 +314,7 @@
 <li>首先需要一塊 semaphore 的大小，初始化 ipc 物件，再依序寫入初始值及 flag</li>
 </ul>
 <hr>
-<h4 id="靜態記憶體管理-v9">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v9">#</a></h4>
+<h4 id="靜態記憶體管理-v5">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v5">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -355,7 +355,7 @@
 </ul>
 <hr>
 <h3 id="刪除-semaphore">刪除 semaphore<a class="header-anchor" href="#刪除-semaphore">#</a></h3>
-<h4 id="動態記憶體管理-v10">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v10">#</a></h4>
+<h4 id="動態記憶體管理-v6">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v6">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -379,7 +379,7 @@
 <li>接著呼叫 <code>rt_object_delete</code> 清除此物件（semaphore）</li>
 </ul>
 <hr>
-<h4 id="靜態記憶體管理-v10">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v10">#</a></h4>
+<h4 id="靜態記憶體管理-v6">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v6">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -528,7 +528,7 @@
 <li>即一種值為 1 的特殊 semaphore，特別的是具有防止優先級翻轉的特性</li>
 </ul>
 <div class="alert alert-success"><p><strong>File:</strong> rtdef.h</p></div>
-<h3 id="結構-v13">結構<a class="header-anchor" href="#結構-v13">#</a></h3>
+<h3 id="結構-v8">結構<a class="header-anchor" href="#結構-v8">#</a></h3>
 <figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> RT_USING_MUTEX</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Mutual exclusion (mutex) structure</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_mutex</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_ipc_object</span> <span class="title">parent</span>;</span>                        <span class="comment">/**&lt; inherit from ipc_object */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_uint16_t</span>          value;                         <span class="comment">/**&lt; value of mutex */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_uint8_t</span>           original_priority;             <span class="comment">/**&lt; priority of last thread hold the mutex */</span></span><br><span class="line">    <span class="type">rt_uint8_t</span>           hold;                          <span class="comment">/**&lt; numbers of thread hold the mutex */</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span>    *<span class="title">owner</span>;</span>                         <span class="comment">/**&lt; current owner of mutex */</span></span><br><span class="line">};</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rt_mutex</span> *<span class="title">rt_mutex_t</span>;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li>為了防止優先權翻轉，在持有鎖的過程中可能會被提升優先權，在結構中就需要紀錄原本的優先級。</li>
@@ -536,7 +536,7 @@
 <hr>
 <div class="alert alert-success"><p><strong>File:</strong> ipc.c</p></div>
 <h3 id="建立-mutex">建立 mutex<a class="header-anchor" href="#建立-mutex">#</a></h3>
-<h4 id="動態記憶體管理-v11">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v11">#</a></h4>
+<h4 id="動態記憶體管理-v7">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v7">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -580,7 +580,7 @@
 <li>同時填入 flag</li>
 </ul>
 <hr>
-<h4 id="靜態記憶體管理-v11">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v11">#</a></h4>
+<h4 id="靜態記憶體管理-v7">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v7">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -619,7 +619,7 @@
 </ul>
 <hr>
 <h3 id="刪除-mutex">刪除 mutex<a class="header-anchor" href="#刪除-mutex">#</a></h3>
-<h4 id="動態記憶體管理-v12">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v12">#</a></h4>
+<h4 id="動態記憶體管理-v8">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v8">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -653,7 +653,7 @@
 <li>與 semaphore 類似，先將正在等待此鎖的所有 thread 叫醒，接著透過 <code>rt_object_delete</code> 刪除 mutex</li>
 </ul>
 <hr>
-<h4 id="靜態記憶體管理-v12">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v12">#</a></h4>
+<h4 id="靜態記憶體管理-v8">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v8">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -827,12 +827,12 @@
 </ul>
 </li>
 </ul>
-<h3 id="結構-v14">結構<a class="header-anchor" href="#結構-v14">#</a></h3>
+<h3 id="結構-v9">結構<a class="header-anchor" href="#結構-v9">#</a></h3>
 <figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br><span class="line">639</span><br><span class="line">640</span><br><span class="line">641</span><br><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> RT_USING_EVENT</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * flag defintions in event</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> RT_EVENT_FLAG_AND               0x01            <span class="comment">/**&lt; logic and */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> RT_EVENT_FLAG_OR                0x02            <span class="comment">/**&lt; logic or */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> RT_EVENT_FLAG_CLEAR             0x04            <span class="comment">/**&lt; clear flag */</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * event structure</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_event</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_ipc_object</span> <span class="title">parent</span>;</span>                        <span class="comment">/**&lt; inherit from ipc_object */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_uint32_t</span>          <span class="built_in">set</span>;                           <span class="comment">/**&lt; event set */</span></span><br><span class="line">};</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rt_event</span> *<span class="title">rt_event_t</span>;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
 <hr>
 <div class="alert alert-success"><p><strong>File:</strong> ipc.c</p></div>
 <h3 id="建立事件">建立事件<a class="header-anchor" href="#建立事件">#</a></h3>
-<h4 id="動態記憶體管理-v13">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v13">#</a></h4>
+<h4 id="動態記憶體管理-v9">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v9">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -868,7 +868,7 @@
 <li>一樣 allocate 記憶體，填入 flag，初始化，最後設定值為 0</li>
 </ul>
 <hr>
-<h4 id="靜態記憶體管理-v13">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v13">#</a></h4>
+<h4 id="靜態記憶體管理-v9">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v9">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -907,7 +907,7 @@
 </ul>
 <hr>
 <h3 id="刪除事件">刪除事件<a class="header-anchor" href="#刪除事件">#</a></h3>
-<h4 id="靜態記憶體管理-v14">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v14">#</a></h4>
+<h4 id="靜態記憶體管理-v10">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v10">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -930,7 +930,7 @@
 <li>相同的，需要先將正在等待此事件的 thread 叫醒，再刪除</li>
 </ul>
 <hr>
-<h4 id="靜態記憶體管理-v15">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v15">#</a></h4>
+<h4 id="靜態記憶體管理-v11">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v11">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>

@@ -185,7 +185,7 @@
 </ul>
 <p><div class="img-item" data-src="https://i.imgur.com/tbptSYO.png" data-sub-html=".caption"><img src="https://i.imgur.com/tbptSYO.png" alt="" title="small memory example"><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom"></span></div></div></p>
 <hr>
-<h2 id="結構-v8">結構<a class="header-anchor" href="#結構-v8">#</a></h2>
+<h2 id="結構-v13">結構<a class="header-anchor" href="#結構-v13">#</a></h2>
 <div class="alert alert-success"><p><strong>File:</strong> mem.c</p></div>
 <figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">heap_mem</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="comment">/* magic and used flag */</span></span><br><span class="line">    <span class="type">rt_uint16_t</span> magic;</span><br><span class="line">    <span class="type">rt_uint16_t</span> used;</span><br><span class="line"></span><br><span class="line">    <span class="type">rt_size_t</span> next, prev;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> RT_USING_MEMTRACE</span></span><br><span class="line">    <span class="type">rt_uint8_t</span> thread[<span class="number">4</span>];   <span class="comment">/* thread name */</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
 <ul>
@@ -268,8 +268,8 @@
 <li>把這一塊掛上 <code>lfree</code></li>
 </ul>
 <hr>
-<h2 id="分配記憶體-v2">分配記憶體<a class="header-anchor" href="#分配記憶體-v2">#</a></h2>
-<h3 id="Code-rt-malloc">Code: rt_malloc<a class="header-anchor" href="#Code-rt-malloc">#</a></h3>
+<h2 id="分配記憶體-v3">分配記憶體<a class="header-anchor" href="#分配記憶體-v3">#</a></h2>
+<h3 id="Code-rt-malloc-v2">Code: rt_malloc<a class="header-anchor" href="#Code-rt-malloc-v2">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -346,7 +346,7 @@
 <li>沒找到一樣還鎖，並回傳 NULL</li>
 </ul>
 <hr>
-<h3 id="Code-rt-realloc">Code: rt_realloc<a class="header-anchor" href="#Code-rt-realloc">#</a></h3>
+<h3 id="Code-rt-realloc-v2">Code: rt_realloc<a class="header-anchor" href="#Code-rt-realloc-v2">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -441,7 +441,7 @@
 <li>如果可以與上一顆合併，動作一樣</li>
 </ul>
 <hr>
-<h3 id="Code-rt-calloc">Code: rt_calloc<a class="header-anchor" href="#Code-rt-calloc">#</a></h3>
+<h3 id="Code-rt-calloc-v2">Code: rt_calloc<a class="header-anchor" href="#Code-rt-calloc-v2">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -478,7 +478,7 @@
 <li>清 0 並回傳起始位址</li>
 </ul>
 <hr>
-<h2 id="釋放記憶體-v2">釋放記憶體<a class="header-anchor" href="#釋放記憶體-v2">#</a></h2>
+<h2 id="釋放記憶體-v3">釋放記憶體<a class="header-anchor" href="#釋放記憶體-v3">#</a></h2>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>

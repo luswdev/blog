@@ -180,7 +180,7 @@
 <li>類似於 pipe，主要用來傳輸資料</li>
 <li>每一封郵件大小為 4 bytes（即 32 位元）</li>
 </ul>
-<h3 id="結構-v10">結構<a class="header-anchor" href="#結構-v10">#</a></h3>
+<h3 id="結構-v5">結構<a class="header-anchor" href="#結構-v5">#</a></h3>
 <div class="alert alert-success"><p><strong>File:</strong> rtdef.h</p></div>
 <figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br><span class="line">649</span><br><span class="line">650</span><br><span class="line">651</span><br><span class="line">652</span><br><span class="line">653</span><br><span class="line">654</span><br><span class="line">655</span><br><span class="line">656</span><br><span class="line">657</span><br><span class="line">658</span><br><span class="line">659</span><br><span class="line">660</span><br><span class="line">661</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> RT_USING_MAILBOX</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * mailbox structure</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_mailbox</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_ipc_object</span> <span class="title">parent</span>;</span>                        <span class="comment">/**&lt; inherit from ipc_object */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_uint32_t</span>         *msg_pool;                      <span class="comment">/**&lt; start address of message buffer */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_uint16_t</span>          size;                          <span class="comment">/**&lt; size of message pool */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_uint16_t</span>          entry;                         <span class="comment">/**&lt; index of messages in msg_pool */</span></span><br><span class="line">    <span class="type">rt_uint16_t</span>          in_offset;                     <span class="comment">/**&lt; input offset of the message buffer */</span></span><br><span class="line">    <span class="type">rt_uint16_t</span>          out_offset;                    <span class="comment">/**&lt; output offset of the message buffer */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_list_t</span>            suspend_sender_thread;         <span class="comment">/**&lt; sender thread suspended on this mailbox */</span></span><br><span class="line">};</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rt_mailbox</span> *<span class="title">rt_mailbox_t</span>;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
 <ul>
@@ -189,7 +189,7 @@
 <hr>
 <div class="alert alert-success"><p><strong>File:</strong> ipc.c</p></div>
 <h3 id="建立-mail-box">建立 mail box<a class="header-anchor" href="#建立-mail-box">#</a></h3>
-<h4 id="動態記憶體管理-v5">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v5">#</a></h4>
+<h4 id="動態記憶體管理">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -240,7 +240,7 @@
 <li>最後初始化值及等待鏈</li>
 </ul>
 <hr>
-<h4 id="靜態記憶體管理-v5">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v5">#</a></h4>
+<h4 id="靜態記憶體管理">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -287,7 +287,7 @@
 </ul>
 <hr>
 <h3 id="刪除-mail-box">刪除 mail box<a class="header-anchor" href="#刪除-mail-box">#</a></h3>
-<h4 id="動態記憶體管理-v6">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v6">#</a></h4>
+<h4 id="動態記憶體管理-v2">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v2">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -314,7 +314,7 @@
 <li>歸還郵件堆，最後刪除 mail box</li>
 </ul>
 <hr>
-<h4 id="靜態記憶體管理-v6">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v6">#</a></h4>
+<h4 id="靜態記憶體管理-v2">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v2">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -499,13 +499,13 @@
 <ul>
 <li>特性：可接受不固定長度的訊息</li>
 </ul>
-<h3 id="結構-v11">結構<a class="header-anchor" href="#結構-v11">#</a></h3>
+<h3 id="結構-v6">結構<a class="header-anchor" href="#結構-v6">#</a></h3>
 <div class="alert alert-success"><p><strong>File:</strong> rtdef.h</p></div>
 <figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">663</span><br><span class="line">664</span><br><span class="line">665</span><br><span class="line">666</span><br><span class="line">667</span><br><span class="line">668</span><br><span class="line">669</span><br><span class="line">670</span><br><span class="line">671</span><br><span class="line">672</span><br><span class="line">673</span><br><span class="line">674</span><br><span class="line">675</span><br><span class="line">676</span><br><span class="line">677</span><br><span class="line">678</span><br><span class="line">679</span><br><span class="line">680</span><br><span class="line">681</span><br><span class="line">682</span><br><span class="line">683</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> RT_USING_MESSAGEQUEUE</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * message queue structure</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_messagequeue</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_ipc_object</span> <span class="title">parent</span>;</span>                        <span class="comment">/**&lt; inherit from ipc_object */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">void</span>                *msg_pool;                      <span class="comment">/**&lt; start address of message queue */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_uint16_t</span>          msg_size;                      <span class="comment">/**&lt; message size of each message */</span></span><br><span class="line">    <span class="type">rt_uint16_t</span>          max_msgs;                      <span class="comment">/**&lt; max number of messages */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_uint16_t</span>          entry;                         <span class="comment">/**&lt; index of messages in the queue */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">void</span>                *msg_queue_head;                <span class="comment">/**&lt; list head */</span></span><br><span class="line">    <span class="type">void</span>                *msg_queue_tail;                <span class="comment">/**&lt; list tail */</span></span><br><span class="line">    <span class="type">void</span>                *msg_queue_free;                <span class="comment">/**&lt; pointer indicated the free node of queue */</span></span><br><span class="line">};</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rt_messagequeue</span> *<span class="title">rt_mq_t</span>;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
 <hr>
 <div class="alert alert-success"><p><strong>File:</strong> ipc.c</p></div>
 <h3 id="建立-message-queue">建立 message queue<a class="header-anchor" href="#建立-message-queue">#</a></h3>
-<h4 id="動態記憶體管理-v7">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v7">#</a></h4>
+<h4 id="動態記憶體管理-v3">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v3">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -568,7 +568,7 @@
 <li>最後設定 <code>entry</code> 為 0</li>
 </ul>
 <hr>
-<h4 id="靜態記憶體管理-v7">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v7">#</a></h4>
+<h4 id="靜態記憶體管理-v3">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v3">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -628,7 +628,7 @@
 </ul>
 <hr>
 <h3 id="刪除-message-queue">刪除 message queue<a class="header-anchor" href="#刪除-message-queue">#</a></h3>
-<h4 id="動態記憶體管理-v8">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v8">#</a></h4>
+<h4 id="動態記憶體管理-v4">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v4">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -655,7 +655,7 @@
 <li>接著 free <code>msg_pool</code>，並刪除物件</li>
 </ul>
 <hr>
-<h4 id="靜態記憶體管理-v8">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v8">#</a></h4>
+<h4 id="靜態記憶體管理-v4">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v4">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>

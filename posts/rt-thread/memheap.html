@@ -187,7 +187,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="結構-v15">結構<a class="header-anchor" href="#結構-v15">#</a></h2>
+<h2 id="結構-v11">結構<a class="header-anchor" href="#結構-v11">#</a></h2>
 <div class="alert alert-success"><p><strong>File:</strong> rtdef.h</p></div>
 <figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">698</span><br><span class="line">699</span><br><span class="line">700</span><br><span class="line">701</span><br><span class="line">702</span><br><span class="line">703</span><br><span class="line">704</span><br><span class="line">705</span><br><span class="line">706</span><br><span class="line">707</span><br><span class="line">708</span><br><span class="line">709</span><br><span class="line">710</span><br><span class="line">711</span><br><span class="line">712</span><br><span class="line">713</span><br><span class="line">714</span><br><span class="line">715</span><br><span class="line">716</span><br><span class="line">717</span><br><span class="line">718</span><br><span class="line">719</span><br><span class="line">720</span><br><span class="line">721</span><br><span class="line">722</span><br><span class="line">723</span><br><span class="line">724</span><br><span class="line">725</span><br><span class="line">726</span><br><span class="line">727</span><br><span class="line">728</span><br><span class="line">729</span><br><span class="line">730</span><br><span class="line">731</span><br><span class="line">732</span><br><span class="line">733</span><br><span class="line">734</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> RT_USING_MEMHEAP</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * memory item on the heap</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_memheap_item</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="type">rt_uint32_t</span>             magic;                      <span class="comment">/**&lt; magic number for memheap */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_memheap</span>      *<span class="title">pool_ptr</span>;</span>                   <span class="comment">/**&lt; point of pool */</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_memheap_item</span> *<span class="title">next</span>;</span>                       <span class="comment">/**&lt; next memheap item */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_memheap_item</span> *<span class="title">prev</span>;</span>                       <span class="comment">/**&lt; prev memheap item */</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_memheap_item</span> *<span class="title">next_free</span>;</span>                  <span class="comment">/**&lt; next free memheap item */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_memheap_item</span> *<span class="title">prev_free</span>;</span>                  <span class="comment">/**&lt; prev free memheap item */</span></span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Base structure of memory heap object</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_memheap</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_object</span>        <span class="title">parent</span>;</span>                     <span class="comment">/**&lt; inherit from rt_object */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">void</span>                   *start_addr;                 <span class="comment">/**&lt; pool start address and size */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_uint32_t</span>             pool_size;                  <span class="comment">/**&lt; pool size */</span></span><br><span class="line">    <span class="type">rt_uint32_t</span>             available_size;             <span class="comment">/**&lt; available size */</span></span><br><span class="line">    <span class="type">rt_uint32_t</span>             max_used_size;              <span class="comment">/**&lt; maximum allocated size */</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_memheap_item</span> *<span class="title">block_list</span>;</span>                 <span class="comment">/**&lt; used block list */</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_memheap_item</span> *<span class="title">free_list</span>;</span>                  <span class="comment">/**&lt; free block list */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_memheap_item</span>  <span class="title">free_header</span>;</span>                <span class="comment">/**&lt; free block list header */</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_semaphore</span>     <span class="title">lock</span>;</span>                       <span class="comment">/**&lt; semaphore lock */</span></span><br><span class="line">};</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
 <ul>
@@ -362,8 +362,8 @@
 <li>使用 <code>rt_object_detach</code> 刪除 semaphore 與 memheap</li>
 </ul>
 <hr>
-<h2 id="分配記憶體-v3">分配記憶體<a class="header-anchor" href="#分配記憶體-v3">#</a></h2>
-<h3 id="Code-rt-malloc-v2">Code: rt_malloc<a class="header-anchor" href="#Code-rt-malloc-v2">#</a></h3>
+<h2 id="分配記憶體">分配記憶體<a class="header-anchor" href="#分配記憶體">#</a></h2>
+<h3 id="Code-rt-malloc">Code: rt_malloc<a class="header-anchor" href="#Code-rt-malloc">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -504,7 +504,7 @@
 <li>不論是找失敗，或是記憶體不足，皆回傳 NULL</li>
 </ul>
 <hr>
-<h3 id="Code-rt-realloc-v2">Code: rt_realloc<a class="header-anchor" href="#Code-rt-realloc-v2">#</a></h3>
+<h3 id="Code-rt-realloc">Code: rt_realloc<a class="header-anchor" href="#Code-rt-realloc">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -702,7 +702,7 @@
 <li>回傳更新後的記憶體位址</li>
 </ul>
 <hr>
-<h3 id="Code-rt-calloc-v2">Code: rt_calloc<a class="header-anchor" href="#Code-rt-calloc-v2">#</a></h3>
+<h3 id="Code-rt-calloc">Code: rt_calloc<a class="header-anchor" href="#Code-rt-calloc">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -738,7 +738,7 @@
 <li>即要求一塊 <code>count * size</code> 大的記憶體</li>
 </ul>
 <hr>
-<h2 id="釋放記憶體-v3">釋放記憶體<a class="header-anchor" href="#釋放記憶體-v3">#</a></h2>
+<h2 id="釋放記憶體">釋放記憶體<a class="header-anchor" href="#釋放記憶體">#</a></h2>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>

@@ -176,7 +176,7 @@
 </span>  
                 
                 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><div class="alert alert-success"><p><strong>File:</strong> rtdef.h</p></div>
-<h2 id="結構-v9">結構<a class="header-anchor" href="#結構-v9">#</a></h2>
+<h2 id="結構-v14">結構<a class="header-anchor" href="#結構-v14">#</a></h2>
 <figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Thread structure</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_thread</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="comment">/* rt object */</span></span><br><span class="line">    <span class="type">char</span>        name[RT_NAME_MAX];                      <span class="comment">/**&lt; the name of thread */</span></span><br><span class="line">    <span class="type">rt_uint8_t</span>  type;                                   <span class="comment">/**&lt; type of object */</span></span><br><span class="line">    <span class="type">rt_uint8_t</span>  flags;                                  <span class="comment">/**&lt; thread's flags */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> RT_USING_MODULE</span></span><br><span class="line">    <span class="type">void</span>       *module_id;                              <span class="comment">/**&lt; id of application module */</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li>一些基本資料，如名字等</li>
@@ -219,7 +219,7 @@
 </ul>
 <hr>
 <h2 id="初始化、建立-thread">初始化、建立 thread<a class="header-anchor" href="#初始化、建立-thread">#</a></h2>
-<h3 id="靜態記憶體管理-v3">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v3">#</a></h3>
+<h3 id="靜態記憶體管理-v12">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v12">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -348,7 +348,7 @@
 <li>最後依序完成 tick、sig、hook 等的初始化</li>
 </ul>
 <hr>
-<h3 id="動態記憶體管理-v3">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v3">#</a></h3>
+<h3 id="動態記憶體管理-v10">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v10">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -565,7 +565,7 @@
 </ul>
 <hr>
 <h3 id="刪除-thread">刪除 thread<a class="header-anchor" href="#刪除-thread">#</a></h3>
-<h4 id="動態記憶體管理-v4">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v4">#</a></h4>
+<h4 id="動態記憶體管理-v11">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v11">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -592,7 +592,7 @@
 <li>接著將 timer 還回去，修改狀態為 <code>RT_THREAD_CLOSE</code>，插入至 <code>rt_thread_defunct</code></li>
 </ul>
 <hr>
-<h4 id="靜態記憶體管理-v4">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v4">#</a></h4>
+<h4 id="靜態記憶體管理-v13">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v13">#</a></h4>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>

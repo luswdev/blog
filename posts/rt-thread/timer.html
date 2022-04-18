@@ -189,7 +189,7 @@
 <li>由於 timer 鏈需要由小到大排，所以將 timer #4 插在 #2 與 #3 之間</li>
 </ul>
 <hr>
-<h2 id="結構-v3">結構<a class="header-anchor" href="#結構-v3">#</a></h2>
+<h2 id="結構-v15">結構<a class="header-anchor" href="#結構-v15">#</a></h2>
 <div class="alert alert-success"><p><strong>File:</strong> rtdef.h</p></div>
 <figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * timer structure</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rt_timer</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rt_object</span> <span class="title">parent</span>;</span>                            <span class="comment">/**&lt; inherit from rt_object */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_list_t</span>        row[RT_TIMER_SKIP_LIST_LEVEL];</span><br><span class="line"></span><br><span class="line">    <span class="type">void</span> (*timeout_func)(<span class="type">void</span> *parameter);              <span class="comment">/**&lt; timeout function */</span></span><br><span class="line">    <span class="type">void</span>            *parameter;                         <span class="comment">/**&lt; timeout function's parameter */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">rt_tick_t</span>        init_tick;                         <span class="comment">/**&lt; timer timeout tick */</span></span><br><span class="line">    <span class="type">rt_tick_t</span>        timeout_tick;                      <span class="comment">/**&lt; timeout tick */</span></span><br><span class="line">};</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rt_timer</span> *<span class="title">rt_timer_t</span>;</span></span><br></pre></td></tr></tbody></table></figure>
 <ul>
@@ -202,7 +202,7 @@
 <ul>
 <li>在建立一個 thread 時，<code>_rt_thread_init</code> 會呼叫 <code>rt_timer_init</code> 來初始化 timer</li>
 </ul>
-<h3 id="靜態記憶體管理">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理">#</a></h3>
+<h3 id="靜態記憶體管理-v14">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v14">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -267,7 +267,7 @@
 <li>設定 flag 為 decativated，設定 timeout_func、tick、timerlist</li>
 </ul>
 <hr>
-<h3 id="動態記憶體管理">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理">#</a></h3>
+<h3 id="動態記憶體管理-v12">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v12">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -310,7 +310,7 @@
 </ul>
 <hr>
 <h2 id="刪除-timer">刪除 timer<a class="header-anchor" href="#刪除-timer">#</a></h2>
-<h3 id="動態記憶體管理-v2">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v2">#</a></h3>
+<h3 id="動態記憶體管理-v13">動態記憶體管理<a class="header-anchor" href="#動態記憶體管理-v13">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
@@ -334,7 +334,7 @@
 <li>透過 <code>rt_object_delete</code> 移除 timer</li>
 </ul>
 <hr>
-<h3 id="靜態記憶體管理-v2">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v2">#</a></h3>
+<h3 id="靜態記憶體管理-v15">靜態記憶體管理<a class="header-anchor" href="#靜態記憶體管理-v15">#</a></h3>
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
