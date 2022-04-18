@@ -1,8 +1,8 @@
 ---
 title: 使用 ANSI 跳脫碼印出有色文字
 date: 2019-12-26 22:50:57
-tags: [C語言, ANSI]
-category: C語言
+tags: [C/C++, ANSI]
+category: C/C++
 summary: 在 C 中使用 ANSI 跳脫碼，讓 printf 印出有顏色的文字
 ---
 
