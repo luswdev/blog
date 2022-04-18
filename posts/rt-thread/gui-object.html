@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="RT-Thread GUI - Object">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>RT-Thread GUI - Object | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-73LPFQQS33"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-73LPFQQS33');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>RT-Thread GUI - Object</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/RT-Thread-GUI/">RT-Thread GUI</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2019-01-01
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        1.1k
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="RT-Thread-GUI-物件架構">RT-Thread GUI 物件架構<a class="header-anchor" href="#RT-Thread-GUI-物件架構">#</a></h2>
+<p>在 RTGUI 中，最小的物件為 widget，再來是 window，window 也是一個 widget；而每個 widget 也是一個 object，這是為了仿造 C++ 的物件導向所設計的，相同的概念我們在 RT-Thread 中已經看過許多次了，在 GUI engine 中也是相同的設計，其中在 object 結構中又串在 type 的結構上，type 中定義了兩個函式：<code>constructor</code> 與 <code>destructor</code>，在 C++ 的 class 中，常使用 <code>init</code> 函式來初始化新建的 class，這裡的 <code>constructor</code> 與 <code>destructor</code> 即用來初始化新建立的物件，及在刪除物件時，釋放該釋放的記憶體。<sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[RTGUI粗讲（个人见解篇之三、RTGUI WIDGET （2））](https://blog.csdn.net/xuzhenglim/article/details/11883351)">[1]</span></a></sup></p>
+<hr>
+<h2 id="結構">結構<a class="header-anchor" href="#結構">#</a></h2>
+<div class="alert alert-success"><p><strong>File:</strong> rtgui_object.h</p></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* rtgui base object */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rtgui_object</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="comment">/* object type */</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">rtgui_type_t</span> *type;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* the event handler */</span></span><br><span class="line">    rtgui_event_handler_ptr event_handler;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">enum</span> rtgui_object_flag flag;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">rt_uint32_t</span> id;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* rtgui type structure */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rtgui_type</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="comment">/* type name */</span></span><br><span class="line">    <span class="keyword">char</span> *name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* parent type link */</span></span><br><span class="line">    <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_type</span> *<span class="title">parent</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* constructor and destructor */</span></span><br><span class="line">    <span class="keyword">rtgui_constructor_t</span> constructor;</span><br><span class="line">    <span class="keyword">rtgui_destructor_t</span> destructor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* size of type */</span></span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="定義物件類型">定義物件類型<a class="header-anchor" href="#定義物件類型">#</a></h2>
+<p>RTGUI 設計了一個巨集函數來定義不同的物件，如下：</p>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEFINE_CLASS_TYPE(type, name, parent, constructor, destructor, size) \</span></span><br><span class="line">	<span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_type</span> _<span class="title">rtgui_</span>##<span class="title">type</span> = {</span> \</span><br><span class="line">	name, \</span><br><span class="line">	parent, \</span><br><span class="line">	RTGUI_CONSTRUCTOR(constructor), \</span><br><span class="line">	RTGUI_DESTRUCTOR(destructor), \</span><br><span class="line">	size }; \</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">rtgui_type_t</span> *_rtgui_#<span class="meta">#type##_get_type(void) { return &amp;_rtgui_##type; } \</span></span><br><span class="line">	RTM_EXPORT(_rtgui_##type##_get_type)</span><br></pre></td></tr></tbody></table></figure>
+<p><code>##</code> 為連字符，在<a href="/rt-thread-RTM-EXPORT">RT-Thread 理解 RTM_EXPORT</a>裡有提過了，基本上就是填入值進去結構體</p>
+<hr>
+<h2 id="建立物件">建立物件<a class="header-anchor" href="#建立物件">#</a></h2>
+<div class="alert alert-success"><p><strong>File:</strong> rtgui_object.c</p></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*object_type</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建立物件</td>
+<td>物件指標</td>
+<td>要建立的物件種類</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Creates a new object: it calls the corresponding constructors</span></span><br><span class="line"><span class="comment"> * (from the constructor of the base class to the constructor of the more</span></span><br><span class="line"><span class="comment"> * derived class) and then sets the values of the given properties</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param object_type the type of object to create</span></span><br><span class="line"><span class="comment"> * @return the created object</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">rtgui_object_t</span> *rtgui_object_create(<span class="keyword">const</span> <span class="keyword">rtgui_type_t</span> *object_type)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">rtgui_object_t</span> *new_object;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!object_type)</span><br><span class="line">        <span class="keyword">return</span> RT_NULL;</span><br><span class="line"></span><br><span class="line">    new_object = rtgui_malloc(object_type-&gt;size);</span><br><span class="line">    <span class="keyword">if</span> (new_object == RT_NULL) <span class="keyword">return</span> RT_NULL;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RTGUI_OBJECT_TRACE</span></span><br><span class="line">    obj_info.objs_number ++;</span><br><span class="line">    obj_info.allocated_size += object_type-&gt;size;</span><br><span class="line">    <span class="keyword">if</span> (obj_info.allocated_size &gt; obj_info.max_allocated)</span><br><span class="line">        obj_info.max_allocated = obj_info.allocated_size;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    new_object-&gt;type = object_type;</span><br><span class="line"></span><br><span class="line">    rtgui_type_object_construct(object_type, new_object);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> new_object;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_object_create);</span><br></pre></td></tr></tbody></table></figure>
+<p>建立物件相當簡單，透過欲建立的物件類型所定意義的 <code>construct</code> 函數來建立，其中 <code>rtgui_type_object_construct</code> 會呼叫正確的建立函式來初始化資料。</p>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>呼叫正確的 <code>construct</code> 函式來初始化物件</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*type</code></th>
+<th><code>*object</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲初始化的物件類型</td>
+<td>物件本體</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_type_object_construct</span><span class="params">(<span class="keyword">const</span> <span class="keyword">rtgui_type_t</span> *type, <span class="keyword">rtgui_object_t</span> *object)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="comment">/* construct from parent to children */</span></span><br><span class="line">    <span class="keyword">if</span> (type-&gt;parent != RT_NULL)</span><br><span class="line">        rtgui_type_object_construct(type-&gt;parent, object);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (type-&gt;constructor)</span><br><span class="line">        type-&gt;constructor(object);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>如果欲建立的物件類型在某一個物件類型的底下，如 window 之於 widget，則先呼叫在上層的 <code>construct</code>；接著呼叫自己的 <code>construct</code> 來完成建立的動作。</p>
+<hr>
+<p>再仔細的看一下 “object” 的 <code>construct</code> 函式，其動作為：填入 vaild 的旗標，並將 id 填入 object 的記憶體指標；以上動作在 <code>_rtgui_object_constructor</code> 完成</p>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*object</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“object” 建立函式</td>
+<td>void</td>
+<td>要建立的物件</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> _rtgui_object_constructor(<span class="keyword">rtgui_object_t</span> *object)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">if</span> (!object)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    object-&gt;flag = RTGUI_OBJECT_FLAG_VALID;</span><br><span class="line">    object-&gt;id   = (<span class="keyword">rt_uint32_t</span>)object;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="刪除物件">刪除物件<a class="header-anchor" href="#刪除物件">#</a></h2>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*object</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刪除物件</td>
+<td>void</td>
+<td>要刪除的物件</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Destroys the object.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The object destructors will be called in inherited type order.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param object the object to destroy</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_object_destroy</span><span class="params">(<span class="keyword">rtgui_object_t</span> *object)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">if</span> (!object || object-&gt;flag &amp; RTGUI_OBJECT_FLAG_STATIC)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RTGUI_OBJECT_TRACE</span></span><br><span class="line">    obj_info.objs_number --;</span><br><span class="line">    obj_info.allocated_size -= object-&gt;type-&gt;size;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* call destructor */</span></span><br><span class="line">    RT_ASSERT(object-&gt;type != RT_NULL);</span><br><span class="line">    rtgui_type_destructors_call(object-&gt;type, object);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* release object */</span></span><br><span class="line">    rtgui_free(object);</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_object_destroy);</span><br></pre></td></tr></tbody></table></figure>
+<p>這裡一樣透過 <code>rtgui_type_destructors_call</code> 來呼叫正確的 <code>destruct</code> 函式，<code>destruct</code> 負責釋放該釋放的記憶體；最後透過 <code>rtgui_free</code> 釋放整個物件。<code>regui_free</code> 則簡單的呼叫 <code>rt_free</code> 釋放記憶體，我們在前幾篇文章有討論過了（<a href="/rt-mem#Code-free">mempool</a>、<a href="/rt-memheap#%E9%87%8B%E6%94%BE%E8%A8%98%E6%86%B6%E9%AB%94">memheap</a>、<a href="/rt-small-mem#%E9%87%8B%E6%94%BE%E8%A8%98%E6%86%B6%E9%AB%94">small mem</a>、<a href="/rt-slab#%E9%87%8B%E6%94%BE%E8%A8%98%E6%86%B6%E9%AB%94">slab</a>）</p>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>呼叫正確的 <code>destructor</code> 函式來清除物件</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*type</code></th>
+<th><code>*object</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欲清除的物件類型</td>
+<td>物件本體</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_type_destructors_call</span><span class="params">(<span class="keyword">const</span> <span class="keyword">rtgui_type_t</span> *type, <span class="keyword">rtgui_object_t</span> *object)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="comment">/* destruct from children to parent */</span></span><br><span class="line">    <span class="keyword">if</span> (type-&gt;destructor)</span><br><span class="line">        type-&gt;destructor(object);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (type-&gt;parent)</span><br><span class="line">        rtgui_type_destructors_call(type-&gt;parent, object);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>同樣的如果此物件類型是在某個物件類型的底下，先呼叫上層的 <code>destruct</code>；接著呼叫自己的 <code>desturct</code> 完成清除的動作。</p>
+<hr>
+<p>最後來看一下 “object” 的刪除函式：填入 none 的旗標，並將物件種類設為 NULL；動作在 <code>_rtgui_object_destructor</code> 完成</p>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*object</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“object” 的刪除函式</td>
+<td>void</td>
+<td>欲清除的物件</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Destroys the object */</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> _rtgui_object_destructor(<span class="keyword">rtgui_object_t</span> *object)</span><br><span class="line">{</span><br><span class="line">    <span class="comment">/* Any valid objest should both have valid flag _and_ valid type. Only use</span></span><br><span class="line"><span class="comment">     * flag is not enough because the chunk of memory may be reallocted to other</span></span><br><span class="line"><span class="comment">     * object and thus the flag will become valid. */</span></span><br><span class="line">    object-&gt;flag = RTGUI_OBJECT_FLAG_NONE;</span><br><span class="line">    object-&gt;type = RT_NULL;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<div id="footnotes"><hr class="block-hr"><div id="footnotelist" class="card card-default"><div class="card-header">Reference</div><ol class="list-group list-group-flush" style="list-style: none; padding-left: 0; margin-left: 0px"><li id="fn:1" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://blog.csdn.net/xuzhenglim/article/details/11883351" target="_blank" rel="noopener">RTGUI粗讲（个人见解篇之三、RTGUI WIDGET （2））</a><a href="#fnref:1" rev="footnote"> ↩</a></span></li></ol></div></div><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/kernel/">#kernel</a> <a href="/tags/RT-Thread/">#RT-Thread</a> <a href="/tags/GUI/">#GUI</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/rt-thread/gui-widget.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/hexo/auto-backup-with-crontab.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2019-01-01 15:08:37',
+            title: 'RT-Thread GUI - Object',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2022 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>

@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker">
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="RT-Thread GUI - Window">
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware.">
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech">
+
+<!--Type page-->
+
+    <meta property="og:type" content="article">
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg">
+
+
+<!-- Title -->
+
+<title>RT-Thread GUI - Window | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png">
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-73LPFQQS33"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-73LPFQQS33');
+</script>
+
+
+
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>RT-Thread GUI - Window</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/RT-Thread-GUI/">RT-Thread GUI</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2019-01-29
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        2.6k
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><div class="alert alert-success"><p><strong>File:</strong> window.h</p></div>
+<h2 id="結構">結構<a class="header-anchor" href="#結構">#</a></h2>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rtgui_win</span></span></span><br><span class="line"><span class="class">{</span></span><br><span class="line">    <span class="comment">/* inherit from container */</span></span><br><span class="line">    <span class="keyword">rtgui_container_t</span> parent;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* update count */</span></span><br><span class="line">    <span class="keyword">rt_base_t</span> update;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* drawing count */</span></span><br><span class="line">    <span class="keyword">rt_base_t</span> drawing;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_rect</span> <span class="title">drawing_rect</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* parent window. RT_NULL if the window is a top level window */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_win</span> *<span class="title">parent_window</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_region</span> <span class="title">outer_clip</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_rect</span> <span class="title">outer_extent</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* the widget that will grab the focus in current window */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_widget</span> *<span class="title">focused_widget</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* which app I belong */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_app</span> *<span class="title">app</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* window style */</span></span><br><span class="line">    <span class="keyword">rt_uint16_t</span> style;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* window state flag */</span></span><br><span class="line">    <span class="keyword">enum</span> rtgui_win_flag flag;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">rtgui_modal_code_t</span> modal_code;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* last mouse event handled widget */</span></span><br><span class="line">    <span class="keyword">rtgui_widget_t</span> *last_mevent_widget;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* window title */</span></span><br><span class="line">    <span class="keyword">char</span> *title;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_wintitle</span> *_<span class="title">title_wgt</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* call back */</span></span><br><span class="line">    <span class="keyword">rt_bool_t</span> (*on_activate)(struct rtgui_object *widget, struct rtgui_event *event);</span><br><span class="line">    <span class="keyword">rt_bool_t</span> (*on_deactivate)(struct rtgui_object *widget, struct rtgui_event *event);</span><br><span class="line">    <span class="keyword">rt_bool_t</span> (*on_close)(struct rtgui_object *widget, struct rtgui_event *event);</span><br><span class="line">    <span class="comment">/* the key is sent to the focused widget by default. If the focused widget</span></span><br><span class="line"><span class="comment">     * and all of it's parents didn't handle the key event, it will be handled</span></span><br><span class="line"><span class="comment">     * by @func on_key</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * If you want to handle key event on your own, it's better to overload</span></span><br><span class="line"><span class="comment">     * this function other than handle EVENT_KBD in event_handler.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">rt_bool_t</span> (*on_key)(struct rtgui_object *widget, struct rtgui_event *event);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* reserved user data */</span></span><br><span class="line">    <span class="keyword">void</span> *user_data;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Private data. */</span></span><br><span class="line">    <span class="keyword">rt_base_t</span> (*_do_show)(struct rtgui_win *win);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* app ref_count */</span></span><br><span class="line">    <span class="keyword">rt_uint16_t</span> app_ref_count;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* win magic flag, magic value is 0xA5A55A5A */</span></span><br><span class="line">    <span class="keyword">rt_uint32_t</span>	magic;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="定義物件類型">定義物件類型<a class="header-anchor" href="#定義物件類型">#</a></h3>
+<div class="alert alert-success"><p><strong>File:</strong> window.c</p></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">DEFINE_CLASS_TYPE(win, <span class="string">"win"</span>,</span><br><span class="line">                  RTGUI_PARENT_TYPE(container),</span><br><span class="line">                  _rtgui_win_constructor,</span><br><span class="line">                  _rtgui_win_destructor,</span><br><span class="line">                  <span class="keyword">sizeof</span>(struct rtgui_win));</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="建立視窗">建立視窗<a class="header-anchor" href="#建立視窗">#</a></h2>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建立視窗</td>
+<td>視窗指標</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*parent_window</code></th>
+<th><code>*title</code></th>
+<th><code>*rect</code></th>
+<th><code>style</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>上層視窗</td>
+<td>視窗標題</td>
+<td>視窗的大小</td>
+<td>一些風格</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">rtgui_win_t</span> *rtgui_win_create(struct rtgui_win *parent_window,</span><br><span class="line">                              <span class="keyword">const</span> <span class="keyword">char</span> *title,</span><br><span class="line">                              <span class="keyword">rtgui_rect_t</span> *rect,</span><br><span class="line">                              <span class="keyword">rt_uint16_t</span> style)</span><br><span class="line">{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_win</span> *<span class="title">win</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* allocate win memory */</span></span><br><span class="line">    win = RTGUI_WIN(rtgui_widget_create(RTGUI_WIN_TYPE));</span><br><span class="line">    <span class="keyword">if</span> (win == RT_NULL)</span><br><span class="line">        <span class="keyword">return</span> RT_NULL;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (rtgui_win_init(win, parent_window, title, rect, style) != <span class="number">0</span>)</span><br><span class="line">    {</span><br><span class="line">        rtgui_widget_destroy(RTGUI_WIDGET(win));</span><br><span class="line">        <span class="keyword">return</span> RT_NULL;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> win;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_create);</span><br></pre></td></tr></tbody></table></figure>
+<p>透過 <code>rtgui_win_init</code> 完成設定</p>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始化視窗</td>
+<td>檢查碼</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*win</code></th>
+<th><code>*parent_window</code></th>
+<th><code>*title</code></th>
+<th><code>*rect</code></th>
+<th><code>style</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>視窗本體</td>
+<td>上層視窗</td>
+<td>視窗標題</td>
+<td>視窗的大小</td>
+<td>一些風格</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rtgui_win_init</span><span class="params">(struct rtgui_win *win, struct rtgui_win *parent_window,</span></span></span><br><span class="line"><span class="function"><span class="params">                   <span class="keyword">const</span> <span class="keyword">char</span> *title,</span></span></span><br><span class="line"><span class="function"><span class="params">                   <span class="keyword">rtgui_rect_t</span> *rect,</span></span></span><br><span class="line"><span class="function"><span class="params">                   <span class="keyword">rt_uint16_t</span> style)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">if</span> (win == RT_NULL) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set parent window */</span></span><br><span class="line">    win-&gt;parent_window = parent_window;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set title, rect and style */</span></span><br><span class="line">    <span class="keyword">if</span> (title != RT_NULL)</span><br><span class="line">        win-&gt;title = rt_strdup(title);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        win-&gt;title = RT_NULL;</span><br><span class="line"></span><br><span class="line">    rtgui_widget_set_rect(RTGUI_WIDGET(win), rect);</span><br><span class="line">    win-&gt;style = style;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!((style &amp; RTGUI_WIN_STYLE_NO_TITLE) &amp;&amp; (style &amp; RTGUI_WIN_STYLE_NO_BORDER)))</span><br><span class="line">    {</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_rect</span> <span class="title">trect</span> = *<span class="title">rect</span>;</span></span><br><span class="line"></span><br><span class="line">        win-&gt;_title_wgt = rtgui_wintitle_create(win);</span><br><span class="line">        <span class="keyword">if</span> (!win-&gt;_title_wgt)</span><br><span class="line">            <span class="keyword">goto</span> __on_err;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!(style &amp; RTGUI_WIN_STYLE_NO_BORDER))</span><br><span class="line">        {</span><br><span class="line">            rtgui_rect_inflate(&amp;trect, WINTITLE_BORDER_SIZE);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">if</span> (!(style &amp; RTGUI_WIN_STYLE_NO_TITLE))</span><br><span class="line">        {</span><br><span class="line">            trect.y1 -= WINTITLE_HEIGHT;</span><br><span class="line">        }</span><br><span class="line">        rtgui_widget_set_rect(RTGUI_WIDGET(win-&gt;_title_wgt), &amp;trect);</span><br><span class="line">        <span class="comment">/* Update the clip of the wintitle manually. */</span></span><br><span class="line">        rtgui_region_subtract_rect(&amp;(RTGUI_WIDGET(win-&gt;_title_wgt)-&gt;clip),</span><br><span class="line">                                   &amp;(RTGUI_WIDGET(win-&gt;_title_wgt)-&gt;clip),</span><br><span class="line">                                   &amp;(RTGUI_WIDGET(win)-&gt;extent));</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* The window title is always un-hidden for simplicity. */</span></span><br><span class="line">        rtgui_widget_show(RTGUI_WIDGET(win-&gt;_title_wgt));</span><br><span class="line">        rtgui_region_init_with_extents(&amp;win-&gt;outer_clip, &amp;trect);</span><br><span class="line">        win-&gt;outer_extent = trect;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    {</span><br><span class="line">        rtgui_region_init_with_extents(&amp;win-&gt;outer_clip, rect);</span><br><span class="line">        win-&gt;outer_extent = *rect;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (_rtgui_win_create_in_server(win) == RT_FALSE)</span><br><span class="line">    {</span><br><span class="line">        <span class="keyword">goto</span> __on_err;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    win-&gt;app-&gt;window_cnt++;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">__on_err:</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_init);</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="建立主視窗">建立主視窗<a class="header-anchor" href="#建立主視窗">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建立主視窗</td>
+<td>視窗指標</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*parent_window</code></th>
+<th><code>*title</code></th>
+<th><code>style</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>上層視窗</td>
+<td>視窗標題</td>
+<td>一些風格</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">rtgui_win_t</span> *rtgui_mainwin_create(struct rtgui_win *parent_window, <span class="keyword">const</span> <span class="keyword">char</span> *title, <span class="keyword">rt_uint16_t</span> style)</span><br><span class="line">{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_rect</span> <span class="title">rect</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* get rect of main window */</span></span><br><span class="line">    rtgui_get_mainwin_rect(&amp;rect);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> rtgui_win_create(parent_window, title, &amp;rect, style);</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_mainwin_create);</span><br></pre></td></tr></tbody></table></figure>
+<p>建立一個固定大小的視窗，這個大小被設定在 <code>_mainwin_rect</code> 這個全域變數裡面，可以透過 <code>rtgui_get_mainwin_rect</code> 來取得這個值。</p>
+<hr>
+<h2 id="刪除視窗">刪除視窗<a class="header-anchor" href="#刪除視窗">#</a></h2>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*win</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刪除視窗</td>
+<td>void</td>
+<td>目標視窗</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_win_destroy</span><span class="params">(struct rtgui_win *win)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="comment">/* close the window first if it's not. */</span></span><br><span class="line">    <span class="keyword">if</span> (!(win-&gt;flag &amp; RTGUI_WIN_FLAG_CLOSED))</span><br><span class="line">    {</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event_win_close</span> <span class="title">eclose</span>;</span></span><br><span class="line"></span><br><span class="line">        RTGUI_EVENT_WIN_CLOSE_INIT(&amp;eclose);</span><br><span class="line">        eclose.wid = win;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (win-&gt;style &amp; RTGUI_WIN_STYLE_DESTROY_ON_CLOSE)</span><br><span class="line">        {</span><br><span class="line">            _rtgui_win_deal_close(win,</span><br><span class="line">                                  (struct rtgui_event *)&amp;eclose,</span><br><span class="line">                                  RT_TRUE);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            _rtgui_win_deal_close(win,</span><br><span class="line">                                  (struct rtgui_event *)&amp;eclose,</span><br><span class="line">                                  RT_TRUE);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win-&gt;flag &amp; RTGUI_WIN_FLAG_MODAL)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* set the RTGUI_WIN_STYLE_DESTROY_ON_CLOSE flag so the window will be</span></span><br><span class="line"><span class="comment">         * destroyed after the event_loop */</span></span><br><span class="line">        win-&gt;style |= RTGUI_WIN_STYLE_DESTROY_ON_CLOSE;</span><br><span class="line">        rtgui_win_end_modal(win, RTGUI_MODAL_CANCEL);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    {</span><br><span class="line">        rtgui_widget_destroy(RTGUI_WIDGET(win));</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_destroy);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="關閉視窗">關閉視窗<a class="header-anchor" href="#關閉視窗">#</a></h2>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*win</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>關閉視窗</td>
+<td>void</td>
+<td>目標視窗</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* send a close event to myself to get a consistent behavior */</span></span><br><span class="line"><span class="keyword">rt_bool_t</span> rtgui_win_close(struct rtgui_win *win)</span><br><span class="line">{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event_win_close</span> <span class="title">eclose</span>;</span></span><br><span class="line"></span><br><span class="line">    RTGUI_EVENT_WIN_CLOSE_INIT(&amp;eclose);</span><br><span class="line">    eclose.wid = win;</span><br><span class="line">    <span class="keyword">return</span> _rtgui_win_deal_close(win,</span><br><span class="line">                                 (struct rtgui_event *)&amp;eclose,</span><br><span class="line">                                 RT_FALSE);</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_close);</span><br></pre></td></tr></tbody></table></figure>
+<p>使用 <code>_rtgui_win_deal_close</code> 完成關閉動作</p>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刪除視窗</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*win</code></th>
+<th><code>*event</code></th>
+<th><code>force_close</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目標視窗</td>
+<td>關閉事件</td>
+<td>是否要強致關閉</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">rt_bool_t</span> _rtgui_win_deal_close(struct rtgui_win *win,</span><br><span class="line">                                       struct rtgui_event *event,</span><br><span class="line">                                       <span class="keyword">rt_bool_t</span> force_close)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">if</span> (win-&gt;on_close != RT_NULL)</span><br><span class="line">    {</span><br><span class="line">        <span class="keyword">if</span> ((win-&gt;on_close(RTGUI_OBJECT(win), event) == RT_FALSE) &amp;&amp; !force_close)</span><br><span class="line">            <span class="keyword">return</span> RT_FALSE;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    rtgui_win_hide(win);</span><br><span class="line"></span><br><span class="line">    win-&gt;flag |= RTGUI_WIN_FLAG_CLOSED;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win-&gt;flag &amp; RTGUI_WIN_FLAG_MODAL)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* rtgui_win_end_modal cleared the RTGUI_WIN_FLAG_MODAL in win-&gt;flag so</span></span><br><span class="line"><span class="comment">         * we have to record it. */</span></span><br><span class="line">        rtgui_win_end_modal(win, RTGUI_MODAL_CANCEL);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    win-&gt;app-&gt;window_cnt--;</span><br><span class="line">    <span class="keyword">if</span> (win-&gt;app-&gt;window_cnt == <span class="number">0</span> &amp;&amp; !(win-&gt;app-&gt;state_flag &amp; RTGUI_APP_FLAG_KEEP))</span><br><span class="line">    {</span><br><span class="line">        rtgui_app_exit(rtgui_app_self(), <span class="number">0</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win-&gt;style &amp; RTGUI_WIN_STYLE_DESTROY_ON_CLOSE)</span><br><span class="line">    {</span><br><span class="line">        rtgui_win_destroy(win);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_TRUE;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="設定視窗">設定視窗<a class="header-anchor" href="#設定視窗">#</a></h2>
+<h3 id="大小">大小<a class="header-anchor" href="#大小">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>設定視窗大小</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*win</code></th>
+<th><code>*rect</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>視窗本體</td>
+<td>新大小</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">842</span><br><span class="line">843</span><br><span class="line">844</span><br><span class="line">845</span><br><span class="line">846</span><br><span class="line">847</span><br><span class="line">848</span><br><span class="line">849</span><br><span class="line">850</span><br><span class="line">851</span><br><span class="line">852</span><br><span class="line">853</span><br><span class="line">854</span><br><span class="line">855</span><br><span class="line">856</span><br><span class="line">857</span><br><span class="line">858</span><br><span class="line">859</span><br><span class="line">860</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_win_set_rect</span><span class="params">(<span class="keyword">rtgui_win_t</span> *win, <span class="keyword">rtgui_rect_t</span> *rect)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event_win_resize</span> <span class="title">event</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win == RT_NULL || rect == RT_NULL) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    RTGUI_WIDGET(win)-&gt;extent = *rect;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win-&gt;flag &amp; RTGUI_WIN_FLAG_CONNECTED)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* set window resize event to server */</span></span><br><span class="line">        RTGUI_EVENT_WIN_RESIZE_INIT(&amp;event);</span><br><span class="line">        event.wid = win;</span><br><span class="line">        event.rect = *rect;</span><br><span class="line"></span><br><span class="line">        rtgui_server_post_event(&amp;(event.parent), <span class="keyword">sizeof</span>(struct rtgui_event_win_resize));</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_set_rect);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="OnActive-函式">OnActive 函式<a class="header-anchor" href="#OnActive-函式">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>設定 OnActive 函式</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*win</code></th>
+<th><code>handler</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>視窗本體</td>
+<td>OnActive 函式</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">862</span><br><span class="line">863</span><br><span class="line">864</span><br><span class="line">865</span><br><span class="line">866</span><br><span class="line">867</span><br><span class="line">868</span><br><span class="line">869</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_win_set_onactivate</span><span class="params">(<span class="keyword">rtgui_win_t</span> *win, rtgui_event_handler_ptr handler)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">if</span> (win != RT_NULL)</span><br><span class="line">    {</span><br><span class="line">        win-&gt;on_activate = handler;</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_set_onactivate);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="OnDeactive-函式">OnDeactive 函式<a class="header-anchor" href="#OnDeactive-函式">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>設定 OnDeactive 函式</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*win</code></th>
+<th><code>handler</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>視窗本體</td>
+<td>OnDeactive 函式</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">871</span><br><span class="line">872</span><br><span class="line">873</span><br><span class="line">874</span><br><span class="line">875</span><br><span class="line">876</span><br><span class="line">877</span><br><span class="line">878</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_win_set_ondeactivate</span><span class="params">(<span class="keyword">rtgui_win_t</span> *win, rtgui_event_handler_ptr handler)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">if</span> (win != RT_NULL)</span><br><span class="line">    {</span><br><span class="line">        win-&gt;on_deactivate = handler;</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_set_ondeactivate);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="OnClose-函式">OnClose 函式<a class="header-anchor" href="#OnClose-函式">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>設定 OnClose 函式</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*win</code></th>
+<th><code>handler</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>視窗本體</td>
+<td>OnClose 函式</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">880</span><br><span class="line">881</span><br><span class="line">882</span><br><span class="line">883</span><br><span class="line">884</span><br><span class="line">885</span><br><span class="line">886</span><br><span class="line">887</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_win_set_onclose</span><span class="params">(<span class="keyword">rtgui_win_t</span> *win, rtgui_event_handler_ptr handler)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">if</span> (win != RT_NULL)</span><br><span class="line">    {</span><br><span class="line">        win-&gt;on_close = handler;</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_set_onclose);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="OnKey">OnKey<a class="header-anchor" href="#OnKey">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>設定 OnKey 函式</td>
+<td>void</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*win</code></th>
+<th><code>handler</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>視窗本體</td>
+<td>OnKey 函式</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">889</span><br><span class="line">890</span><br><span class="line">891</span><br><span class="line">892</span><br><span class="line">893</span><br><span class="line">894</span><br><span class="line">895</span><br><span class="line">896</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_win_set_onkey</span><span class="params">(<span class="keyword">rtgui_win_t</span> *win, rtgui_event_handler_ptr handler)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">if</span> (win != RT_NULL)</span><br><span class="line">    {</span><br><span class="line">        win-&gt;on_key = handler;</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_set_onkey);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="視窗的行為">視窗的行為<a class="header-anchor" href="#視窗的行為">#</a></h2>
+<h3 id="動態模式">動態模式<a class="header-anchor" href="#動態模式">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*win</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>進入動態模式</td>
+<td>檢查碼</td>
+<td>視窗本體</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">rt_base_t</span> rtgui_win_enter_modal(struct rtgui_win *win)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">rt_base_t</span> exit_code = <span class="number">-1</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event_win_modal_enter</span> <span class="title">emodal</span>;</span></span><br><span class="line"></span><br><span class="line">    RTGUI_EVENT_WIN_MODAL_ENTER_INIT(&amp;emodal);</span><br><span class="line">    emodal.wid = win;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (rtgui_server_post_event_sync((struct rtgui_event *)&amp;emodal,</span><br><span class="line">                                     <span class="keyword">sizeof</span>(emodal)) != RT_EOK)</span><br><span class="line">        <span class="keyword">return</span> exit_code;</span><br><span class="line"></span><br><span class="line">    win-&gt;flag |= RTGUI_WIN_FLAG_MODAL;</span><br><span class="line">    win-&gt;app_ref_count = win-&gt;app-&gt;ref_count + <span class="number">1</span>;</span><br><span class="line">    exit_code = rtgui_app_run(win-&gt;app);</span><br><span class="line">    win-&gt;flag &amp;= ~RTGUI_WIN_FLAG_MODAL;</span><br><span class="line"></span><br><span class="line">    rtgui_win_hide(win);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> exit_code;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_enter_modal);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>離開動態模式</td>
+<td>檢查碼</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*win</code></th>
+<th><code>modal_code</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>視窗本體</td>
+<td>動態模式編號</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_win_end_modal</span><span class="params">(struct rtgui_win *win, <span class="keyword">rtgui_modal_code_t</span> modal_code)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (win == RT_NULL || !(win-&gt;flag &amp; RTGUI_WIN_FLAG_MODAL))</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (win-&gt;app_ref_count &lt; win-&gt;app-&gt;ref_count)</span><br><span class="line">    {</span><br><span class="line">        rtgui_app_exit(win-&gt;app, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        i ++;</span><br><span class="line">        <span class="keyword">if</span> (i &gt;= <span class="number">1000</span>)</span><br><span class="line">        {</span><br><span class="line">            rt_kprintf(<span class="string">" =*=&gt; rtgui_win_end_modal while (win-&gt;app_ref_count &lt; win-&gt;app-&gt;ref_count) \n"</span>);</span><br><span class="line">            RT_ASSERT(<span class="number">0</span>);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    rtgui_app_exit(win-&gt;app, modal_code);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* remove modal mode */</span></span><br><span class="line">    win-&gt;flag &amp;= ~RTGUI_WIN_FLAG_MODAL;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_end_modal);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="現身">現身<a class="header-anchor" href="#現身">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>現身該視窗</td>
+<td>檢查碼</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*win</code></th>
+<th><code>is_modal</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>視窗本體</td>
+<td>是否為動態模式</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">rt_base_t</span> rtgui_win_show(struct rtgui_win *win, <span class="keyword">rt_bool_t</span> is_modal)</span><br><span class="line">{</span><br><span class="line">    RTGUI_WIDGET_UNHIDE(win);</span><br><span class="line"></span><br><span class="line">    win-&gt;magic = RTGUI_WIN_MAGIC;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (is_modal)</span><br><span class="line">        win-&gt;flag |= RTGUI_WIN_FLAG_MODAL;</span><br><span class="line">    <span class="keyword">if</span> (win-&gt;_do_show)</span><br><span class="line">        <span class="keyword">return</span> win-&gt;_do_show(win);</span><br><span class="line">    <span class="keyword">return</span> rtgui_win_do_show(win);</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_show);</span><br></pre></td></tr></tbody></table></figure>
+<p>如果視窗本身有設定 <code>_do_show</code> 函式的話，則呼叫本身的；否則呼叫 <code>rtgui_win_do_show</code></p>
+<hr>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*win</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>視窗現身</td>
+<td>檢查碼</td>
+<td>視窗本體</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">rt_base_t</span> rtgui_win_do_show(struct rtgui_win *win)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">rt_base_t</span> exit_code = <span class="number">-1</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_app</span> *<span class="title">app</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event_win_show</span> <span class="title">eshow</span>;</span></span><br><span class="line"></span><br><span class="line">    RTGUI_EVENT_WIN_SHOW_INIT(&amp;eshow);</span><br><span class="line">    eshow.wid = win;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win == RT_NULL)</span><br><span class="line">        <span class="keyword">return</span> exit_code;</span><br><span class="line"></span><br><span class="line">    win-&gt;flag &amp;= ~RTGUI_WIN_FLAG_CLOSED;</span><br><span class="line">    win-&gt;flag &amp;= ~RTGUI_WIN_FLAG_CB_PRESSED;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* if it does not register into server, create it in server */</span></span><br><span class="line">    <span class="keyword">if</span> (!(win-&gt;flag &amp; RTGUI_WIN_FLAG_CONNECTED))</span><br><span class="line">    {</span><br><span class="line">        <span class="keyword">if</span> (_rtgui_win_create_in_server(win) == RT_FALSE)</span><br><span class="line">            <span class="keyword">return</span> exit_code;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set window unhidden before notify the server */</span></span><br><span class="line">    rtgui_widget_show(RTGUI_WIDGET(win));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (rtgui_server_post_event_sync(RTGUI_EVENT(&amp;eshow),</span><br><span class="line">                                     <span class="keyword">sizeof</span>(struct rtgui_event_win_show)) != RT_EOK)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* It could not be shown if a parent window is hidden. */</span></span><br><span class="line">        rtgui_widget_hide(RTGUI_WIDGET(win));</span><br><span class="line">        <span class="keyword">return</span> exit_code;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win-&gt;focused_widget == RT_NULL)</span><br><span class="line">        rtgui_widget_focus(RTGUI_WIDGET(win));</span><br><span class="line"></span><br><span class="line">    app = win-&gt;app;</span><br><span class="line">    RT_ASSERT(app != RT_NULL);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* set main window */</span></span><br><span class="line">    <span class="keyword">if</span> (app-&gt;main_object == RT_NULL)</span><br><span class="line">        rtgui_app_set_main_win(app, win);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win-&gt;flag &amp; RTGUI_WIN_FLAG_MODAL)</span><br><span class="line">    {</span><br><span class="line">        exit_code = rtgui_win_enter_modal(win);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> exit_code;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_do_show);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="隱藏">隱藏<a class="header-anchor" href="#隱藏">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*win</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>隱藏視窗</td>
+<td>檢查碼</td>
+<td>視窗本體</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_win_hide</span><span class="params">(struct rtgui_win *win)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    RT_ASSERT(win != RT_NULL);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!RTGUI_WIDGET_IS_HIDE(win) &amp;&amp;</span><br><span class="line">            win-&gt;flag &amp; RTGUI_WIN_FLAG_CONNECTED)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* send hidden message to server */</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event_win_hide</span> <span class="title">ehide</span>;</span></span><br><span class="line">        RTGUI_EVENT_WIN_HIDE_INIT(&amp;ehide);</span><br><span class="line">        ehide.wid = win;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (rtgui_server_post_event_sync(RTGUI_EVENT(&amp;ehide),</span><br><span class="line">                                         <span class="keyword">sizeof</span>(struct rtgui_event_win_hide)) != RT_EOK)</span><br><span class="line">        {</span><br><span class="line">            rt_kprintf(<span class="string">"hide win: %s failed\n"</span>, win-&gt;title);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        rtgui_widget_hide(RTGUI_WIDGET(win));</span><br><span class="line">        win-&gt;flag &amp;= ~RTGUI_WIN_FLAG_ACTIVATE;</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_hide);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="啟動">啟動<a class="header-anchor" href="#啟動">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*win</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>啟動視窗</td>
+<td>檢查碼</td>
+<td>視窗本體</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">rt_err_t</span> rtgui_win_activate(struct rtgui_win *win)</span><br><span class="line">{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event_win_activate</span> <span class="title">eact</span>;</span></span><br><span class="line">    RTGUI_EVENT_WIN_ACTIVATE_INIT(&amp;eact);</span><br><span class="line">    eact.wid = win;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> rtgui_server_post_event_sync(RTGUI_EVENT(&amp;eact),</span><br><span class="line">                                        <span class="keyword">sizeof</span>(eact));</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_activate);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="移動">移動<a class="header-anchor" href="#移動">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>進入動態模式</td>
+<td>檢查碼</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*win</code></th>
+<th><code>x</code></th>
+<th><code>y</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>視窗本體</td>
+<td>目標 x</td>
+<td>目標 y</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_win_move</span><span class="params">(struct rtgui_win *win, <span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_widget</span> *<span class="title">wgt</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event_win_move</span> <span class="title">emove</span>;</span></span><br><span class="line">    <span class="keyword">int</span> dx, dy;</span><br><span class="line">    RTGUI_EVENT_WIN_MOVE_INIT(&amp;emove);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win == RT_NULL)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win-&gt;_title_wgt)</span><br><span class="line">    {</span><br><span class="line">        wgt = RTGUI_WIDGET(win-&gt;_title_wgt);</span><br><span class="line">        dx = x - wgt-&gt;extent.x1;</span><br><span class="line">        dy = y - wgt-&gt;extent.y1;</span><br><span class="line">        rtgui_widget_move_to_logic(wgt, dx, dy);</span><br><span class="line"></span><br><span class="line">        wgt = RTGUI_WIDGET(win);</span><br><span class="line">        rtgui_widget_move_to_logic(wgt, dx, dy);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    {</span><br><span class="line">        wgt = RTGUI_WIDGET(win);</span><br><span class="line">        dx = x - wgt-&gt;extent.x1;</span><br><span class="line">        dy = y - wgt-&gt;extent.y1;</span><br><span class="line">        rtgui_widget_move_to_logic(wgt, dx, dy);</span><br><span class="line">    }</span><br><span class="line">    rtgui_rect_move(&amp;win-&gt;outer_extent, dx, dy);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win-&gt;flag &amp; RTGUI_WIN_FLAG_CONNECTED)</span><br><span class="line">    {</span><br><span class="line">        rtgui_widget_hide(RTGUI_WIDGET(win));</span><br><span class="line"></span><br><span class="line">        emove.wid   = win;</span><br><span class="line">        emove.x     = x;</span><br><span class="line">        emove.y     = y;</span><br><span class="line">        <span class="keyword">if</span> (rtgui_server_post_event_sync(RTGUI_EVENT(&amp;emove),</span><br><span class="line">                                         <span class="keyword">sizeof</span>(struct rtgui_event_win_move)) != RT_EOK)</span><br><span class="line">        {</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    rtgui_widget_show(RTGUI_WIDGET(win));</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_move);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="OnDraw">OnDraw<a class="header-anchor" href="#OnDraw">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*win</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OnDraw</td>
+<td>boolean</td>
+<td>視窗本體</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> rt_bool_t <span class="title">rtgui_win_ondraw</span><span class="params">(struct rtgui_win *win)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_dc</span> *<span class="title">dc</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_rect</span> <span class="title">rect</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event_paint</span> <span class="title">event</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* begin drawing */</span></span><br><span class="line">    dc = rtgui_dc_begin_drawing(RTGUI_WIDGET(win));</span><br><span class="line">    <span class="keyword">if</span> (dc == RT_NULL)</span><br><span class="line">        <span class="keyword">return</span> RT_FALSE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* get window rect */</span></span><br><span class="line">    rtgui_widget_get_rect(RTGUI_WIDGET(win), &amp;rect);</span><br><span class="line">    <span class="comment">/* fill area */</span></span><br><span class="line">    rtgui_dc_fill_rect(dc, &amp;rect);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* widget drawing */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* paint each widget */</span></span><br><span class="line">    RTGUI_EVENT_PAINT_INIT(&amp;event);</span><br><span class="line">    event.wid = RT_NULL;</span><br><span class="line"></span><br><span class="line">    rtgui_container_dispatch_event(RTGUI_CONTAINER(win),</span><br><span class="line">                                   (<span class="keyword">rtgui_event_t</span> *)&amp;event);</span><br><span class="line"></span><br><span class="line">    rtgui_dc_end_drawing(dc, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_FALSE;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h3 id="更新重疊區域">更新重疊區域<a class="header-anchor" href="#更新重疊區域">#</a></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+<th><code>*win</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>更新重疊區域</td>
+<td>void</td>
+<td>視窗本體</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">602</span><br><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br><span class="line">624</span><br><span class="line">625</span><br><span class="line">626</span><br><span class="line">627</span><br><span class="line">628</span><br><span class="line">629</span><br><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br><span class="line">639</span><br><span class="line">640</span><br><span class="line">641</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rtgui_win_update_clip</span><span class="params">(struct rtgui_win *win)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_container</span> *<span class="title">cnt</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_list_node</span> *<span class="title">node</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win == RT_NULL)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win-&gt;flag &amp; RTGUI_WIN_FLAG_CLOSED)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (win-&gt;_title_wgt)</span><br><span class="line">    {</span><br><span class="line">        <span class="comment">/* Reset the inner clip of title. */</span></span><br><span class="line">        RTGUI_WIDGET(win-&gt;_title_wgt)-&gt;extent = win-&gt;outer_extent;</span><br><span class="line">        rtgui_region_copy(&amp;RTGUI_WIDGET(win-&gt;_title_wgt)-&gt;clip, &amp;win-&gt;outer_clip);</span><br><span class="line">        rtgui_region_subtract_rect(&amp;RTGUI_WIDGET(win-&gt;_title_wgt)-&gt;clip,</span><br><span class="line">                                   &amp;RTGUI_WIDGET(win-&gt;_title_wgt)-&gt;clip,</span><br><span class="line">                                   &amp;RTGUI_WIDGET(win)-&gt;extent);</span><br><span class="line">        <span class="comment">/* Reset the inner clip of window. */</span></span><br><span class="line">        rtgui_region_intersect_rect(&amp;RTGUI_WIDGET(win)-&gt;clip,</span><br><span class="line">                                    &amp;win-&gt;outer_clip,</span><br><span class="line">                                    &amp;RTGUI_WIDGET(win)-&gt;extent);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    {</span><br><span class="line">        RTGUI_WIDGET(win)-&gt;extent = win-&gt;outer_extent;</span><br><span class="line">        rtgui_region_copy(&amp;RTGUI_WIDGET(win)-&gt;clip, &amp;win-&gt;outer_clip);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* update the clip info of each child */</span></span><br><span class="line">    cnt = RTGUI_CONTAINER(win);</span><br><span class="line">    rtgui_list_foreach(node, &amp;(cnt-&gt;children))</span><br><span class="line">    {</span><br><span class="line">        <span class="keyword">rtgui_widget_t</span> *child = rtgui_list_entry(node, <span class="keyword">rtgui_widget_t</span>, sibling);</span><br><span class="line"></span><br><span class="line">        rtgui_widget_update_clip(child);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_update_clip);</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="Event-Handler">Event Handler<a class="header-anchor" href="#Event-Handler">#</a></h2>
+<p>此 event handler 也就是 window 的函式進入點</p>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>功能</th>
+<th>回傳值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>window 函式進入點</td>
+<td>boolean</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th><code>*object</code></th>
+<th><code>*event</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>物件本體</td>
+<td>行為本體</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight c line-number"><table><tbody><tr><td class="gutter"><pre><span class="line">678</span><br><span class="line">679</span><br><span class="line">680</span><br><span class="line">681</span><br><span class="line">682</span><br><span class="line">683</span><br><span class="line">684</span><br><span class="line">685</span><br><span class="line">686</span><br><span class="line">687</span><br><span class="line">688</span><br><span class="line">689</span><br><span class="line">690</span><br><span class="line">691</span><br><span class="line">692</span><br><span class="line">693</span><br><span class="line">694</span><br><span class="line">695</span><br><span class="line">696</span><br><span class="line">697</span><br><span class="line">698</span><br><span class="line">699</span><br><span class="line">700</span><br><span class="line">701</span><br><span class="line">702</span><br><span class="line">703</span><br><span class="line">704</span><br><span class="line">705</span><br><span class="line">706</span><br><span class="line">707</span><br><span class="line">708</span><br><span class="line">709</span><br><span class="line">710</span><br><span class="line">711</span><br><span class="line">712</span><br><span class="line">713</span><br><span class="line">714</span><br><span class="line">715</span><br><span class="line">716</span><br><span class="line">717</span><br><span class="line">718</span><br><span class="line">719</span><br><span class="line">720</span><br><span class="line">721</span><br><span class="line">722</span><br><span class="line">723</span><br><span class="line">724</span><br><span class="line">725</span><br><span class="line">726</span><br><span class="line">727</span><br><span class="line">728</span><br><span class="line">729</span><br><span class="line">730</span><br><span class="line">731</span><br><span class="line">732</span><br><span class="line">733</span><br><span class="line">734</span><br><span class="line">735</span><br><span class="line">736</span><br><span class="line">737</span><br><span class="line">738</span><br><span class="line">739</span><br><span class="line">740</span><br><span class="line">741</span><br><span class="line">742</span><br><span class="line">743</span><br><span class="line">744</span><br><span class="line">745</span><br><span class="line">746</span><br><span class="line">747</span><br><span class="line">748</span><br><span class="line">749</span><br><span class="line">750</span><br><span class="line">751</span><br><span class="line">752</span><br><span class="line">753</span><br><span class="line">754</span><br><span class="line">755</span><br><span class="line">756</span><br><span class="line">757</span><br><span class="line">758</span><br><span class="line">759</span><br><span class="line">760</span><br><span class="line">761</span><br><span class="line">762</span><br><span class="line">763</span><br><span class="line">764</span><br><span class="line">765</span><br><span class="line">766</span><br><span class="line">767</span><br><span class="line">768</span><br><span class="line">769</span><br><span class="line">770</span><br><span class="line">771</span><br><span class="line">772</span><br><span class="line">773</span><br><span class="line">774</span><br><span class="line">775</span><br><span class="line">776</span><br><span class="line">777</span><br><span class="line">778</span><br><span class="line">779</span><br><span class="line">780</span><br><span class="line">781</span><br><span class="line">782</span><br><span class="line">783</span><br><span class="line">784</span><br><span class="line">785</span><br><span class="line">786</span><br><span class="line">787</span><br><span class="line">788</span><br><span class="line">789</span><br><span class="line">790</span><br><span class="line">791</span><br><span class="line">792</span><br><span class="line">793</span><br><span class="line">794</span><br><span class="line">795</span><br><span class="line">796</span><br><span class="line">797</span><br><span class="line">798</span><br><span class="line">799</span><br><span class="line">800</span><br><span class="line">801</span><br><span class="line">802</span><br><span class="line">803</span><br><span class="line">804</span><br><span class="line">805</span><br><span class="line">806</span><br><span class="line">807</span><br><span class="line">808</span><br><span class="line">809</span><br><span class="line">810</span><br><span class="line">811</span><br><span class="line">812</span><br><span class="line">813</span><br><span class="line">814</span><br><span class="line">815</span><br><span class="line">816</span><br><span class="line">817</span><br><span class="line">818</span><br><span class="line">819</span><br><span class="line">820</span><br><span class="line">821</span><br><span class="line">822</span><br><span class="line">823</span><br><span class="line">824</span><br><span class="line">825</span><br><span class="line">826</span><br><span class="line">827</span><br><span class="line">828</span><br><span class="line">829</span><br><span class="line">830</span><br><span class="line">831</span><br><span class="line">832</span><br><span class="line">833</span><br><span class="line">834</span><br><span class="line">835</span><br><span class="line">836</span><br><span class="line">837</span><br><span class="line">838</span><br><span class="line">839</span><br><span class="line">840</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">rt_bool_t</span> rtgui_win_event_handler(struct rtgui_object *object, struct rtgui_event *event)</span><br><span class="line">{</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_win</span> *<span class="title">win</span>;</span></span><br><span class="line"></span><br><span class="line">    RT_ASSERT(object != RT_NULL);</span><br><span class="line">    RT_ASSERT(event != RT_NULL);</span><br><span class="line"></span><br><span class="line">    win = RTGUI_WIN(object);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (event-&gt;type)</span><br><span class="line">    {</span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_WIN_SHOW:</span><br><span class="line">        rtgui_win_do_show(win);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_WIN_HIDE:</span><br><span class="line">        rtgui_win_hide(win);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_WIN_CLOSE:</span><br><span class="line">        _rtgui_win_deal_close(win, event, RT_FALSE);</span><br><span class="line">        <span class="comment">/* don't broadcast WIN_CLOSE event to others */</span></span><br><span class="line">        <span class="keyword">return</span> RT_TRUE;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_WIN_MOVE:</span><br><span class="line">    {</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event_win_move</span> *<span class="title">emove</span> = (<span class="title">struct</span> <span class="title">rtgui_event_win_move</span> *)<span class="title">event</span>;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* move window */</span></span><br><span class="line">        rtgui_win_move(win, emove-&gt;x, emove-&gt;y);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_WIN_ACTIVATE:</span><br><span class="line">        <span class="keyword">if</span> (win-&gt;flag &amp; RTGUI_WIN_FLAG_UNDER_MODAL ||</span><br><span class="line">                RTGUI_WIDGET_IS_HIDE(win))</span><br><span class="line">        {</span><br><span class="line">            <span class="comment">/* activate a hide window */</span></span><br><span class="line">            <span class="keyword">return</span> RT_TRUE;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        win-&gt;flag |= RTGUI_WIN_FLAG_ACTIVATE;</span><br><span class="line">        <span class="comment">/* There are many cases where the paint event will follow this activate</span></span><br><span class="line"><span class="comment">         * event and just repaint the title is not a big deal. So just repaint</span></span><br><span class="line"><span class="comment">         * the title if there is one. If you want to update the content of the</span></span><br><span class="line"><span class="comment">         * window, do it in the on_activate callback.*/</span></span><br><span class="line">        <span class="keyword">if</span> (win-&gt;_title_wgt)</span><br><span class="line">            rtgui_widget_update(RTGUI_WIDGET(win-&gt;_title_wgt));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (win-&gt;on_activate != RT_NULL)</span><br><span class="line">        {</span><br><span class="line">            win-&gt;on_activate(RTGUI_OBJECT(object), event);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_WIN_DEACTIVATE:</span><br><span class="line">        win-&gt;flag &amp;= ~RTGUI_WIN_FLAG_ACTIVATE;</span><br><span class="line">        <span class="comment">/* No paint event follow the deactive event. So we have to update</span></span><br><span class="line"><span class="comment">         * the title manually to reflect the change. */</span></span><br><span class="line">        <span class="keyword">if</span> (win-&gt;_title_wgt)</span><br><span class="line">            rtgui_widget_update(RTGUI_WIDGET(win-&gt;_title_wgt));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (win-&gt;on_deactivate != RT_NULL)</span><br><span class="line">            win-&gt;on_deactivate(RTGUI_OBJECT(object), event);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_WIN_UPDATE_END:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_CLIP_INFO:</span><br><span class="line">        <span class="comment">/* update win clip */</span></span><br><span class="line">        rtgui_win_update_clip(win);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_PAINT:</span><br><span class="line">        <span class="keyword">if</span> (win-&gt;_title_wgt)</span><br><span class="line">            rtgui_widget_update(RTGUI_WIDGET(win-&gt;_title_wgt));</span><br><span class="line">        rtgui_win_ondraw(win);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> GUIENGIN_USING_VFRAMEBUFFER</span></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_VPAINT_REQ:</span><br><span class="line">    {</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event_vpaint_req</span> *<span class="title">req</span> = (<span class="title">struct</span> <span class="title">rtgui_event_vpaint_req</span> *)<span class="title">event</span>;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_dc</span> *<span class="title">dc</span>;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* get drawing dc */</span></span><br><span class="line">        dc = rtgui_win_get_drawing(win);</span><br><span class="line"></span><br><span class="line">        req-&gt;sender-&gt;buffer = dc;</span><br><span class="line">        rt_completion_done(req-&gt;sender-&gt;cmp);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    }</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_MOUSE_BUTTON:</span><br><span class="line">    {</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_event_mouse</span> *<span class="title">emouse</span> = (<span class="title">struct</span> <span class="title">rtgui_event_mouse</span>*)<span class="title">event</span>;</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (rtgui_rect_contains_point(&amp;RTGUI_WIDGET(win)-&gt;extent,</span><br><span class="line">                                      emouse-&gt;x, emouse-&gt;y) == RT_EOK)</span><br><span class="line">            <span class="keyword">return</span> _win_handle_mouse_btn(win, event);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (win-&gt;_title_wgt)</span><br><span class="line">        {</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_object</span> *<span class="title">tobj</span> = <span class="title">RTGUI_OBJECT</span>(<span class="title">win</span>-&gt;_<span class="title">title_wgt</span>);</span></span><br><span class="line">            <span class="keyword">return</span> tobj-&gt;event_handler(tobj, event);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_MOUSE_MOTION:</span><br><span class="line">        <span class="keyword">return</span> rtgui_container_dispatch_mouse_event(RTGUI_CONTAINER(win),</span><br><span class="line">                (struct rtgui_event_mouse *)event);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_KBD:</span><br><span class="line">        <span class="comment">/* we should dispatch key event firstly */</span></span><br><span class="line">        <span class="keyword">if</span> (!(win-&gt;flag &amp; RTGUI_WIN_FLAG_HANDLE_KEY))</span><br><span class="line">        {</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">rtgui_widget</span> *<span class="title">widget</span>;</span></span><br><span class="line">            <span class="keyword">rt_bool_t</span> res = RT_FALSE;</span><br><span class="line">            <span class="comment">/* we should dispatch the key event just once. Once entered the</span></span><br><span class="line"><span class="comment">             * dispatch mode, we should swtich to key handling mode. */</span></span><br><span class="line">            win-&gt;flag |= RTGUI_WIN_FLAG_HANDLE_KEY;</span><br><span class="line"></span><br><span class="line">            <span class="comment">/* dispatch the key event */</span></span><br><span class="line">            <span class="keyword">for</span> (widget = win-&gt;focused_widget;</span><br><span class="line">                    widget &amp;&amp; !res;</span><br><span class="line">                    widget = widget-&gt;parent)</span><br><span class="line">            {</span><br><span class="line">                <span class="keyword">if</span> (RTGUI_OBJECT(widget)-&gt;event_handler != RT_NULL)</span><br><span class="line">                    res = RTGUI_OBJECT(widget)-&gt;event_handler(</span><br><span class="line">                              RTGUI_OBJECT(widget), event);</span><br><span class="line">            }</span><br><span class="line"></span><br><span class="line">            win-&gt;flag &amp;= ~RTGUI_WIN_FLAG_HANDLE_KEY;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        {</span><br><span class="line">            <span class="comment">/* in key handling mode(it may reach here in</span></span><br><span class="line"><span class="comment">             * win-&gt;focused_widget-&gt;event_handler call) */</span></span><br><span class="line">            <span class="keyword">if</span> (win-&gt;on_key != RT_NULL)</span><br><span class="line">                <span class="keyword">return</span> win-&gt;on_key(RTGUI_OBJECT(win), event);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> RTGUI_EVENT_COMMAND:</span><br><span class="line">        <span class="keyword">if</span> (rtgui_container_dispatch_event(RTGUI_CONTAINER(object), event) != RT_TRUE)</span><br><span class="line">        {</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> RT_TRUE;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">return</span> rtgui_container_event_handler(object, event);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RT_FALSE;</span><br><span class="line">}</span><br><span class="line">RTM_EXPORT(rtgui_win_event_handler);</span><br></pre></td></tr></tbody></table></figure>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/RT-Thread/">#RT-Thread</a> <a href="/tags/GUI/">#GUI</a> <a href="/tags/window/">#window</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+                <li class="previous page-item d-inline"><a href="/posts/rt-thread/gui-server.html" class="page-link float-left">&larr;  下一頁</a></li>
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/rt-thread/gui-widget.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2019-01-29 20:53:02',
+            title: 'RT-Thread GUI - Window',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2022 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>
