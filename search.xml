@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title>在 Linux 新增一個 Service</title>
+      <link href="/posts/linux/add-system-service.html"/>
+      <url>/posts/linux/add-system-service.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="建立-Unit-檔案">建立 Unit 檔案<a class="header-anchor" href="#建立-Unit-檔案">#</a></h2><p>首先建立一個 system service unit 檔案，格式如下</p><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=service discription</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecStart=execute path/<span class="built_in">command</span></span><br><span class="line">Restart=always</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></tbody></table></figure><p>並存放於 <code>/usr/lib/systemd/system/service-name.service</code>（自行修改 service name）</p><ul><li><code>ExecStart</code> 為該執行的程式或是指令，如 <code>php /path/to/main.php</code></li><li>如果有需要先執行的指令，可以使用 <code>ExecStartPre</code>，如 <code>ExecStartPre=mkdir /path/to/log/</code></li><li>如果有需要<strong>後</strong>執行的指令，可以使用 <code>ExecStartPost</code>，如 <code>ExecStartPost=rm /path/to/some.txt</code></li></ul><h2 id="安裝-service">安裝 service<a class="header-anchor" href="#安裝-service">#</a></h2><p>安裝的意思為，為 service 設定權限，在何種開機模式下會自動執行，如上述範例為 multi-user，其餘各種開機模式可見<a href="https://blog.lusw.dev/posts/linux/init-number.html">此篇</a></p><ul><li>指令</li></ul><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">systemctl install service-name.service</span><br></pre></td></tr></tbody></table></figure><ul><li>也可以先執行確認結果</li></ul><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">systemctl start service-name.service</span><br></pre></td></tr></tbody></table></figure><h2 id="確認-Log">確認 Log<a class="header-anchor" href="#確認-Log">#</a></h2><p>若是要確認 system service 的 log，則需要使用 journald 這個 service</p><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">journalctl -fu service-name</span><br></pre></td></tr></tbody></table></figure><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> systemctl </tag>
+            
+            <tag> journalctl </tag>
+            
+            <tag> systemd </tag>
+            
+            <tag> journald </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>透過 SplatNet APIs 獲取遊戲紀錄</title>
       <link href="/posts/splatnet-api.html"/>
       <url>/posts/splatnet-api.html</url>
@@ -241,14 +274,14 @@
       
       <categories>
           
-          <category> C語言 </category>
+          <category> C/C++ </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> C語言 </tag>
+            <tag> C/C++ </tag>
             
             <tag> Bit field </tag>
             
@@ -1023,14 +1056,14 @@
       
       <categories>
           
-          <category> C語言 </category>
+          <category> C/C++ </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> C語言 </tag>
+            <tag> C/C++ </tag>
             
             <tag> attribute </tag>
             
