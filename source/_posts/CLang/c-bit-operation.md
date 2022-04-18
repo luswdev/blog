@@ -1,8 +1,8 @@
 ---
 title: C 語言 - 位元欄位
-tags: [C語言, Bit field]
+tags: [C/C++, Bit field]
 date: 2020-04-10 17:28:52
-category: C語言
+category: C/C++
 ---
 在 C 語言中，如果我們要對特定的 bit(s) 做操作的話，最直覺的方式是用 bit and（`&`）跟 bit or（`|`）：
 

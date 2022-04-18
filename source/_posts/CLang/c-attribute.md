@@ -1,8 +1,8 @@
 ---
 title: C 語言 - attribute
 date: 2018-10-12 13:11:49
-tag: [C語言, attribute]
-category: C語言
+tag: [C/C++, attribute]
+category: C/C++
 ---
 有分三種： :one: 對副函式的 :two: 對資料的　:three: 對結構的
 
