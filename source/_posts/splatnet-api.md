@@ -65,4 +65,4 @@ curl_setopt_array($ch, array (
 ));
 ```
 
-接下來只需連線至 API 網址即可，完整範例可參考 [GitHub](https://github.com/luswdev/SplatoonBot/blob/master/src/splatnet.php)
+接下來只需連線至 APIs 網址即可，完整範例可參考 [GitHub](https://github.com/luswdev/SplatoonBot/blob/master/src/splatnet.php)

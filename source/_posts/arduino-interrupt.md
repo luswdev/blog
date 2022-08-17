@@ -21,7 +21,7 @@ attachInterrupt(pin, ISR, mode);
 ### 模式
 - LOW：當 pin 處於低電位的時候觸發中斷
 - RISING：當 pin 從低電位轉為高電位時觸發中斷
-- FALLING：當 pin 從高電位轉為高電位時觸發中斷
+- FALLING：當 pin 從高電位轉為高電位時觸發中斷
 - CHANGE：當 pin 的電位發生改變時觸發中斷
 - HIGH：當 pin 處於高電位時觸發中斷（只適用 arduino due）
 
