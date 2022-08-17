@@ -19,7 +19,7 @@
 
 <!--Open Graph Title-->
 
-    <meta property="og:title" content="HackTech"/>
+    <meta property="og:title" content="Git Tag Push"/>
 
 
 <!--Open Graph Description-->
@@ -32,7 +32,7 @@
 
 <!--Type page-->
 
-    <meta property="og:type" content="website"/>
+    <meta property="og:type" content="article"/>
 
 
 <!--Page Cover-->
@@ -51,7 +51,7 @@
 
 <!-- Title -->
 
-<title>彙整：2018/10 | HackTech</title>
+<title>Git Tag Push | HackTech</title>
 
 <!-- Bootstrap Core CSS -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
@@ -125,91 +125,185 @@
 </nav>
 
     <!-- Main Content -->
-    
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
 
-<!-- Page Header -->
-<!-- Set your background image for this header in the theme's configuration: index_cover -->
 <header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-                <div class="site-heading text-center text-white">
-                    <h1>2018/10</h1>
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>Git Tag Push</h1>
+                    
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container page-archives">
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center mb-5">
-            <div class="btn-group archives-filter-group" role="group" aria-label="archives filter">
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/Linux/">Linux</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2022-08-17
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        80
     
 
     
-        
-            <button type="button" class="btn btn-info" disabled>
-                2018
-            </button>
-        
-    
-        
-            <button type="button" class="btn btn-light" onclick="javascript:window,location.href = '/archives/2019'">
-                2019
-            </button>
-        
-    
-        
-            <button type="button" class="btn btn-light" onclick="javascript:window,location.href = '/archives/2020'">
-                2020
-            </button>
-        
-    
-        
-            <button type="button" class="btn btn-light" onclick="javascript:window,location.href = '/archives/2021'">
-                2021
-            </button>
-        
-    
-        
-            <button type="button" class="btn btn-light" onclick="javascript:window,location.href = '/archives/2022'">
-                2022
-            </button>
-        
-    
-</div>
 
-    <a class="btn btn-light archives-filter-all" href="/archives/" role="button">
-        All    
-        <span class="badge badge-secondary">64</span>
-    </a>
- 
-        </div>
-        <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-            
-                <div class="post-preview post-preview-archive-archive">
-    <a href="/posts/c-c++/c-attribute.html">
-        <h1 class="post-title">
-            C 語言 - attribute
-        </h1>
-    </a>
-    <p class="post-meta">
-        <!-- Date and Author -->
-        
-        2018-10-12
-    </p>
-</div>
-            
-            <div class="archive-before-pagination"></div>
-            <ul class="pagination d-block text-center">
     
-    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>New</h1>
+<ul>
+<li>New a tag with current HEAD <sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[Git - 標籤 (git-scm.com)](https://git-scm.com/book/zh-tw/v2/Git-%E5%9F%BA%E7%A4%8E-%E6%A8%99%E7%B1%A4)">[1]</span></a></sup></li>
 </ul>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git tag -a <span class="string">'tag_name'</span></span><br><span class="line">git tag -a v1.0.0</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>New a tag with specific commit</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git tag -a <span class="string">'tag_name'</span> commit_SHA</span><br><span class="line">git tag -a v1.0.0 fc30d37b</span><br></pre></td></tr></tbody></table></figure>
+<h1>Push</h1>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git push origin <span class="string">'tag_name'</span></span><br><span class="line">git push origin v1.0.0</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>Push all local tag to remote</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git push origin --tags</span><br></pre></td></tr></tbody></table></figure>
+<h1>Show</h1>
+<ul>
+<li>List</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git tag</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>Check tag note and commits</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git show <span class="string">'tag_name'</span></span><br><span class="line">git show v1.0.0</span><br></pre></td></tr></tbody></table></figure>
+<div id="footnotes"><hr class="block-hr"><div id="footnotelist" class="card card-default"><div class="card-header">Reference</div><ol class="list-group list-group-flush" style="list-style: none; padding-left: 0; margin-left: 0px"><li id="fn:1" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://git-scm.com/book/zh-tw/v2/Git-%E5%9F%BA%E7%A4%8E-%E6%A8%99%E7%B1%A4">Git - 標籤 (git-scm.com)</a><a href="#fnref:1" rev="footnote"> ↩</a></span></li></ol></div></div>
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/Linux/">#Linux</a> <a href="/tags/Git/">#Git</a> <a href="/tags/Tags/">#Tags</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/linux/add-system-service.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2022-08-17 14:12:01',
+            title: 'Git Tag Push',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
         </div>
     </div>
-</div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2"  aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
 
 
     <!-- Footer -->
