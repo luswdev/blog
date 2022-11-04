@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>Git 查看未 Push 的 Commit</title>
+      <link href="/posts/linux/git-commits-to-push.html"/>
+      <url>/posts/linux/git-commits-to-push.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>查看數量</h1><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></tbody></table></figure><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">On branch master</span><br><span class="line">Your branch is ahead of <span class="string">'origin/master'</span> by 1 commit.</span><br></pre></td></tr></tbody></table></figure><h2 id="查看-Commit-資訊">查看 Commit 資訊<a class="header-anchor" href="#查看-Commit-資訊">#</a></h2><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git cherry -v</span><br></pre></td></tr></tbody></table></figure><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">+ a342c7b8c62c167de7af8bb8814eff7439b6ae15 add. initial commit</span><br></pre></td></tr></tbody></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> Git </tag>
+            
+            <tag> Push </tag>
+            
+            <tag> Commit </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Git Tag Push</title>
       <link href="/posts/linux/git-tag-push.html"/>
       <url>/posts/linux/git-tag-push.html</url>
