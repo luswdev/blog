@@ -167,7 +167,7 @@
     
         <span class="post-meta-split">&nbsp;|&nbsp;</span>
         <i class="far fa-file-word fa-fw"></i>
-        80
+        101
     
 
     
@@ -184,12 +184,16 @@
 <li>New a tag with specific commit</li>
 </ul>
 <figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git tag -a <span class="string">'tag_name'</span> commit_SHA</span><br><span class="line">git tag -a v1.0.0 fc30d37b</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="Edit-Exists-Tag">Edit Exists Tag<a class="header-anchor" href="#Edit-Exists-Tag">#</a></h2>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git tag &lt;tag_name&gt; &lt;tag_name&gt;^{} -f -a</span><br></pre></td></tr></tbody></table></figure>
 <h1>Push</h1>
 <figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git push origin <span class="string">'tag_name'</span></span><br><span class="line">git push origin v1.0.0</span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li>Push all local tag to remote</li>
 </ul>
 <figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git push origin --tags</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="Overwrite-Exists-Tag">Overwrite Exists Tag<a class="header-anchor" href="#Overwrite-Exists-Tag">#</a></h2>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git push origin --tags -f</span><br></pre></td></tr></tbody></table></figure>
 <h1>Show</h1>
 <ul>
 <li>List</li>
@@ -419,7 +423,7 @@
                     
                 </ul>
                 <p class="copyright footer-author">
-                    &copy; 2018-2022 
+                    &copy; 2018-2023 
                     <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br/>
                     Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
                     <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
