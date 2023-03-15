@@ -22,6 +22,12 @@ git tag -a 'tag_name' commit_SHA
 git tag -a v1.0.0 fc30d37b
 ```
 
+## Edit Exists Tag
+
+```bash
+git tag <tag_name> <tag_name>^{} -f -a
+```
+
 # Push
 
 ```bash
@@ -33,6 +39,12 @@ git push origin v1.0.0
 
 ```bash
 git push origin --tags
+```
+
+## Overwrite Exists Tag
+
+```bash
+git push origin --tags -f
 ```
 
 # Show
