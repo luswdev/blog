@@ -21,7 +21,7 @@ git config --global --add oh-my-zsh.hide-status 1
 git config --global --add oh-my-zsh.hide-dirty 1
 ```
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9c799cdd-3316-4dc3-815d-47ff617a7cfc/Untitled.png)
+![add config](https://i.imgur.com/hfAm6Tt.png)
 
 # Unset
 
@@ -32,4 +32,4 @@ git config --unset oh-my-zsh.hide-status 1
 git config --unset oh-my-zsh.hide-dirty 1
 ```
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e3f0aa95-9012-450d-b793-18ad6fc04d73/Untitled.png)
+![unset config](https://i.imgur.com/0xI1oe7.png)
