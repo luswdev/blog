@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>解決 ZSH 在大型 Repo 下會卡頓的問題</title>
+      <link href="/posts/linux/zsh-big-repo-lag-fixed.html"/>
+      <url>/posts/linux/zsh-big-repo-lag-fixed.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote><p>有些 oh-my-zsh theme 會顯示 git prompt，在大型 repo 下檢查是否有改變時會造成卡頓。</p></blockquote><ul><li>為解決此問題，設定 flags 給 oh-my-zsh <sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[oh-my-zsh slow, but only for certain Git repo - Stack Overflow](https://stackoverflow.com/questions/12765344/oh-my-zsh-slow-but-only-for-certain-git-repo)">[1]</span></a></sup></li></ul><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git config --add oh-my-zsh.hide-status 1</span><br><span class="line">git config --add oh-my-zsh.hide-dirty 1</span><br></pre></td></tr></tbody></table></figure><ul><li>也可以直接設定 global，預設所有 repo 都不檢查</li></ul><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git config --global --add oh-my-zsh.hide-status 1</span><br><span class="line">git config --global --add oh-my-zsh.hide-dirty 1</span><br></pre></td></tr></tbody></table></figure><p><div class="img-item" data-src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9c799cdd-3316-4dc3-815d-47ff617a7cfc/Untitled.png" data-sub-html=".caption"><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9c799cdd-3316-4dc3-815d-47ff617a7cfc/Untitled.png" alt="Untitled"><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom">Untitled</span></div></div></p><h1>Unset</h1><ul><li>如果要復原的話，移除這些 config 即可</li></ul><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git config --<span class="built_in">unset</span> oh-my-zsh.hide-status 1</span><br><span class="line">git config --<span class="built_in">unset</span> oh-my-zsh.hide-dirty 1</span><br></pre></td></tr></tbody></table></figure><p><div class="img-item" data-src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e3f0aa95-9012-450d-b793-18ad6fc04d73/Untitled.png" data-sub-html=".caption"><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e3f0aa95-9012-450d-b793-18ad6fc04d73/Untitled.png" alt="Untitled"><div class="img-caption d-block text-center"><span class="center-caption text-muted border-bottom">Untitled</span></div></div></p><div id="footnotes"><hr class="block-hr"><div id="footnotelist" class="card card-default"><div class="card-header">Reference</div><ol class="list-group list-group-flush" style="list-style: none; padding-left: 0; margin-left: 0px"><li id="fn:1" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://stackoverflow.com/questions/12765344/oh-my-zsh-slow-but-only-for-certain-git-repo">oh-my-zsh slow, but only for certain Git repo - Stack Overflow</a><a href="#fnref:1" rev="footnote"> ↩</a></span></li></ol></div></div>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> zsh </tag>
+            
+            <tag> git </tag>
+            
+            <tag> oh-my-zsh </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Git 查看未 Push 的 Commit</title>
       <link href="/posts/linux/git-commits-to-push.html"/>
       <url>/posts/linux/git-commits-to-push.html</url>
