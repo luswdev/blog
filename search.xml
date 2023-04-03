@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>linux/sed-find-and-replace-all</title>
+      <link href="/posts/linux/sed-find-and-replace-all.html"/>
+      <url>/posts/linux/sed-find-and-replace-all.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>SED 基本操作</h1><ul><li>取代單檔 <sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[Linux sed 指令 (hy-star.com.tw)](https://www.hy-star.com.tw/tech/linux/sed/sed.html)">[1]</span></a></sup></li></ul><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">sed -e s/before/after/g target.file &gt; target.file</span><br></pre></td></tr></tbody></table></figure><h1>多檔取代</h1><p>直覺上我們會用 wildcard 取代上面的 <code>target.file</code>，例如改成 *.file 似乎就能完成</p><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">sed -e s/before/after/g *.file &gt; *.file</span><br></pre></td></tr></tbody></table></figure><p>但是這樣是不能一次的多檔快速取代的，因為要寫入的檔案沒辦法用 wildcard，所以必須搭配 find <sup id="fnref:2"><a href="#fn:2" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[regex - Changing all occurrences in a folder - Stack Overflow](https://stackoverflow.com/questions/905144/changing-all-occurrences-in-a-folder)">[2]</span></a></sup> 使用。</p><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">find ./ -name <span class="string">'*.file'</span> -<span class="built_in">exec</span> sed -i <span class="string">"s/before/after/g"</span> {} \;</span><br></pre></td></tr></tbody></table></figure><div id="footnotes"><hr class="block-hr"><div id="footnotelist" class="card card-default"><div class="card-header">Reference</div><ol class="list-group list-group-flush" style="list-style: none; padding-left: 0; margin-left: 0px"><li id="fn:1" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://www.hy-star.com.tw/tech/linux/sed/sed.html">Linux sed 指令 (hy-star.com.tw)</a><a href="#fnref:1" rev="footnote"> ↩</a></span></li><li id="fn:2" class="list-group-item"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: 0px">2.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://stackoverflow.com/questions/905144/changing-all-occurrences-in-a-folder">regex - Changing all occurrences in a folder - Stack Overflow</a><a href="#fnref:2" rev="footnote"> ↩</a></span></li></ol></div></div>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> bash </tag>
+            
+            <tag> sed </tag>
+            
+            <tag> find </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>解決 ZSH 在大型 Repo 下會卡頓的問題</title>
       <link href="/posts/linux/zsh-big-repo-lag-fixed.html"/>
       <url>/posts/linux/zsh-big-repo-lag-fixed.html</url>
