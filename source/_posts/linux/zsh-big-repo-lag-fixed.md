@@ -21,8 +21,6 @@ git config --global --add oh-my-zsh.hide-status 1
 git config --global --add oh-my-zsh.hide-dirty 1
 ```
 
-![add config](https://i.imgur.com/hfAm6Tt.png)
-
 # Unset
 
 - 如果要復原的話，移除這些 config 即可
@@ -31,5 +29,3 @@ git config --global --add oh-my-zsh.hide-dirty 1
 git config --unset oh-my-zsh.hide-status 1
 git config --unset oh-my-zsh.hide-dirty 1
 ```
-
-![unset config](https://i.imgur.com/0xI1oe7.png)
