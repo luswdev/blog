@@ -1,5 +1,5 @@
 ---
-title: linux/sed-find-and-replace-all
+title: SED 大量檔案取代
 tags: [Linux, bash, sed, find]
 date: 2023-04-04 01:07:11
 category: Linux
