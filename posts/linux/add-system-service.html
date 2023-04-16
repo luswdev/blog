@@ -167,7 +167,7 @@
     
         <span class="post-meta-split">&nbsp;|&nbsp;</span>
         <i class="far fa-file-word fa-fw"></i>
-        308
+        356
     
 
     
@@ -204,6 +204,10 @@
 <h2 id="確認-Log">確認 Log<a class="header-anchor" href="#確認-Log">#</a></h2>
 <p>若是要確認 system service 的 log，則需要使用 journald 這個 service</p>
 <figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">journalctl -fu service-name</span><br><span class="line">journalctl --user -fu service-name</span><br></pre></td></tr></tbody></table></figure>
+<h1>修改 Unit 檔案</h1>
+<p>如果是在已經安裝完 service 後又有修改 unit 檔案時，在 restart service 需要先 reload daemon</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl --user daemon-reload</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">systemctl restart service-name.service</span><br><span class="line">systemctl --user restart service-name.service</span><br></pre></td></tr></tbody></table></figure>
 
             </div>
 
