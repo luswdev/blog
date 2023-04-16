@@ -65,3 +65,17 @@ journalctl -fu service-name
 journalctl --user -fu service-name
 ```
 
+# 修改 Unit 檔案
+
+如果是在已經安裝完 service 後又有修改 unit 檔案時，在 restart service 需要先 reload daemon
+
+```bash
+systemctl daemon-reload
+systemctl --user daemon-reload
+```
+
+```bash
+systemctl restart service-name.service
+systemctl --user restart service-name.service
+```
+
