@@ -52,9 +52,9 @@ systemctl start service-name.service
 systemctl --user start service-name.service
 ```
 
-{% card info %}
+{% alert info %}
 `--user` 代表 user level，`--system` 是 system level，通常預設是 system level
-{% endcard %}
+{% endalert %}
 
 ## 確認 Log
 
