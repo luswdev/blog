@@ -200,7 +200,7 @@
 <li>也可以先執行確認結果</li>
 </ul>
 <figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">systemctl start service-name.service</span><br><span class="line">systemctl --user start service-name.service</span><br></pre></td></tr></tbody></table></figure>
-<div class="card bg-info  text-white my-3"><div class="card-body"><p><code>--user</code> 代表 user level，<code>--system</code> 是 system level，通常預設是 system level</p></div></div>
+<div class="alert alert-info"><p><code>--user</code> 代表 user level，<code>--system</code> 是 system level，通常預設是 system level</p></div>
 <h2 id="確認-Log">確認 Log<a class="header-anchor" href="#確認-Log">#</a></h2>
 <p>若是要確認 system service 的 log，則需要使用 journald 這個 service</p>
 <figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">journalctl -fu service-name</span><br><span class="line">journalctl --user -fu service-name</span><br></pre></td></tr></tbody></table></figure>
