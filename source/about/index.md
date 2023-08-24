@@ -41,6 +41,7 @@ layout: "about"
 <!-- endheader -->
 - [**CoOS GUI Engine**](https://github.com/luswdev/CoOS-GUI-Engine) - 一個在 CoOS 上的圖形使用者介面渲染引擎，我的碩士論文
 - [**Mini Cloud system**](https://github.com/luswdev/mini-cloud-system) - 一個用 PHP + MySQL 打造的簡易雲端
+- [**Discord Bot for Splatoon**](https://github.com/luswdev/splatoon-bot) - 一個專為 Splatoon 所設計的 Discord 機器人
 {% endcard %}
 
 {% card %}
@@ -65,25 +66,37 @@ layout: "about"
         <li class="progress-box list-group-item">
             <span>C/C++</span>
             <div class="progress">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-success" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </li>
         <li class="progress-box">
             <span>RTOS</span>
             <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar" role="progressbar" style="width: 74%" aria-valuenow="74" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </li>
+        <li class="progress-box">
+            <span>Docker</span>
+            <div class="progress">
+                <div class="progress-bar-danger" role="progressbar" style="width: 42%" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </li>
         <li class="progress-box">
             <span>Linux</span>
             <div class="progress">
-                <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-success" role="progressbar" style="width: 92%" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </li>
         <li class="progress-box">
             <span>PHP</span>
             <div class="progress">
                 <div class="progress-bar bg-warning" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </li>
+        <li class="progress-box">
+            <span>Node.js</span>
+            <div class="progress">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 52%" aria-valuenow="52" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </li>
     </ul>
