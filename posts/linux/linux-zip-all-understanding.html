@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<!--Description-->
+
+
+
+    <meta name="description" content="Notes of single-chip microcompute, RTOS and Firmware."/>
+
+
+<!--Author-->
+
+    <meta name="author" content="LuSkywalker"/>
+
+
+<!--Open Graph Title-->
+
+    <meta property="og:title" content="Linux ZIP 全理解"/>
+
+
+<!--Open Graph Description-->
+
+    <meta property="og:description" content="Notes of single-chip microcompute, RTOS and Firmware."/>
+
+
+<!--Open Graph Site Name-->
+    <meta property="og:site_name" content="HackTech"/>
+
+<!--Type page-->
+
+    <meta property="og:type" content="article"/>
+
+
+<!--Page Cover-->
+
+
+    <meta property="og:image" content="https://blog.lusw.dev/img/home-bg.jpg"/>
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+
+
+
+
+    <meta name="twitter:image" content="https://blog.lusw.dev/img/home-bg.jpg"/>
+
+
+<!-- Title -->
+
+<title>Linux ZIP 全理解 | HackTech</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+<!-- Custom CSS -->
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css" />
+<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css" />
+<link href="//fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Gallery -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/featherlight@1.4.0/src/featherlight.css" integrity="sha256-30DV/STftlyQ6v8yaOWlabammvCYtRJERLj/m0b3zno=" crossorigin="anonymous">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/css/lightgallery.min.css">
+
+<!-- favicon -->
+
+<link rel="icon" href="/img/favicon.png"/>
+
+
+
+    <!-- Google Analytics -->
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-73LPFQQS33"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-73LPFQQS33');
+</script>
+
+
+
+<meta name="generator" content="Hexo 6.1.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="HackTech" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<!-- Head tag -->
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top bg-transparent position-absolute w-100 p-0" id="nav">
+    <div class="container pl-0 pr-0">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand text-white p-1 pl-3" href="/">LuSkywalker</a>
+        </div>
+        <div class="navbar-nav float-right">
+            <button class="btn btn-link search-btn navbar-item" data-toggle="modal" data-target="#searchModal">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <div class="post-heading text-white">
+                    <h1>Linux ZIP 全理解</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                
+                    <span class="meta d-inline-block">
+    
+        <i class="far fa-bookmark fa-fw"></i>
+        
+
+<a href="/categories/Linux/">Linux</a>
+
+    
+    
+    <!-- Date -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-calendar-check fa-fw"></i>
+        2024-01-24
+    
+    <!-- word count and read count -->
+    
+        <span class="post-meta-split">&nbsp;|&nbsp;</span>
+        <i class="far fa-file-word fa-fw"></i>
+        754
+    
+
+    
+
+    
+</span>  
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>1. 初始化</h1>
+<p>首先，先建立基礎的 zip 檔</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> zip_root</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">"test"</span> &gt; zip_root/test.txt</span><br><span class="line">$ zip -ry test.zip zip_root</span><br><span class="line">	adding: zip_root/ (stored 0%)</span><br><span class="line">  adding: zip_root/test.txt (stored 0%)</span><br></pre></td></tr></tbody></table></figure>
+<p>先來看一下 zip_root 裡面長怎樣:</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ tree zip_root</span><br><span class="line">zip_root</span><br><span class="line">└── test.txt</span><br><span class="line"></span><br><span class="line">0 directories, 1 file</span><br></pre></td></tr></tbody></table></figure>
+<p>包出來的 test.zip:</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ unzip test.zip -d <span class="built_in">test</span></span><br><span class="line">Archive:  test.zip</span><br><span class="line">   creating: <span class="built_in">test</span>/zip_root/</span><br><span class="line"> extracting: <span class="built_in">test</span>/zip_root/test.txt</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ tree <span class="built_in">test</span></span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">└── zip_root</span><br><span class="line">    └── test.txt</span><br><span class="line"></span><br><span class="line">1 directory, 1 file</span><br></pre></td></tr></tbody></table></figure>
+<p>目前看起來就如預期，將整個 zip_root 包進 zip 裡了</p>
+<h1>2. 建立新檔案</h1>
+<p>這時，我們再建立一個 test.1.txt，來看看會發生什麼事</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">"test.1"</span> &gt; zip_root/test.1.txt</span><br><span class="line">$ zip -ry test.zip zip_root</span><br><span class="line">updating: zip_root/ (stored 0%)</span><br><span class="line">updating: zip_root/test.txt (stored 0%)</span><br><span class="line">  adding: zip_root/test.1.txt (stored 0%)</span><br></pre></td></tr></tbody></table></figure>
+<p>檢查一下 zip_root 與 test.zip:</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ tree zip_root</span><br><span class="line">zip_root</span><br><span class="line">├── test.1.txt</span><br><span class="line">└── test.txt</span><br><span class="line"></span><br><span class="line">0 directories, 2 files</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -rf <span class="built_in">test</span></span><br><span class="line">$ unzip test.zip -d <span class="built_in">test</span></span><br><span class="line">Archive:  test.zip</span><br><span class="line">   creating: <span class="built_in">test</span>/zip_root/</span><br><span class="line"> extracting: <span class="built_in">test</span>/zip_root/test.txt</span><br><span class="line"> extracting: <span class="built_in">test</span>/zip_root/test.1.txt</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ tree <span class="built_in">test</span></span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">└── zip_root</span><br><span class="line">    ├── test.1.txt</span><br><span class="line">    └── test.txt</span><br><span class="line"></span><br><span class="line">1 directory, 2 files</span><br></pre></td></tr></tbody></table></figure>
+<p>So far, so good.</p>
+<h1>3. 修改 test.txt 的內容</h1>
+<p>接著嘗試修改其中一個檔案的內容:</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">"new test"</span> &gt; zip_root/test.txt</span><br><span class="line">$ <span class="built_in">cat</span> zip_root/test.txt</span><br><span class="line">new <span class="built_in">test</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ zip -ry test.zip zip_root</span><br><span class="line">updating: zip_root/ (stored 0%)</span><br><span class="line">updating: zip_root/test.txt (stored 0%)</span><br><span class="line">updating: zip_root/test.1.txt (stored 0%)</span><br></pre></td></tr></tbody></table></figure>
+<p>檢查一下 test.zip:</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -rf <span class="built_in">test</span></span><br><span class="line">$ unzip test.zip -d <span class="built_in">test</span></span><br><span class="line">Archive:  test.zip</span><br><span class="line">   creating: <span class="built_in">test</span>/zip_root/</span><br><span class="line"> extracting: <span class="built_in">test</span>/zip_root/test.txt</span><br><span class="line"> extracting: <span class="built_in">test</span>/zip_root/test.1.txt</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> <span class="built_in">test</span>/zip_root/test.txt</span><br><span class="line">new <span class="built_in">test</span></span><br></pre></td></tr></tbody></table></figure>
+<p>Perfect.</p>
+<h1>4. 刪除一個檔案</h1>
+<p>最後來測試一下刪除 zip_root 的檔案，zip 裡面會不會也被刪除</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> zip_root/test.txt</span><br><span class="line">$ zip -ry test.zip zip_root</span><br><span class="line">updating: zip_root/ (stored 0%)</span><br><span class="line">updating: zip_root/test.1.txt (stored 0%)</span><br></pre></td></tr></tbody></table></figure>
+<p>檢查一下 zip_root 與 test.zip:</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ tree zip_root</span><br><span class="line">zip_root</span><br><span class="line">└── test.1.txt</span><br><span class="line"></span><br><span class="line">0 directories, 1 file</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -rf <span class="built_in">test</span></span><br><span class="line">$ unzip test.zip -d <span class="built_in">test</span></span><br><span class="line">Archive:  test.zip</span><br><span class="line">   creating: <span class="built_in">test</span>/zip_root/</span><br><span class="line"> extracting: <span class="built_in">test</span>/zip_root/test.txt</span><br><span class="line"> extracting: <span class="built_in">test</span>/zip_root/test.1.txt</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ tree <span class="built_in">test</span></span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">└── zip_root</span><br><span class="line">    ├── test.1.txt</span><br><span class="line">    └── test.txt</span><br><span class="line"></span><br><span class="line">1 directory, 2 files</span><br></pre></td></tr></tbody></table></figure>
+<p>test.txt 並沒有被移除!!</p>
+<p>看一下 zip 的說明:</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ zip -h2</span><br><span class="line"></span><br><span class="line">Extended Help <span class="keyword">for</span> Zip</span><br><span class="line"></span><br><span class="line">See the Zip Manual <span class="keyword">for</span> more detailed <span class="built_in">help</span></span><br><span class="line"></span><br><span class="line">Zip stores files <span class="keyword">in</span> zip archives.  The default action is to add or replace</span><br><span class="line">zipfile entries.</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><strong>The default action is to add or replace zipfile entries.</strong> → 因此不會刪除也是正常的</li>
+</ul>
+<p>再仔細看一下 zip 的說明</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">Deletion, File Sync:</span><br><span class="line">  -d        delete files</span><br><span class="line">  Delete archive entries matching internal archive paths <span class="keyword">in</span> list</span><br><span class="line">    zip archive -d pattern pattern ...</span><br><span class="line">  Can use -t and -tt to select files <span class="keyword">in</span> archive, but NOT -x or -i, so</span><br><span class="line">    zip archive -d <span class="string">"*"</span> -t 2005-12-27</span><br><span class="line">  deletes all files from archive.zip with <span class="built_in">date</span> of 27 Dec 2005 and later</span><br><span class="line">  Note the * (escape as <span class="string">"*"</span> on Unix) to select all files <span class="keyword">in</span> archive</span><br><span class="line"></span><br><span class="line">  -FS       file <span class="built_in">sync</span></span><br><span class="line">  Similar to update, but files updated <span class="keyword">if</span> <span class="built_in">date</span> or size of entry does not</span><br><span class="line">  match file on OS.  Also deletes entry from archive <span class="keyword">if</span> no matching file</span><br><span class="line">  on OS.</span><br><span class="line">    zip archive_to_update -FS -r dir_used_before</span><br><span class="line">  Result generally same as creating new archive, but unchanged entries</span><br><span class="line">  are copied instead of being <span class="built_in">read</span> and compressed so can be faster.</span><br><span class="line">      WARNING:  -FS deletes entries so make backup copy of archive first</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>-FS</code> 似乎可以解決此問題: <strong>Also deletes entry from archive if no matching file on OS.</strong></li>
+</ul>
+<p>讓我們來試看看 <code>-FS</code>:</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ zip -ry -FS test.zip zip_root</span><br><span class="line">deleting: zip_root/test.txt</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -rf <span class="built_in">test</span></span><br><span class="line">$ unzip test.zip -d <span class="built_in">test</span></span><br><span class="line">Archive:  test.zip</span><br><span class="line">   creating: <span class="built_in">test</span>/zip_root/</span><br><span class="line"> extracting: <span class="built_in">test</span>/zip_root/test.1.txt</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ tree <span class="built_in">test</span></span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">└── zip_root</span><br><span class="line">    └── test.1.txt</span><br><span class="line"></span><br><span class="line">1 directory, 1 file</span><br></pre></td></tr></tbody></table></figure>
+<p><code>-FS</code> 完美的解決我們的問題!</p>
+<h1>結論</h1>
+<p>如果有刪除檔案的需求，而且不想要移除舊的 zip 檔的話，記得帶 <code>-FS</code></p>
+<div class="alert alert-info"><p>不移除舊 zip 檔可以加快 zip pack 的速度，因此帶 <code>-FS</code> 看起來是比較好的做法</p></div>
+
+            </div>
+
+            <!-- Post information -->
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 post-tags">
+        
+            <i class="fas fa-tag" style="vertical-align: middle;font-size: .8rem;"></i>
+            tags:&nbsp;
+            
+            
+        
+            <a href="/tags/Linux/">#Linux</a> <a href="/tags/Zip/">#Zip</a>
+        
+    </div>
+
+            
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <ul class="pagination d-block text-center">
+            
+            
+                <li class="next page-item d-inline"><a href="/posts/linux/sed-find-and-replace-all.html" class="page-link float-right">上一頁  &rarr;</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+                <!-- Comments -->
+                
+    
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+        <div id="gitalk-container"></div>
+    </div>
+
+    <script>
+        let gitalk = new Gitalk({
+            clientID: '97c34b7bba491c6a5007',
+            clientSecret: '6140d208bae6bbbc69c65e3e332a46d090094fc8',
+            repo: 'HackTech',
+            owner: 'luswdev',
+            admin: "luswdev",
+            id: '2024-01-24 15:41:11',
+            title: 'Linux ZIP 全理解',
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        });
+        gitalk.render('gitalk-container');
+    </script>
+
+
+                
+
+            
+
+        </div>
+    </div>
+</article> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    <style>
+        #toc-content .toc-link::before {
+            background-color: transparent;
+            max-height: 25px;
+        }
+
+        #toc-content .toc-link.is-active-link::before {
+            background-color: #404040;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <div class="ui-toc dropup scrollspy-body pull-right" style="right: 3%;">
+        <button type="button" class="toc-btn btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="fas fa-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right p-2"  aria-labelledby="tocLabel">
+            <div class="toc-widget">
+                <div id="toc-content" class="text-truncate">
+                </div>
+            </div>
+            <div class="toc-menu pt-3 pl-4">
+                <a class="expand-toggle d-block py-1" href="#"><span class="expand-text">全部展開</span><span class="close-text" style="display: none;">全部收起</span></a>
+                <a class="back-to-top d-block py-1" href="#">回到頂部</a>
+                <a class="go-to-bottom d-block py-1" href="#">移至底部</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '#toc-content',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: 'article',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+    </script>
+
+
+    
+
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center">
+                <ul class="list-inline">
+                    
+
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://github.com/luswdev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="https://www.linkedin.com/in/callum-lu" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li class="list-inline-item">
+                            <a rel="external" href="mailto:info@lusw.dev" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+                <ul class="copyright footer-menu list-inline">
+                    
+                    
+                        <li class="list-inline-item">
+                            
+                            
+                            <a href="/">
+                                
+                                    Home
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/archives">
+                                
+                                    Archives
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/tags">
+                                
+                                    Tags
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/categories">
+                                
+                                    Categories
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="list-inline-item">
+                            
+                                <span class="copyright-split">&nbsp;|&nbsp;</span>
+                            
+                            
+                            <a href="/about">
+                                
+                                    About
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+                <p class="copyright footer-author">
+                    &copy; 2018-2024 
+                    <a rel="external" class="copyright-link" href="https://github.com/luswdev" target="_blank">LuSkywalker</a><br/>
+                    Powered by <a rel="external" class="copyright-link" href="https://hexo.io/" target="_blank">Hexo</a>  
+                    <span class="copyright-split">&nbsp;|&nbsp;&nbsp;</span>
+                    Theme <a rel="external" class="copyright-link" href="https://github.com/luswdev/hexo-theme-clean.git" target="_blank">Clean</a>
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    <!-- jQuery -->
+<script src="//cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js"></script>
+
+<!-- For drop down -->
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- Gallery -->
+<script src="//cdn.jsdelivr.net/npm/lightgallery@1.6.11/dist/js/lightgallery-all.min.js"></script>
+<!-- Busuanzi -->
+
+
+<!-- Search script -->
+
+<script src="/js/search.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        searchFunc( '/search.xml' , 'searchInput', 'searchResult');
+    });
+</script>
+
+
+
+<script src="/js/main.js"></script>
+
+
+
+    <!-- Search Modal -->
+    <!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content overflow-auto">
+            <div class="modal-header">
+                <input type="text" class="form-control" placeholder="搜尋關鍵字..." id="searchInput">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="searchResult">
+                    <div class="search-empty text-center text-muted p-5">
+                        <i class="far fa-meh"></i>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>
