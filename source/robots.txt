@@ -10,4 +10,4 @@ Disallow: /css/
 Disallow: /js/
 Disallow: /pages/
 
-Sitemap: https://lusw.dev/sitemap.xml
+Sitemap: https://blog.lusw.dev/sitemap.xml
