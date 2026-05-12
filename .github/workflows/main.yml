@@ -7,7 +7,7 @@ on:
 
 env:
   GIT_USER: luswdev
-  GIT_EMAIL: 610721230@gms.ndhu.edu.tw
+  GIT_EMAIL: callumlu@gmail.com
   DEPLOY_REPO: blog
   DEPLOY_BRANCH: gh-pages
 
