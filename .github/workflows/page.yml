@@ -9,11 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          token: ${{ secrets.HEXO_DEPLOY_PRI }}
-          # If your repository depends on submodule, please see: https://github.com/actions/checkout
           submodules: recursive
+          fetch-depth: 0
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
