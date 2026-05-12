@@ -3,7 +3,7 @@ name: Pages
 on:
   push:
     branches:
-      - main # default branch
+      - master # default branch
 
 jobs:
   build:
@@ -48,4 +48,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        
