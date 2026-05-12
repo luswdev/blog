@@ -75,6 +75,12 @@ footer:
 # Google Analytics Tracking ID
 google_analytics: G-73LPFQQS33
 
+# Sponsor config
+# ---------------------------------------------------------------
+sponsor:
+  enable: false
+  ko_fi: luswdev
+
 # Busuanzi Statistics
 busuanzi:
   enable: false
