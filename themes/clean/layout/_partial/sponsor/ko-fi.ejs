@@ -1,6 +1,6 @@
 <% if (theme.sponsor && theme.sponsor.enable){ %>
     <% if (theme.sponsor.ko_fi){ %>
         <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
-        <script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi', '#404040', 'W7W41ZEH2N');kofiwidget2.draw();</script> 
+        <script type='text/javascript'>kofiwidget2.init('Buy me a coffee', '#404040', '<%- theme.sponsor.ko_fi %>');kofiwidget2.draw();</script> 
     <% } %>
 <% } %>
