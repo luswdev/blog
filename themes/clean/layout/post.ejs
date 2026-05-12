@@ -34,7 +34,11 @@
 
             <!-- Post information -->
             <%- partial('_partial/post/post-tags', {page: page}) %>
-            <%- partial('_partial/sponsor/ko-fi', {page: page}) %>
+
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 sponsor-container">
+                <%- partial('_partial/sponsor/ko-fi', {page: page}) %>
+            </div>
+
             <%- partial('_partial/post/post-footer', {page: page}) %>
 
             <% if (page.comments != false) { %>
