@@ -78,7 +78,7 @@ google_analytics: G-73LPFQQS33
 # Sponsor config
 # ---------------------------------------------------------------
 sponsor:
-  enable: false
+  enable: true
   ko_fi: luswdev
 
 # Busuanzi Statistics
