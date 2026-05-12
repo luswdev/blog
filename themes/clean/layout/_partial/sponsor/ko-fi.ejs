@@ -1,7 +1,6 @@
 <% if (theme.sponsor && theme.sponsor.enable){ %>
     <% if (theme.sponsor.ko_fi){ %>
-        <a href="https://ko-fi.com/<%- theme.sponsor.ko_fi %>" target="_blank" rel="noopener noreferrer">
-            <img height="36" style="border:0px;height:36px;" src="https://cdn.ko-fi.com/cdn/kofi3.png?v=3" border="0" alt="Buy Me a Coffee at ko-fi.com" />
-        </a>
+        <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
+        <script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi', '#404040', 'W7W41ZEH2N');kofiwidget2.draw();</script> 
     <% } %>
 <% } %>
